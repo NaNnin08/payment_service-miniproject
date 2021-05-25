@@ -70,6 +70,13 @@ const payment_transaction = (sequelize, DataTypes) => {
       ],
     }
   );
+
+  Payment_transaction.associate = (models) => {
+    Payment_transaction.belongsTo(models.Payment_Account, {
+      foreignKey: "payt_paac_account_number",
+    });
+  };
+
   return Payment_transaction;
 };
 

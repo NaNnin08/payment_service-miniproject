@@ -5,6 +5,7 @@ import expressJwt from "express-jwt";
 import formidable from "formidable";
 import fs from "fs";
 import path from "path";
+import { nanoid } from "nanoid";
 
 const pathDir = __dirname + "../../../upload";
 
@@ -12,15 +13,32 @@ const signup = async (req, res) => {
   const { dataValues } = new req.context.models.Users(req.body);
   const salt = Auth.makeSalt();
   const hashPassword = Auth.hashPassword(dataValues.user_password, salt);
+  const id = nanoid(16);
 
   const users = await req.context.models.Users.create({
+    user_id: id,
     user_name: dataValues.user_name,
     user_email: dataValues.user_email,
     user_password: hashPassword,
     user_salt: salt,
   });
 
-  return res.send(users);
+  const wallet = await req.context.models.Payment_Account.create({
+    pacc_saldo: 0,
+    pacc_user_id: users.user_id,
+  });
+
+  const user = await req.context.models.Users.findOne({
+    where: { user_id: users.user_id },
+    include: [
+      {
+        all: true,
+      },
+    ],
+    attributes: { exclude: ["user_password", "user_salt"] },
+  });
+
+  return res.send(user);
 };
 
 const signin = async (req, res) => {

@@ -62,6 +62,12 @@ const bank_account = (sequelize, DataTypes) => {
       ],
     }
   );
+
+  Bank_account.associate = (models) => {
+    Bank_account.belongsTo(models.Users, { foreignKey: "baac_user_id" });
+    Bank_account.belongsTo(models.Bank, { foreignKey: "baac_bank_id" });
+  };
+
   return Bank_account;
 };
 

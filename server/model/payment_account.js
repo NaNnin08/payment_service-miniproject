@@ -40,6 +40,14 @@ const payment_account = (sequelize, DataTypes) => {
       ],
     }
   );
+
+  Payment_account.associate = (models) => {
+    Payment_account.belongsTo(models.Users, { foreignKey: "pacc_user_id" });
+    Payment_account.hasMany(models.Payment_Transaction, {
+      foreignKey: "payt_paac_account_number",
+    });
+  };
+
   return Payment_account;
 };
 

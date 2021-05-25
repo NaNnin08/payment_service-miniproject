@@ -21,7 +21,7 @@ select CONCAT('PAY',to_char(now(),'YYYY'),to_char(now(),'MM'),to_char(now(),'DD'
 $$ language sql
 
 CREATE TABLE users (
-	user_id SERIAL PRIMARY KEY,
+	user_id VARCHAR(30) PRIMARY KEY,
 	user_name VARCHAR(20) NOT NULL,
 	user_email VARCHAR(55) NOT NULL,
 	user_password VARCHAR(255) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE bank_account (
 	baac_start_date DATE,
 	baac_end_date DATE,
 	baac_type VARCHAR(20) NOT NULL,
-	baac_user_id INTEGER NOT NULL,
+	baac_user_id VARCHAR(30) NOT NULL,
 	baac_bank_id VARCHAR(3) NOT NULL,
 	FOREIGN KEY (baac_user_id) REFERENCES users(user_id)
 	ON UPDATE CASCADE ON DELETE CASCADE,
@@ -66,7 +66,7 @@ CREATE TABLE payment_account (
 	paac_account_number TEXT DEFAULT pacc_id() PRIMARY KEY,
 	pacc_saldo NUMERIC(20,2),
 	pacc_pin_number VARCHAR(6),
-	pacc_user_id INTEGER NOT NULL,
+	pacc_user_id VARCHAR(30) NOT NULL,
 	FOREIGN KEY (pacc_user_id) REFERENCES users(user_id) 
 	ON UPDATE CASCADE ON DELETE CASCADE
 );

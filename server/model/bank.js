@@ -26,6 +26,14 @@ const bank = (sequelize, DataTypes) => {
       ],
     }
   );
+
+  Bank.associate = (models) => {
+    Bank.hasMany(models.Bank_Accounts, {
+      foreignKey: "baac_bank_id",
+      onDelete: "CASCADE",
+    });
+  };
+
   return Bank;
 };
 

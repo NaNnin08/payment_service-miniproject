@@ -106,11 +106,20 @@ const findAll = async (req, res) => {
 const findOne = async (req, res) => {
   const users = await req.context.models.Users.findOne({
     where: { user_id: req.params.id },
+    include: [
+      {
+        all: true,
+      },
+    ],
   });
   return res.send(users);
 };
 
 const update = async (req, res) => {
+  const { dataValues } = await req.context.models.Users.findOne({
+    where: { user_id: req.params.id },
+  });
+
   if (!fs.existsSync(pathDir)) {
     fs.mkdirSync(pathDir);
   }
@@ -123,7 +132,12 @@ const update = async (req, res) => {
 
   form
     .on("fileBegin", (name, file) => {
+      file.name = name + "_" + new Date().getMilliseconds() + "_" + file.name;
       file.path = path.join(pathDir, file.name);
+
+      if (dataValues.user_avatar) {
+        fs.unlinkSync(pathDir + "//" + dataValues.user_avatar);
+      }
     })
     .parse(req, async (err, fields, files) => {
       if (err) {
@@ -134,8 +148,16 @@ const update = async (req, res) => {
 
       let user = new req.context.models.Users(fields);
 
+      if (user.user_password) {
+        user.user_salt = Auth.makeSalt();
+        user.user_password = Auth.hashPassword(
+          user.user_password,
+          user.user_salt
+        );
+      }
+
       if (!user.user_id) {
-        user.user_id = parseInt(req.params.id);
+        user.user_id = req.params.id;
       }
 
       if (files.user_avatar) {
@@ -145,9 +167,14 @@ const update = async (req, res) => {
       try {
         const result = await req.context.models.Users.update(user.dataValues, {
           returning: true,
-          where: { user_id: parseInt(req.params.id) },
+          where: { user_id: req.params.id },
         });
-        return res.send(result);
+
+        if (result[0]) {
+          return res.send("Update Completed");
+        } else {
+          return res.send("Update Failed");
+        }
       } catch (error) {
         res.send(error.message);
       }

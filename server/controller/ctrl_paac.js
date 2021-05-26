@@ -21,6 +21,11 @@ const findAll = async (req, res) => {
 const findOne = async (req, res) => {
   const paac = await req.context.models.Payment_Account.findOne({
     where: { paac_account_number: req.params.id },
+    include: [
+      {
+        all: true,
+      },
+    ],
   });
 
   if (paac) {

@@ -54,7 +54,7 @@ CREATE TABLE bank_account (
 	baac_start_date DATE,
 	baac_end_date DATE,
 	baac_type VARCHAR(20) NOT NULL,
-	baac_user_id VARCHAR(30) NOT NULL,
+	baac_user_id VARCHAR(30),
 	baac_bank_id VARCHAR(3) NOT NULL,
 	FOREIGN KEY (baac_user_id) REFERENCES users(user_id)
 	ON UPDATE CASCADE ON DELETE CASCADE,

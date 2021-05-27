@@ -2,7 +2,7 @@ import { Router } from "express";
 import ctrl from "../controller";
 
 const router = Router();
-router.post("/signup", ctrl.User.signup);
+router.post("/signup", ctrl.User.signup, ctrl.Paac.create, ctrl.User.findOne);
 router.post("/signin", ctrl.User.signin);
 router.post("/signout", ctrl.User.signout);
 router.get("/", ctrl.User.findAll);

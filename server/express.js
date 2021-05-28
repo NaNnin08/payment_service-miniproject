@@ -8,6 +8,9 @@ import helmet from "helmet";
 import models from "./model";
 import router from "./router";
 
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger/swagger.json";
+
 const app = express();
 
 // parse body params and attache them to req.body
@@ -41,6 +44,7 @@ app.use("/api/bank", router.route_bank);
 app.use("/api/baac", router.route_baac);
 app.use("/api/paac", router.route_paac);
 app.use("/api/payt", router.route_payt);
+app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Catch unauthorised errors
 app.use((err, req, res, next) => {

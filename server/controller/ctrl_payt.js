@@ -140,7 +140,7 @@ const findOne = async (req, res, next) => {
     if (payt) {
       return res.send(payt);
     } else {
-      return res.send("data has not found");
+      return res.status(404).send({ message: "data has not found" });
     }
   } else {
     if (req.data.paac) {

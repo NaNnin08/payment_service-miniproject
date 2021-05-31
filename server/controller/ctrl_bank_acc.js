@@ -147,7 +147,7 @@ const update = async (req, res, next) => {
           console.log(err);
         }
       } else {
-        return res.send("saldo tidak cukup");
+        return res.status(501).send({ message: "saldo tidak cukup" });
       }
     }
   }

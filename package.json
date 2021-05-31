@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon",
-    "test": "mocha --require @babel/register ./tests/RegionTest.js",
+    "test": "mocha --require @babel/register ./tests/test_payt.js",
     "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js",
     "prod": "set NODE_ENV=production node ./dist/server.generated.js",
     "reverse:db": "sequelize-auto -o ./schema-reverse -d payment-service -h localhost -u postgres -p 5432 -x admin -e postgres"

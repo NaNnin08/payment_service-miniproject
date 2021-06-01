@@ -11,6 +11,9 @@
     "reverse:db": "sequelize-auto -o ./schema-reverse -d payment-service -h localhost -u postgres -p 5432 -x admin -e postgres"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@headlessui/react": "^1.1.1",
     "@heroicons/react": "^1.0.1",
     "@hot-loader/react-dom": "^17.0.1",
@@ -42,7 +45,10 @@
     "react-helmet": "^6.1.0",
     "react-hot-loader": "^4.13.0",
     "react-nice-dates": "^3.1.0",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
+    "redux": "^4.1.0",
+    "redux-thunk": "^2.3.0",
     "sequelize": "^5.21.7",
     "swagger-jsdoc": "^7.0.0-rc.6",
     "swagger-ui-express": "^4.1.6",

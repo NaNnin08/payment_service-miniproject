@@ -14,15 +14,12 @@ const signup = async (req, res, next) => {
   const salt = Auth.makeSalt();
   const hashPassword = Auth.hashPassword(dataValues.user_password, salt);
   const id = nanoid(16);
+  dataValues.user_password = hashPassword;
+  dataValues.user_salt = salt;
+  dataValues.user_id = id;
 
   try {
-    const users = await req.context.models.Users.create({
-      user_id: id,
-      user_name: dataValues.user_name,
-      user_email: dataValues.user_email,
-      user_password: hashPassword,
-      user_salt: salt,
-    });
+    const users = await req.context.models.Users.create(dataValues);
 
     req.user_id = users.user_id;
 

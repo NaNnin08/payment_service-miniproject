@@ -3,13 +3,8 @@ module.exports = {
   darkMode: false,
   theme: {
     extend: {
-      animation: {
-        "pulse-normal": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) 1s infinite",
-        "pulse-very-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) 2s infinite",
-      },
       gridTemplateRows: {
-        layout: "2.5rem 1fr 2rem",
+        layout: "4rem 1fr 2rem",
       },
     },
     height: {

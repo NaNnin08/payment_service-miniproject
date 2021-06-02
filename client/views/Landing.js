@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/images/B_icon_navbar.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function Landing() {
   return (
@@ -15,9 +13,6 @@ export default function Landing() {
           <Link to="/login">login</Link>
         </div>
       </header>
-      <div className="text-blue-500">
-        <FontAwesomeIcon size="10x" icon={faSpinner} spin />
-      </div>
     </div>
   );
 }

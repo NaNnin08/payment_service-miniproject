@@ -3,8 +3,9 @@ import { style } from "../../assets/styles/style";
 import Logo from "../../assets/images/bayar-logo.svg";
 import AlertInput from "../../components/layout/AlertInput";
 import { useDispatch, useSelector } from "react-redux";
-import { signin } from "../../actions/userActions";
+import { findOneUser, signin } from "../../actions/userActions";
 import { useHistory } from "react-router-dom";
+import LoadingScreen from "../../components/layout/LoadingScreen";
 
 export default function LoginScreen() {
   const [values, setValues] = useState({
@@ -17,6 +18,9 @@ export default function LoginScreen() {
 
   const userSignin = useSelector((state) => state.userSignin);
   const { loading, userInfo, error } = userSignin;
+
+  const userFund = useSelector((state) => state.userFund);
+  const { fund } = userFund;
 
   const dispatch = useDispatch();
 
@@ -32,12 +36,16 @@ export default function LoginScreen() {
   };
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo && !fund) {
+      dispatch(findOneUser(userInfo.users.user_id));
+    }
+    if (fund) {
       history.push("/myaccount/summary");
     }
-  }, [history, userInfo]);
+  }, [userInfo, history, fund]);
   return (
     <div className="bg-gray-100 min-h-screen flex items-center font-serif">
+      {loading && <LoadingScreen />}
       <div className="w-5/6 md:w-1/2 lg:w-1/3 mx-auto bg-white shadow p-10 rounded-sm">
         <div className="-mt-5">
           <img className="w-1/2 mx-auto" src={Logo} alt="" />

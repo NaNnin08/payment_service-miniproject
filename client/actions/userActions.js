@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  USER_FIND_ONE_FAIL,
+  USER_FIND_ONE_REQUEST,
+  USER_FIND_ONE_SUCCESS,
   USER_REGISTER_FAIL_1,
   USER_REGISTER_FAIL_2,
   USER_REGISTER_REQUEST_1,
@@ -78,6 +81,22 @@ export const register_2 = (user) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL_2,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const findOneUser = (id) => async (dispatch) => {
+  dispatch({ type: USER_FIND_ONE_REQUEST, payload: id });
+  try {
+    const { data } = await axios.get(`/api/users/${id}`);
+    dispatch({ type: USER_FIND_ONE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_FIND_ONE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

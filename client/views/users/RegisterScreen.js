@@ -7,9 +7,9 @@ import AlertInput from "../../components/layout/AlertInput";
 
 export default function RegisterScreen() {
   const [values, setValues] = useState({
-    user_name: null,
-    user_email: null,
-    user_password: null,
+    user_name: undefined,
+    user_email: undefined,
+    user_password: undefined,
   });
   const [confirm, setConfirm] = useState("");
   const [isError, setIsError] = useState("");

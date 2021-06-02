@@ -1,4 +1,7 @@
 import {
+  USER_FIND_ONE_FAIL,
+  USER_FIND_ONE_REQUEST,
+  USER_FIND_ONE_SUCCESS,
   USER_REGISTER_FAIL_1,
   USER_REGISTER_FAIL_2,
   USER_REGISTER_REQUEST_1,
@@ -40,6 +43,21 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: false, isSuccess: true };
     case USER_REGISTER_FAIL_2:
       return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userFindOneReduccer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_FIND_ONE_REQUEST:
+      return { ...state, loading: true };
+    case USER_FIND_ONE_SUCCESS:
+      return { ...state, loading: false, fund: action.payload };
+    case USER_FIND_ONE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case USER_SIGNOUT:
+      return {};
     default:
       return state;
   }

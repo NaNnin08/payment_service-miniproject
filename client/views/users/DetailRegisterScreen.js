@@ -38,7 +38,7 @@ export default function DetailRegisterScreen() {
   }
 
   return (
-    <div className="w-5/6 md:w-1/2 lg:w-1/3 mx-auto min-h-screen bg-white shadow p-10 rounded-sm">
+    <div className="w-5/6 md:w-1/2 lg:w-1/3 mx-auto min-h-screen bg-white shadow p-10 rounded-sm font-serif">
       <div
         className="w-10 -mt-5 -ml-5 text-gray-400 cursor-pointer"
         onClick={() => history.goBack()}

@@ -61,6 +61,23 @@ const findOne = async (req, res, next) => {
   }
 };
 
+const findOneByUser = async (req, res) => {
+  const bacc = await req.context.models.Bank_Accounts.findAll({
+    where: { baac_user_id: req.params.id },
+    include: [
+      {
+        model: req.context.models.Bank,
+      },
+    ],
+  });
+
+  if (bacc) {
+    return res.send(bacc);
+  } else {
+    return res.send("data has not found");
+  }
+};
+
 // create update
 const update = async (req, res, next) => {
   if (req.params.id) {
@@ -165,6 +182,7 @@ export default {
   create,
   findAll,
   findOne,
+  findOneByUser,
   update,
   remove,
 };

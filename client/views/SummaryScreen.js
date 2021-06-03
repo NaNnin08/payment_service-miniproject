@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MoneyIcon from "../assets/images/money_icon.svg";
+import bankIcon from "../assets/images/bank.svg";
+import cardIcon from "../assets/images/card.svg";
 import { DotsVerticalIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function SummaryScreen() {
-  const { fund } = useSelector((state) => state.userFund);
-  const { payment_account } = fund;
+  const [wallet, setWallet] = useState({});
+  const [bank, setBank] = useState([]);
+  const userFund = useSelector((state) => state.userFund);
+  const { fund } = userFund;
+  useEffect(() => {
+    setWallet(fund.payment_account);
+    setBank(fund.bank_accounts);
+  }, []);
+
   return (
     <div className="min-h-screen w-5/6 flex flex-col md:flex-row mx-auto bg-gray-100">
       <div className="md:w-2/3 mb-5">
@@ -22,12 +31,9 @@ export default function SummaryScreen() {
           <p className="mt-2 text-3xl relative ml-6">
             <span className="absolute -ml-6 -mt-2 text-lg">Rp</span>
             <span className="font-mono">
-              {parseFloat(payment_account.pacc_saldo).toLocaleString(
-                navigator.language,
-                {
-                  minimumFractionDigits: 2,
-                }
-              )}
+              {parseFloat(wallet.pacc_saldo).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
             </span>
           </p>
           <p className="text-sm font-thin font-mono">Available</p>
@@ -80,9 +86,40 @@ export default function SummaryScreen() {
           <Link>
             <h1 className="text-blue-700 hover:underline">Bank and cards</h1>
           </Link>
-          <p className="mt-2">
-            Shop and send payment more securely. Link your credit card now.
-          </p>
+          {bank ? (
+            bank.map((data, index) => (
+              <div
+                key={index}
+                className="flex flex-row items-center mt-2 pb-2 border-b-2 border-dotted"
+              >
+                <div>
+                  <img
+                    className="w-10"
+                    src={
+                      data.baac_type === "debit"
+                        ? bankIcon
+                        : data.baac_type === "card"
+                        ? cardIcon
+                        : null
+                    }
+                    alt="bank icon"
+                  />
+                </div>
+                <div className="ml-2 font-thin font-mono">
+                  <p className="text-sm">{data.baac_owner}</p>
+                  <p className="text-xs">
+                    {data.baac_type}{" "}
+                    {"*".repeat(5) + data.baac_acc_bank.substr(5)}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="mt-2">
+              Shop and send payment more securely. Link your credit card now.
+            </p>
+          )}
+
           <button className="border border-blue-700 rounded-xl px-3 py-1 text-blue-700 hover:text-blue-900 hover:border-blue-900 text-sm mt-3">
             Link a Card or Bank
           </button>

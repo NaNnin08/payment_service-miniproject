@@ -94,6 +94,7 @@ export const findOneUser = (id) => async (dispatch) => {
   try {
     const { data } = await axios.get(`/api/users/${id}`);
     dispatch({ type: USER_FIND_ONE_SUCCESS, payload: data });
+    sessionStorage.setItem("fund", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_FIND_ONE_FAIL,

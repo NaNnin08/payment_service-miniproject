@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { findOneUser, signin } from "../../actions/userActions";
 import { useHistory } from "react-router-dom";
 import LoadingScreen from "../../components/layout/LoadingScreen";
+import { findBankById } from "../../actions/bankActions";
 
 export default function LoginScreen() {
   const [values, setValues] = useState({

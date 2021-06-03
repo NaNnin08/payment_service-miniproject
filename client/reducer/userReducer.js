@@ -1,4 +1,9 @@
 import {
+  BANK_REMOVE_FAIL,
+  BANK_REMOVE_REQUEST,
+  BANK_REMOVE_SUCCESS,
+} from "../constants/bankConstants";
+import {
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
   USER_FIND_ONE_SUCCESS,
@@ -58,6 +63,12 @@ export const userFindOneReduccer = (state = {}, action) => {
       return { ...state, loading: false, error: action.payload };
     case USER_SIGNOUT:
       return {};
+    case BANK_REMOVE_REQUEST:
+      return { loading: true };
+    case BANK_REMOVE_SUCCESS:
+      return { loading: false, fund: action.payload };
+    case BANK_REMOVE_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

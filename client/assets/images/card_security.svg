@@ -1,0 +1,12 @@
+<svg width="210" height="116" viewBox="0 0 210 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="card_security">
+<path id="Vector" d="M195 115.625H15C6.71265 115.625 0 110.451 0 104.062V11.5625C0 5.17433 6.71265 0 15 0H195C203.287 0 210 5.17433 210 11.5625V104.062C210 110.451 203.287 115.625 195 115.625Z" fill="#40A2E7"/>
+<path id="Vector_2" d="M0 28.9062H210V52.0312H0V28.9062Z" fill="#57565C"/>
+<g id="Group">
+<path id="Vector_3" d="M30 80.9375H52.5V92.5H30V80.9375Z" fill="white"/>
+<path id="Vector_4" d="M67.5 80.9375H97.5V92.5H67.5V80.9375Z" fill="white"/>
+<path id="Vector_5" d="M112.5 80.9375H142.5V92.5H112.5V80.9375Z" fill="white"/>
+<path id="Vector_6" d="M157.5 80.9375H180V92.5H157.5V80.9375Z" fill="white"/>
+</g>
+</g>
+</svg>

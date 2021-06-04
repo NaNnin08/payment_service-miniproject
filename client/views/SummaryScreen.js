@@ -5,6 +5,7 @@ import cardIcon from "../assets/images/card.svg";
 import { DotsVerticalIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 export default function SummaryScreen() {
   const [wallet, setWallet] = useState({});
@@ -18,11 +19,16 @@ export default function SummaryScreen() {
 
   return (
     <div className="min-h-screen w-5/6 flex flex-col md:flex-row mx-auto bg-gray-100">
+      <Helmet>
+        <title>Bayar: Summary</title>
+      </Helmet>
       <div className="md:w-2/3 mb-5">
         <div className="bg-white w-5/6 mx-auto mt-10 rounded-xl shadow-lg p-5 text-lg relative">
-          <div className="w-6 absolute right-5 cursor-pointer">
-            <DotsVerticalIcon />
-          </div>
+          <Link to="/myaccount/topup/balance">
+            <div className="w-6 absolute right-5 cursor-pointer">
+              <DotsVerticalIcon />
+            </div>
+          </Link>
           <Link to="/myaccount/money">
             <h1 className="text-blue-700 hover:underline mb-5">
               Bayar balance
@@ -74,7 +80,7 @@ export default function SummaryScreen() {
           </div>
         </div>
         <div className="p-5 text-lg">
-          <Link>
+          <Link to="#">
             <h1 className="text-blue-700 hover:underline">Recent activity</h1>
           </Link>
           <p className="mt-2">
@@ -83,7 +89,7 @@ export default function SummaryScreen() {
           </p>
         </div>
         <div className="p-5 text-lg">
-          <Link>
+          <Link to="/myaccount/money">
             <h1 className="text-blue-700 hover:underline">Bank and cards</h1>
           </Link>
           {bank ? (
@@ -119,10 +125,11 @@ export default function SummaryScreen() {
               Shop and send payment more securely. Link your credit card now.
             </p>
           )}
-
-          <button className="border border-blue-700 rounded-xl px-3 py-1 text-blue-700 hover:text-blue-900 hover:border-blue-900 text-sm mt-3">
-            Link a Card or Bank
-          </button>
+          <Link to="/myaccount/money/account/new">
+            <button className="border border-blue-700 rounded-xl px-3 py-1 text-blue-700 hover:text-blue-900 hover:border-blue-900 text-sm mt-3">
+              Link a Card or Bank
+            </button>
+          </Link>
         </div>
       </div>
     </div>

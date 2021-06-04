@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../../assets/images/B_icon.svg";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register_2 } from "../../actions/userActions";
+import { Helmet } from "react-helmet";
 
 export default function DetailRegisterScreen() {
   const userRegister = useSelector((state) => state.userRegister);
@@ -39,12 +40,14 @@ export default function DetailRegisterScreen() {
 
   return (
     <div className="w-5/6 md:w-1/2 lg:w-1/3 mx-auto min-h-screen bg-white shadow p-10 rounded-sm font-serif">
-      <div
-        className="w-10 -mt-5 -ml-5 text-gray-400 cursor-pointer"
-        onClick={() => history.goBack()}
-      >
-        <ArrowLeftIcon />
-      </div>
+      <Helmet>
+        <title>Register</title>
+      </Helmet>
+      <Link to="/register">
+        <div className="w-10 -mt-5 -ml-5 text-gray-400 cursor-pointer">
+          <ArrowLeftIcon />
+        </div>
+      </Link>
       <div className="-mt-5">
         <img className=" w-20 transform -rotate-6 mx-auto" src={Logo} alt="" />
       </div>

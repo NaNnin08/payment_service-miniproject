@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import bIcon from "../assets/images/B_icon.svg";
 import { XIcon } from "@heroicons/react/outline";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { bankFindById } from "../actions/bankActions";
+import { bankFindById, bankLink } from "../actions/bankActions";
 import { BANK_CLEAR_SEARCH } from "../constants/bankConstants";
 
 export default function LinkBankScreen() {
@@ -11,7 +11,10 @@ export default function LinkBankScreen() {
     baac_bank_id: "",
     baac_acc_bank: "",
   });
+  const history = useHistory();
 
+  const user = useSelector((state) => state.userFund);
+  const { fund, isSuccess } = user;
   const bank = useSelector((state) => state.bank);
   const { bankId } = bank;
   const dispatch = useDispatch();
@@ -29,17 +32,31 @@ export default function LinkBankScreen() {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  if (isSuccess) {
+    history.push(
+      `/add/debit/success?id=${values.baac_acc_bank}&from=/myaccount/money`
+    );
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
-    // to do something
+    const update = {
+      baac_acc_bank: values.baac_acc_bank,
+      baac_user_id: fund.user_id,
+    };
+    dispatch(bankLink(update));
+  };
+
+  const clearSearch = () => {
+    dispatch({ type: BANK_CLEAR_SEARCH });
   };
   return (
     <div className="bg-gray-200">
-      <div className="bg-white w-2/4 min-h-screen mx-auto relative flex flex-col">
+      <div className="bg-white w-full md:w-2/4 min-h-screen mx-auto relative flex flex-col">
         <Link to="/myaccount/money">
           <div
             className="w-8 text-gray-400 absolute right-5 mt-2"
-            onClick={() => dispatch({ type: BANK_CLEAR_SEARCH })}
+            onClick={clearSearch}
           >
             <XIcon />
           </div>
@@ -82,7 +99,7 @@ export default function LinkBankScreen() {
             </div>
             <div className="mt-5">
               <input
-                type="password"
+                type="text"
                 id="baac_acc_bank"
                 name="baac_acc_bank"
                 className="block w-full p-2 border rounded border-gray-300 focus:outline-none focus:ring-1 focus:ring-black focus:border-transparent  "

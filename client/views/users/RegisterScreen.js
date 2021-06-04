@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register_1 } from "../../actions/userActions";
 import AlertInput from "../../components/layout/AlertInput";
+import { Helmet } from "react-helmet";
+import LoadingScreen from "../../components/layout/LoadingScreen";
 
 export default function RegisterScreen() {
   const [values, setValues] = useState({
@@ -13,6 +15,7 @@ export default function RegisterScreen() {
   });
   const [confirm, setConfirm] = useState("");
   const [isError, setIsError] = useState("");
+  const [next, setNext] = useState(false);
   const history = useHistory();
 
   const handleChange = (name) => (event) => {
@@ -28,15 +31,17 @@ export default function RegisterScreen() {
 
   const dispatch = useDispatch();
 
+  if (register && next) {
+    history.push("/registerDetail");
+  } else if (error) {
+    setIsError(error);
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
     if (values.user_password === confirm) {
       dispatch(register_1(values));
-      if (register) {
-        history.push("/registerDetail");
-      } else if (error) {
-        setIsError(error);
-      }
+      setNext(true);
     } else {
       setIsError("Password dan Confirm password tidak sama");
     }
@@ -44,6 +49,10 @@ export default function RegisterScreen() {
 
   return (
     <div className="bg-gray-100 min-h-screen flex items-center font-serif">
+      <Helmet>
+        <title>Register</title>
+      </Helmet>
+      {loading && <LoadingScreen />}
       <div className="w-5/6 md:w-1/2 lg:w-1/3 mx-auto min-h-screen bg-white shadow p-10 rounded-sm">
         <div className="-mt-5">
           <img

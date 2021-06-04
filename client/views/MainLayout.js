@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
-import icon from "../assets/images/B_icon.svg";
 
 export default function MainLayout(props) {
   const userSignin = useSelector((state) => state.userSignin);
@@ -17,10 +15,6 @@ export default function MainLayout(props) {
   }, [history, userInfo]);
   return (
     <div className="font-serif bg-gray-100 min-h-screen">
-      <Helmet>
-        <title>Payment</title>
-        <link rel="shortcut icon" href={icon} />
-      </Helmet>
       <div className="grid grid-rows-layout grid-cols-1 h-100v">
         <Navbar />
         <main className="row-span-1 bg-gray-100">{props.children}</main>

@@ -1,7 +1,8 @@
 import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import { bankFindReducer } from "./reducer/bankReducer";
+import { bankAccFindReducer, bankFindReducer } from "./reducer/bankReducer";
+import { topupFromBankReducer } from "./reducer/paymentReducer";
 import {
   userFindOneReduccer,
   userRegisterReducer,
@@ -31,6 +32,8 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userFund: userFindOneReduccer,
   bank: bankFindReducer,
+  bankAcc: bankAccFindReducer,
+  payment: topupFromBankReducer,
 });
 
 const store = createStore(

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BANK_CLEAR_SEARCH } from "../constants/bankConstants";
 import {
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
@@ -38,7 +39,9 @@ export const signin = (email, password) => async (dispatch) => {
 
 export const signout = () => (dispatch) => {
   sessionStorage.removeItem("userInfo");
+  sessionStorage.removeItem("fund");
   dispatch({ type: USER_SIGNOUT });
+  dispatch({ type: BANK_CLEAR_SEARCH });
 };
 
 export const register_1 = (user) => async (dispatch) => {

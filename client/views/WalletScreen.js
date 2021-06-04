@@ -9,20 +9,24 @@ import segi3 from "../assets/images/Polygon 1.svg";
 import { bankFindById } from "../actions/bankActions";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
-import { useLocation, Switch, Route } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import WalletChildScreen from "./WalletChildScreen";
+import { Helmet } from "react-helmet";
 
 export default function WalletScreen(props) {
   const [wallet, setWallet] = useState({});
   const [isBank, setIsBank] = useState("");
   const [isBalance, setIsBalance] = useState(true);
-  const [idBank, setIdBank] = useState();
+  const [child, setChild] = useState(true);
+
   const location = useLocation();
+
   const userFund = useSelector((state) => state.userFund);
   const { fund } = userFund;
   const bank = useSelector((state) => state.bank);
   const { bankId } = bank;
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(bankFindById(""));
     fund.payment_account && setWallet(fund.payment_account);
@@ -30,6 +34,9 @@ export default function WalletScreen(props) {
   }, [dispatch, fund]);
   return (
     <div className="min-h-screen bg-gray-100">
+      <Helmet>
+        <title>Bayar: Wallet</title>
+      </Helmet>
       {fund ? (
         isBank.length > 0 ? null : (
           <div className="bg-gray-800 h-40v ">
@@ -46,9 +53,11 @@ export default function WalletScreen(props) {
                     Join with other customer who use Bayar to pay for everyday
                     purchases any time, any day, any where
                   </p>
-                  <button className="border border-gray-100 rounded-xl px-5 py-3 hover:border-gray-400 text-sm mt-10">
-                    Link a Card or Bank
-                  </button>
+                  <Link to="/myaccount/money/account/new">
+                    <button className="border border-gray-100 rounded-xl px-5 py-3 hover:border-gray-400 text-sm mt-10">
+                      Link a Card or Bank
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -66,7 +75,7 @@ export default function WalletScreen(props) {
             </div>
             <div className="border border-black border-dotted h-10v my-auto"></div>
             <div className="text-blue-500 font-semibold hover:text-blue-700">
-              <Link>
+              <Link to="/myaccount/money/card/new">
                 <img className="h-7v ml-3" src={addCard} alt="link card" />
                 <p className="mt-3 -ml-2">Link a card</p>
               </Link>
@@ -160,7 +169,7 @@ export default function WalletScreen(props) {
               : null
             : null}
         </div>
-        <div className="w-3/4 bg-white hidden md:block min-h-screen">
+        <div className={`w-3/4 bg-white min-h-screen hidden md:block`}>
           {isBalance ? (
             <div>
               <div className="bg-white mt-10 p-5 text-2xl flex">
@@ -194,7 +203,11 @@ export default function WalletScreen(props) {
               </div>
             </div>
           ) : (
-            <WalletChildScreen idBank={bankId} accBank={isBank} />
+            <WalletChildScreen
+              idBank={bankId}
+              accBank={isBank}
+              match={props.match}
+            />
           )}
         </div>
       </div>

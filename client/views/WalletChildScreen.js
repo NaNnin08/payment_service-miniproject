@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
 import { useLocation, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bankRemoveCard } from "../actions/bankActions";
 
-export default function WalletChildScreen({ idBank, accBank }) {
+export default function WalletChildScreen({ idBank, accBank, match }) {
   const [bank_id, setBank_id] = useState("");
   const [bank_acc, setBank_acc] = useState("");
+
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export default function WalletChildScreen({ idBank, accBank }) {
     setBank_acc("");
     setBank_id("");
   }, [location.search]);
+
   useEffect(() => {
     if (!bank_acc) {
       setBank_acc(
@@ -30,13 +32,16 @@ export default function WalletChildScreen({ idBank, accBank }) {
         idBank &&
           idBank.find((y) => y.bank_id === bank_acc.baac_bank_id).bank_name
       );
-      console.log(bank_acc);
     }
-  }, [bank_acc, bank_id]);
+  }, [bank_acc, bank_id, dispatch]);
+
   const removeBankCard = () => {
-    history.push("/myaccount/money/banks/new");
+    history.push(
+      `/remove/${bank_acc.baac_type}/success?id=${bank_acc.baac_acc_bank}&from=${location.pathname}`
+    );
     dispatch(bankRemoveCard(bank_acc.baac_acc_bank, bank_acc.baac_user_id));
   };
+
   return (
     <div>
       <div className="bg-white mt-10 p-5 text-2xl flex flex-col">
@@ -65,7 +70,7 @@ export default function WalletChildScreen({ idBank, accBank }) {
       <div className="flex flex-col mt-10 w-1/2 mx-auto border border-gray-300 border-l-0 border-r-0 p-3">
         <button
           className="text-blue-500 hover:text-black text-lg"
-          onClick={removeBankCard}
+          onClick={() => removeBankCard()}
         >
           remove
         </button>

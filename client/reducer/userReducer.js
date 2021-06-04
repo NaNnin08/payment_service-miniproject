@@ -1,4 +1,8 @@
 import {
+  BANK_LINK_CLEAR,
+  BANK_LINK_FAIL,
+  BANK_LINK_REQUEST,
+  BANK_LINK_SUCCESS,
   BANK_REMOVE_FAIL,
   BANK_REMOVE_REQUEST,
   BANK_REMOVE_SUCCESS,
@@ -66,8 +70,16 @@ export const userFindOneReduccer = (state = {}, action) => {
     case BANK_REMOVE_REQUEST:
       return { loading: true };
     case BANK_REMOVE_SUCCESS:
-      return { loading: false, fund: action.payload };
+      return { loading: false, fund: action.payload, isSuccess: true };
     case BANK_REMOVE_FAIL:
+      return { loading: false, error: action.payload };
+    case BANK_LINK_REQUEST:
+      return { loading: true };
+    case BANK_LINK_SUCCESS:
+      return { loading: false, fund: action.payload, isSuccess: true };
+    case BANK_LINK_CLEAR:
+      return { ...state, isSuccess: false };
+    case BANK_LINK_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

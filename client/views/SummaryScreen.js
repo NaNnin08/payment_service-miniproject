@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
 import MoneyIcon from "../assets/images/money_icon.svg";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
-import { DotsVerticalIcon } from "@heroicons/react/solid";
+import { DotsVerticalIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -24,11 +25,59 @@ export default function SummaryScreen() {
       </Helmet>
       <div className="md:w-2/3 mb-5">
         <div className="bg-white w-5/6 mx-auto mt-10 rounded-xl shadow-lg p-5 text-lg relative">
-          <Link to="/myaccount/topup/balance">
-            <div className="w-6 absolute right-5 cursor-pointer">
-              <DotsVerticalIcon />
+          <>
+            <div className="absolute right-5 ">
+              <Menu as="div" className="relative inline-block text-left">
+                <div>
+                  <Menu.Button className="w-6">
+                    <DotsVerticalIcon />
+                  </Menu.Button>
+                </div>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute right-0 -mr-16 md:-mr-24 -mt-2 w-32 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg">
+                    <div className="p-2">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="/myaccount/money"
+                            className={`${
+                              active
+                                ? "bg-violet-500 text-blue-500"
+                                : "text-gray-900"
+                            } group flex rounded-md items-center w-32 px-2 py-2 text-sm`}
+                          >
+                            Go to Bayar balance
+                          </Link>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="/myaccount/topup/balance"
+                            className={`${
+                              active
+                                ? "bg-violet-500 text-blue-500"
+                                : "text-gray-900"
+                            } group flex rounded-md items-center w-32 px-2 py-2 text-sm`}
+                          >
+                            Add Balance
+                          </Link>
+                        )}
+                      </Menu.Item>
+                    </div>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
             </div>
-          </Link>
+          </>
           <Link to="/myaccount/money">
             <h1 className="text-blue-700 hover:underline mb-5">
               Bayar balance
@@ -94,9 +143,13 @@ export default function SummaryScreen() {
           </Link>
           {bank ? (
             bank.map((data, index) => (
-              <div
+              <Link
                 key={index}
                 className="flex flex-row items-center mt-2 pb-2 border-b-2 border-dotted"
+                to={{
+                  pathname: "/myaccount/money",
+                  search: `?id=${data.baac_acc_bank}`,
+                }}
               >
                 <div>
                   <img
@@ -118,7 +171,7 @@ export default function SummaryScreen() {
                     {"*".repeat(5) + data.baac_acc_bank.substr(5)}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))
           ) : (
             <p className="mt-2">

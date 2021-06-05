@@ -1,3 +1,5 @@
+const { inset } = require("tailwindcss/defaultTheme");
+
 module.exports = {
   purge: ["./**/*.html"],
   darkMode: false,
@@ -5,6 +7,19 @@ module.exports = {
     extend: {
       gridTemplateRows: {
         layout: "4rem 1fr 2rem",
+      },
+      inset: {
+        "10p": "10%",
+        "20p": "20%",
+        "30p": "30%",
+        "40p": "40%",
+        "45p": "45%",
+        "50p": "50%",
+        "60p": "60%",
+        "70p": "70%",
+        "80p": "80%",
+        "90p": "90%",
+        "100p": "100%",
       },
     },
     height: {

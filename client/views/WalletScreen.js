@@ -12,14 +12,15 @@ import cardIcon from "../assets/images/card.svg";
 import { useLocation } from "react-router-dom";
 import WalletChildScreen from "./WalletChildScreen";
 import { Helmet } from "react-helmet";
+import LoadingScreen from "../components/layout/LoadingScreen";
 
 export default function WalletScreen(props) {
+  const location = useLocation();
+
   const [wallet, setWallet] = useState({});
   const [isBank, setIsBank] = useState("");
-  const [isBalance, setIsBalance] = useState(true);
-  const [child, setChild] = useState(true);
-
-  const location = useLocation();
+  const [isBalance, setIsBalance] = useState(!location.search);
+  const [isLoading, setIsLoadig] = useState(true);
 
   const userFund = useSelector((state) => state.userFund);
   const { fund } = userFund;
@@ -31,9 +32,22 @@ export default function WalletScreen(props) {
     dispatch(bankFindById(""));
     fund.payment_account && setWallet(fund.payment_account);
     fund.payment_account && setIsBank(fund.bank_accounts);
+    if (isLoading && fund) {
+      const timeLoading = setTimeout(() => {
+        setIsLoadig(false);
+      }, 500);
+      return () => {
+        clearTimeout(timeLoading);
+      };
+    }
   }, [dispatch, fund]);
   return (
     <div className="min-h-screen bg-gray-100">
+      {isLoading && (
+        <div className="absolute right-0 w-full h-100v top-0">
+          <LoadingScreen />
+        </div>
+      )}
       <Helmet>
         <title>Bayar: Wallet</title>
       </Helmet>

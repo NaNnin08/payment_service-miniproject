@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
 import { useLocation, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { bankRemoveCard } from "../actions/bankActions";
-import LoadingScreen from "../components/layout/LoadingScreen";
 
 export default function WalletChildScreen({ idBank, accBank, match }) {
   const [bank_id, setBank_id] = useState("");
   const [bank_acc, setBank_acc] = useState("");
-  const [isLoading, setIsLoadig] = useState(true);
 
   const location = useLocation();
   const history = useHistory();
@@ -36,14 +34,6 @@ export default function WalletChildScreen({ idBank, accBank, match }) {
           idBank.find((y) => y.bank_id === bank_acc.baac_bank_id).bank_name
       );
     }
-    if (isLoading && bank_id && bank_acc) {
-      const timeLoading = setTimeout(() => {
-        setIsLoadig(false);
-      }, 500);
-      return () => {
-        clearTimeout(timeLoading);
-      };
-    }
   }, [bank_acc, bank_id, dispatch, idBank, accBank]);
 
   const removeBankCard = () => {
@@ -55,11 +45,6 @@ export default function WalletChildScreen({ idBank, accBank, match }) {
 
   return (
     <div>
-      {isLoading && (
-        <div className="absolute right-0 w-full h-100v top-0">
-          <LoadingScreen />
-        </div>
-      )}
       <div className="bg-white mt-10 p-5 text-2xl flex flex-col">
         <div className="mx-auto">
           <div className="w-24">

@@ -4,7 +4,7 @@ import Logo from "../../assets/images/bayar-logo.svg";
 import AlertInput from "../../components/layout/AlertInput";
 import { useDispatch, useSelector } from "react-redux";
 import { findOneUser, signin } from "../../actions/userActions";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import LoadingScreen from "../../components/layout/LoadingScreen";
 import { findBankById } from "../../actions/bankActions";
 import { Helmet } from "react-helmet";
@@ -17,6 +17,7 @@ export default function LoginScreen() {
   });
 
   const history = useHistory();
+  const location = useLocation();
 
   const userSignin = useSelector((state) => state.userSignin);
   const { loading, userInfo, error } = userSignin;
@@ -42,7 +43,11 @@ export default function LoginScreen() {
       dispatch(findOneUser(userInfo.users.user_id));
     }
     if (fund) {
-      history.push("/myaccount/summary");
+      const redirect = location.search
+        ? new URLSearchParams(location.search).get("redirect")
+        : "/myaccount/summary";
+
+      history.push(redirect);
     }
   }, [userInfo, history, fund]);
   return (

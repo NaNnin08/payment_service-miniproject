@@ -328,7 +328,7 @@ export default function Landing() {
               <div className="absolute w-full h-90v bg-black bg-opacity-50 text-white flex items-center">
                 <div className="w-1/2 md:ml-32 mx-auto">
                   <p className="md:text-4xl text-xl font-semibold -mt-20">
-                    GROWING YOUR BUSINESS? THEN IT'S TIME TO ADD Bayar
+                    GROWING YOUR BUSINESS? THEN IT'S TIME TO ADD BAYAR
                   </p>
                   <p className="mt-5 font-semibold md:text-xl">
                     With a Bayar, you enjoy access to 240+ million more

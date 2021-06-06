@@ -3,7 +3,10 @@ import { XIcon } from "@heroicons/react/outline";
 import checkIcon from "../../assets/images/checked1.svg";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { BANK_LINK_CLEAR } from "../../constants/bankConstants";
+import {
+  BANK_CLEAR_SEARCH,
+  BANK_LINK_CLEAR,
+} from "../../constants/bankConstants";
 import { PAYMENT_TOPUP_BANK_CLEAR } from "../../constants/paymentConstants";
 
 export default function SuccessAlert({ match }) {
@@ -21,6 +24,7 @@ export default function SuccessAlert({ match }) {
     }
     if (paymentSuccess) {
       dispatch({ type: PAYMENT_TOPUP_BANK_CLEAR });
+      dispatch({ type: BANK_CLEAR_SEARCH });
     }
   }, []);
 

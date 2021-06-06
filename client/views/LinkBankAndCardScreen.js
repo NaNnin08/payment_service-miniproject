@@ -4,11 +4,20 @@ import bIcon from "../assets/images/B_icon.svg";
 import { XIcon } from "@heroicons/react/outline";
 import addBank from "../assets/images/addBank.svg";
 import addCard from "../assets/images/credit-cards-payment 1.svg";
+import { motion } from "framer-motion";
 
 export default function LinkBankAndCardScreen() {
   return (
     <div className="bg-gray-200">
-      <div className="bg-white w-full md:w-2/4 min-h-screen mx-auto relative flex flex-col">
+      <motion.div
+        exit={{ y: "700px" }}
+        transition={{ duration: 0.8, ease: [0.12, 0, 0.39, 0] }}
+        onAnimationStart={() => document.body.classList.add("overflow-hidden")}
+        onAnimationComplete={() =>
+          document.body.classList.remove("overflow-hidden")
+        }
+        className="bg-white w-full md:w-2/4 min-h-screen mx-auto relative flex flex-col"
+      >
         <Link to="/myaccount/money">
           <div className="w-8 text-gray-400 absolute right-5 mt-2">
             <XIcon />
@@ -45,7 +54,7 @@ export default function LinkBankAndCardScreen() {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import checkIcon from "../assets/images/checked1.svg";
 import cardSecurityIcon from "../assets/images/card_security.svg";
 import AlertBox from "../components/layout/AlertInput";
 import Cleave from "cleave.js/react";
+import { motion } from "framer-motion";
 
 export default function LinkCardScreen() {
   const [values, setValues] = useState({
@@ -77,8 +78,18 @@ export default function LinkCardScreen() {
     dispatch({ type: BANK_CLEAR_SEARCH });
   };
   return (
-    <div className="bg-gray-200">
-      <div className="bg-white w-full md:w-2/4 min-h-screen mx-auto relative flex flex-col">
+    <motion.div className="bg-gray-200">
+      <motion.div
+        initial={{ y: "700px" }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: [0.12, 0, 0.39, 0] }}
+        onAnimationStart={() => document.body.classList.add("overflow-hidden")}
+        onAnimationComplete={() =>
+          document.body.classList.remove("overflow-hidden")
+        }
+        exit={{ y: "700px" }}
+        className="bg-white w-full md:w-2/4 min-h-screen mx-auto relative flex flex-col"
+      >
         <Link to="/myaccount/money">
           <div
             className="w-8 text-gray-400 absolute right-5 mt-2"
@@ -163,7 +174,7 @@ export default function LinkCardScreen() {
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

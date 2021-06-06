@@ -3,7 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import MoneyIcon from "../assets/images/money_icon.svg";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
-import { DotsVerticalIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { DotsVerticalIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -14,8 +14,10 @@ export default function SummaryScreen() {
   const userFund = useSelector((state) => state.userFund);
   const { fund } = userFund;
   useEffect(() => {
-    setWallet(fund.payment_account);
-    setBank(fund.bank_accounts);
+    if (fund) {
+      setWallet(fund.payment_account);
+      setBank(fund.bank_accounts);
+    }
   }, []);
 
   return (
@@ -86,7 +88,7 @@ export default function SummaryScreen() {
           <p className="mt-2 text-3xl relative ml-6">
             <span className="absolute -ml-6 -mt-2 text-lg">Rp</span>
             <span className="font-mono">
-              {parseFloat(wallet.pacc_saldo).toLocaleString("en-US", {
+              {parseFloat(wallet.pacc_saldo).toLocaleString("ID", {
                 minimumFractionDigits: 2,
               })}
             </span>
@@ -96,6 +98,7 @@ export default function SummaryScreen() {
             Transfer Funds
           </button>
         </div>
+        <div></div>
       </div>
       <div className="md:w-1/3">
         <div className="md:flex py-5 hidden">

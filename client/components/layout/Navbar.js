@@ -10,7 +10,7 @@ export default function Navbar() {
   const location = useLocation();
   const dispatch = useDispatch();
   const signoutHandler = () => {
-    history.push("/signin");
+    history.push("/login");
     dispatch(signout());
   };
   return (

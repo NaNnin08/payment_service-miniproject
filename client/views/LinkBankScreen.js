@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bankFindById, bankLink } from "../actions/bankActions";
 import { BANK_CLEAR_SEARCH } from "../constants/bankConstants";
+import { motion } from "framer-motion";
 
 export default function LinkBankScreen() {
   const [values, setValues] = useState({
@@ -52,7 +53,17 @@ export default function LinkBankScreen() {
   };
   return (
     <div className="bg-gray-200">
-      <div className="bg-white w-full md:w-2/4 min-h-screen mx-auto relative flex flex-col">
+      <motion.div
+        initial={{ y: "700px" }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: [0.12, 0, 0.39, 0] }}
+        onAnimationStart={() => document.body.classList.add("overflow-hidden")}
+        onAnimationComplete={() =>
+          document.body.classList.remove("overflow-hidden")
+        }
+        exit={{ y: "700px" }}
+        className="bg-white w-full md:w-2/4 min-h-screen mx-auto relative flex flex-col"
+      >
         <Link to="/myaccount/money">
           <div
             className="w-8 text-gray-400 absolute right-5 mt-2"
@@ -124,7 +135,7 @@ export default function LinkBankScreen() {
             </div>
           </form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

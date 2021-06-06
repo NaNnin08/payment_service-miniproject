@@ -7,6 +7,8 @@ import { topupFromBank } from "../actions/paymentAction";
 import { findOneUser } from "../actions/userActions";
 import { PAYMENT_TOPUP_BANK_CLEAR } from "../constants/paymentConstants";
 import AlertInput from "../components/layout/AlertInput";
+import { bankFindById } from "../actions/bankActions";
+import { BANK_CLEAR_SEARCH } from "../constants/bankConstants";
 
 export default function TopUpBalanceScreen() {
   const history = useHistory();
@@ -25,6 +27,12 @@ export default function TopUpBalanceScreen() {
     payt_type: "topup",
     payt_dabet: undefined,
   });
+
+  useEffect(() => {
+    if (!bankId) {
+      dispatch(bankFindById(""));
+    }
+  }, []);
 
   useEffect(() => {
     if (fund && !values.payt_paac_account_number) {
@@ -55,6 +63,7 @@ export default function TopUpBalanceScreen() {
 
   const clearSearch = () => {
     dispatch({ type: PAYMENT_TOPUP_BANK_CLEAR });
+    dispatch({ type: BANK_CLEAR_SEARCH });
   };
   return (
     <div className="bg-gray-200">
@@ -78,7 +87,7 @@ export default function TopUpBalanceScreen() {
           <h1 className="text-2xl">Add Balance</h1>
           <p className="mt-5">Add balance from your bank</p>
         </div>
-        <div className="w-1/2 mx-auto">
+        <div className="w-2/3 mx-auto">
           {error && <AlertInput data={error} />}
           <form onSubmit={onSubmit}>
             <div className="mt-5">
@@ -100,6 +109,10 @@ export default function TopUpBalanceScreen() {
                         key={data.baac_acc_bank}
                       >
                         {data.baac_acc_bank}
+                        {"-"}
+                        {bankId &&
+                          bankId.find((y) => y.bank_id === data.baac_bank_id)
+                            .bank_name}
                       </option>
                     ))}
               </select>

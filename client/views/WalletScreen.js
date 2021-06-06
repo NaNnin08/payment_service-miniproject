@@ -12,7 +12,6 @@ import cardIcon from "../assets/images/card.svg";
 import { useLocation } from "react-router-dom";
 import WalletChildScreen from "./WalletChildScreen";
 import { Helmet } from "react-helmet";
-import LoadingScreen from "../components/layout/LoadingScreen";
 
 export default function WalletScreen(props) {
   const location = useLocation();
@@ -20,7 +19,6 @@ export default function WalletScreen(props) {
   const [wallet, setWallet] = useState({});
   const [isBank, setIsBank] = useState("");
   const [isBalance, setIsBalance] = useState(!location.search);
-  const [isLoading, setIsLoadig] = useState(true);
 
   const userFund = useSelector((state) => state.userFund);
   const { fund } = userFund;
@@ -32,27 +30,14 @@ export default function WalletScreen(props) {
     dispatch(bankFindById(""));
     fund.payment_account && setWallet(fund.payment_account);
     fund.payment_account && setIsBank(fund.bank_accounts);
-    if (isLoading && fund) {
-      const timeLoading = setTimeout(() => {
-        setIsLoadig(false);
-      }, 500);
-      return () => {
-        clearTimeout(timeLoading);
-      };
-    }
-  }, [dispatch, fund]);
+  }, [dispatch, fund, isBank, wallet]);
   return (
     <div className="min-h-screen bg-gray-100">
-      {isLoading && (
-        <div className="absolute right-0 w-full h-100v top-0">
-          <LoadingScreen />
-        </div>
-      )}
       <Helmet>
         <title>Bayar: Wallet</title>
       </Helmet>
       {fund ? (
-        isBank.length > 0 ? null : (
+        fund.bank_accounts.length > 0 ? null : (
           <div className="bg-gray-800 h-40v ">
             <div className="flex flex-row w-2/3 mx-auto">
               <div className="w-1/3 hidden md:block">
@@ -114,7 +99,7 @@ export default function WalletScreen(props) {
                 <p className="mt-2 text-xl relative ml-6">
                   <span className="absolute -ml-5 -mt-1 text-sm">Rp</span>
                   <span className="font-mono">
-                    {parseFloat(wallet.pacc_saldo).toLocaleString("en-US", {
+                    {parseFloat(wallet.pacc_saldo).toLocaleString("ID", {
                       minimumFractionDigits: 2,
                     })}
                   </span>
@@ -195,7 +180,7 @@ export default function WalletScreen(props) {
                   <p className="mt-2 -ml-5 text-3xl relative">
                     <span className="absolute -ml-6 -mt-2 text-lg">Rp</span>
                     <span className="font-mono">
-                      {parseFloat(wallet.pacc_saldo).toLocaleString("en-US", {
+                      {parseFloat(wallet.pacc_saldo).toLocaleString("ID", {
                         minimumFractionDigits: 2,
                       })}
                     </span>

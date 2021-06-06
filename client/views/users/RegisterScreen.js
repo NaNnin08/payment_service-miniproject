@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../../assets/images/B_icon.svg";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register_1 } from "../../actions/userActions";
 import AlertInput from "../../components/layout/AlertInput";
@@ -119,6 +119,11 @@ export default function RegisterScreen() {
                 Next
               </button>
             </div>
+          </div>
+          <div className="mt-6 text-center">
+            <Link className="font-thin" to="/login">
+              Already have an account?
+            </Link>
           </div>
         </form>
       </div>

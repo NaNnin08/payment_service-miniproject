@@ -18,6 +18,8 @@ import WalletScreen from "./views/WalletScreen";
 import TopUpBalanceScreen from "./views/TopUpBalanceScreen";
 import Dummy from "./views/dummy";
 import OrderViews from "./views/OrderViews";
+import ProfilePageScreen from "./views/users/ProfilePageScreen";
+import AddPhotoProfileScreen from "./views/AddPhotoProfileScreen";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -60,6 +62,11 @@ const MainRouter = () => {
           path="/:action/:type/success"
           component={SuccessAlert}
         />
+        <PrivateRoute
+          exact
+          path="/myaccount/add/profile"
+          component={AddPhotoProfileScreen}
+        />
         <MainLayout>
           <PrivateRoute
             exact
@@ -70,6 +77,11 @@ const MainRouter = () => {
             exact
             path="/myaccount/money"
             component={WalletScreen}
+          />
+          <PrivateRoute
+            exact
+            path="/myaccount/profile"
+            component={ProfilePageScreen}
           />
         </MainLayout>
       </Switch>

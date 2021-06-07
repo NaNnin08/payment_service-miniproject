@@ -1,6 +1,12 @@
 import axios from "axios";
 import { BANK_CLEAR_SEARCH } from "../constants/bankConstants";
 import {
+  USER_ADD_ADDRESS_FAIL,
+  USER_ADD_ADDRESS_REQUEST,
+  USER_ADD_ADDRESS_SUCCESS,
+  USER_DELETE_ADDRESS_FAIL,
+  USER_DELETE_ADDRESS_REQUEST,
+  USER_DELETE_ADDRESS_SUCCESS,
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
   USER_FIND_ONE_SUCCESS,
@@ -14,6 +20,12 @@ import {
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
   USER_SIGNOUT,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_PIN_FAIL,
+  USER_UPDATE_PIN_REQUEST,
+  USER_UPDATE_PIN_SUCCESS,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
 
 export const signin = (email, password) => async (dispatch) => {
@@ -101,6 +113,81 @@ export const findOneUser = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_FIND_ONE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUser = (user, id) => async (dispatch) => {
+  dispatch({ type: USER_UPDATE_REQUEST, payload: user });
+  try {
+    const { data } = await axios.put(`/api/users/${id}`, user);
+    sessionStorage.removeItem("fund");
+    sessionStorage.setItem("fund", JSON.stringify(data));
+    dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUserPin = (pin, id) => async (dispatch) => {
+  dispatch({ type: USER_UPDATE_PIN_REQUEST });
+  try {
+    await axios.put(`/api/paac/${pin.paac_account_number}`, pin);
+    const { data } = await axios.get(`/api/users/${id}`);
+    sessionStorage.removeItem("fund");
+    sessionStorage.setItem("fund", JSON.stringify(data));
+    dispatch({ type: USER_UPDATE_PIN_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_PIN_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const addUserAddress = (address) => async (dispatch) => {
+  dispatch({ type: USER_ADD_ADDRESS_REQUEST });
+  try {
+    await axios.post(`/api/address`, address);
+    const { data } = await axios.get(`/api/users/${address.addr_user_id}`);
+    sessionStorage.removeItem("fund");
+    sessionStorage.setItem("fund", JSON.stringify(data));
+    dispatch({ type: USER_ADD_ADDRESS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_ADD_ADDRESS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteUserAddress = (id, userId) => async (dispatch) => {
+  dispatch({ type: USER_DELETE_ADDRESS_REQUEST });
+  try {
+    await axios.delete(`/api/address/${id}`);
+    const { data } = await axios.get(`/api/users/${userId}`);
+    sessionStorage.removeItem("fund");
+    sessionStorage.setItem("fund", JSON.stringify(data));
+    dispatch({ type: USER_DELETE_ADDRESS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_ADDRESS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

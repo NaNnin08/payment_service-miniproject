@@ -69,6 +69,10 @@ const users = (sequelize, DataTypes) => {
       foreignKey: "baac_user_id",
       onDelete: "CASCADE",
     });
+    Users.hasMany(models.Addres, {
+      foreignKey: "addr_user_id",
+      onDelete: "CASCADE",
+    });
     Users.hasOne(models.Payment_Account, {
       foreignKey: "pacc_user_id",
       onDelete: "CASCADE",

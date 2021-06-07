@@ -8,17 +8,17 @@ const addres = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      addr_street_1: {
+      addr_street: {
         type: DataTypes.STRING(100),
         allowNull: true,
       },
-      addr_street_2: {
-        type: DataTypes.STRING(100),
-        allowNull: true,
-      },
-      addr_city: {
-        type: DataTypes.STRING(100),
-        allowNull: true,
+      addr_user_id: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "user_id",
+        },
       },
     },
     {
@@ -35,6 +35,11 @@ const addres = (sequelize, DataTypes) => {
       ],
     }
   );
+
+  Addres.associate = (models) => {
+    Addres.belongsTo(models.Users, { foreignKey: "addr_user_id" });
+  };
+
   return Addres;
 };
 

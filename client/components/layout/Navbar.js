@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { signout } from "../../actions/userActions";
 import Logo from "../../assets/images/B_icon_navbar.svg";
 import { useHistory, useLocation } from "react-router-dom";
+import { CogIcon } from "@heroicons/react/outline";
 
 export default function Navbar() {
   const history = useHistory();
@@ -44,7 +45,12 @@ export default function Navbar() {
           </h1>
         </Link>
       </div>
-      <div className="absolute right-10">
+      <div className="absolute right-10 flex flex-row">
+        <Link to="/myaccount/profile">
+          <button className="w-8 pb-1 mr-3 hover:border-b-2">
+            <CogIcon className="" />
+          </button>
+        </Link>
         <button className="text-sm hover:border-b-2" onClick={signoutHandler}>
           LOG OUT
         </button>

@@ -8,6 +8,12 @@ import {
   BANK_REMOVE_SUCCESS,
 } from "../constants/bankConstants";
 import {
+  USER_ADD_ADDRESS_FAIL,
+  USER_ADD_ADDRESS_REQUEST,
+  USER_ADD_ADDRESS_SUCCESS,
+  USER_DELETE_ADDRESS_FAIL,
+  USER_DELETE_ADDRESS_REQUEST,
+  USER_DELETE_ADDRESS_SUCCESS,
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
   USER_FIND_ONE_SUCCESS,
@@ -21,6 +27,12 @@ import {
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
   USER_SIGNOUT,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_PIN_FAIL,
+  USER_UPDATE_PIN_REQUEST,
+  USER_UPDATE_PIN_SUCCESS,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
 
 export const userSigninReducer = (state = {}, action) => {
@@ -80,6 +92,27 @@ export const userFindOneReduccer = (state = {}, action) => {
     case BANK_LINK_CLEAR:
       return { ...state, isSuccess: false };
     case BANK_LINK_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_UPDATE_REQUEST:
+      return { loading: true };
+    case USER_UPDATE_SUCCESS:
+      return { loading: false, fund: action.payload, isSuccess: true };
+    case USER_UPDATE_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_UPDATE_PIN_REQUEST:
+      return { loading: true };
+    case USER_UPDATE_PIN_SUCCESS:
+      return { loading: false, fund: action.payload, isSuccess: true };
+    case USER_UPDATE_PIN_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_ADD_ADDRESS_REQUEST:
+    case USER_DELETE_ADDRESS_REQUEST:
+      return { loading: true };
+    case USER_ADD_ADDRESS_SUCCESS:
+    case USER_DELETE_ADDRESS_SUCCESS:
+      return { loading: false, fund: action.payload, isSuccess: true };
+    case USER_ADD_ADDRESS_FAIL:
+    case USER_DELETE_ADDRESS_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

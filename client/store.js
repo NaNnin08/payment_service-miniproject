@@ -27,6 +27,7 @@ const initialState = {
         : null,
   },
 };
+
 const reducer = combineReducers({
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,

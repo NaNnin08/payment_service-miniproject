@@ -116,7 +116,7 @@ const findOne = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   const { dataValues } = await req.context.models.Users.findOne({
     where: { user_id: req.params.id },
   });
@@ -172,7 +172,7 @@ const update = async (req, res) => {
         });
 
         if (result[0]) {
-          return res.send("Update Completed");
+          next();
         } else {
           return res.send("Update Failed");
         }
@@ -203,10 +203,20 @@ const requireSignin = expressJwt({
   algorithms: ["sha1", "RS256", "HS256"],
 });
 
+const photo = async (req, res) => {
+  const fileName = `${pathDir}/${req.params.filename}`;
+
+  if (req.params.filename !== "null") {
+    res.set("Content-Type", "image/jpeg");
+    return res.download(fileName);
+  }
+};
+
 export default {
   signup,
   signin,
   signout,
+  photo,
   findAll,
   findOne,
   update,

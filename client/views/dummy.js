@@ -3,18 +3,16 @@ import ButtonBayar from "../components/payment/ButtonBayar";
 
 export default function Dummy() {
   const [testFungsi, setTestFungsi] = useState("");
-
-  const handleFungsi = (data) => {
-    setTestFungsi(data);
-  };
+  const [amount, setAmount] = useState(1000.99);
+  const [payt, setPayt] = useState("");
   return (
     <div>
       <ButtonBayar
-        amount={1000.78}
-        onSuccess={handleFungsi}
+        amount={amount}
+        onSuccess={setPayt}
         orderNumber={"ORNUM12121"}
       />
-      {testFungsi && <p>{testFungsi}</p>}
+      {payt && <p>{payt.payt_trx_number}</p>}
     </div>
   );
 }

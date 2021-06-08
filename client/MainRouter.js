@@ -20,6 +20,7 @@ import Dummy from "./views/dummy";
 import OrderViews from "./views/OrderViews";
 import ProfilePageScreen from "./views/users/ProfilePageScreen";
 import AddPhotoProfileScreen from "./views/AddPhotoProfileScreen";
+import { ErrorAlert } from "./components/layout/ErrorAlert";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -62,6 +63,7 @@ const MainRouter = () => {
           path="/:action/:type/success"
           component={SuccessAlert}
         />
+        <PrivateRoute exact path="/:action/:type/fail" component={ErrorAlert} />
         <PrivateRoute
           exact
           path="/myaccount/add/profile"

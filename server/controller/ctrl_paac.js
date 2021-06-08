@@ -84,7 +84,8 @@ const topup = async (req, res, next) => {
   try {
     await req.context.models.Payment_Account.update(
       {
-        pacc_saldo: parseInt(paac.pacc_saldo) + parseInt(dataValues.payt_dabet),
+        pacc_saldo:
+          parseFloat(paac.pacc_saldo) + parseFloat(dataValues.payt_dabet),
       },
       {
         returning: true,
@@ -110,7 +111,7 @@ const order = async (req, res, next) => {
       await req.context.models.Payment_Account.update(
         {
           pacc_saldo:
-            parseInt(paac.pacc_saldo) - parseInt(dataValues.payt_credit),
+            parseFloat(paac.pacc_saldo) - parseFloat(dataValues.payt_credit),
         },
         {
           returning: true,
@@ -137,7 +138,8 @@ const refund = async (req, res, next) => {
   try {
     await req.context.models.Payment_Account.update(
       {
-        pacc_saldo: parseInt(paac.pacc_saldo) + parseInt(payt_ref.payt_credit),
+        pacc_saldo:
+          parseFloat(paac.pacc_saldo) + parseFloat(payt_ref.payt_credit),
       },
       {
         returning: true,

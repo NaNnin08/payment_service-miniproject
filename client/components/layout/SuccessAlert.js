@@ -30,11 +30,14 @@ export default function SuccessAlert({ match }) {
 
   return (
     <div className="bg-gray-200">
-      <div className="bg-white w-2/4 min-h-screen mx-auto relative flex flex-col">
+      <div className="bg-white md:w-2/4 min-h-screen mx-auto relative flex flex-col">
         <div
           className="w-8 text-gray-400 absolute right-5 mt-2 cursor-pointer"
-          onClick={() =>
-            history.push(new URLSearchParams(location.search).get("from"))
+          onClick={
+            match.params.action === "order"
+              ? () => window.close()
+              : () =>
+                  history.push(new URLSearchParams(location.search).get("from"))
           }
         >
           <XIcon />
@@ -51,15 +54,22 @@ export default function SuccessAlert({ match }) {
             {match.params.action} {match.params.type}
           </p>
           <p>
-            {location.search &&
+            {new URLSearchParams(location.search).get("id") &&
               "*".repeat(5) +
                 new URLSearchParams(location.search).get("id").substr(5)}
           </p>
-          {match.params.action === "topup" && (
+          {(match.params.action === "topup" ||
+            match.params.action === "order") && (
             <div className="mt-10 font-thin text-left font-mono">
               <p>
                 Amount: Rp. {new URLSearchParams(location.search).get("debet")}
               </p>
+              {new URLSearchParams(location.search).get("orderNumber") && (
+                <p className="mt-2">
+                  Order-Number:{" "}
+                  {new URLSearchParams(location.search).get("orderNumber")}
+                </p>
+              )}
               <p className="mt-2">
                 Invoice: {new URLSearchParams(location.search).get("invoice")}
               </p>
@@ -68,8 +78,11 @@ export default function SuccessAlert({ match }) {
         </div>
         <button
           className="bg-blue-500 w-1/2 mt-20 mx-auto py-3 rounded-2xl text-white text-lg font-semibold"
-          onClick={() =>
-            history.push(new URLSearchParams(location.search).get("from"))
+          onClick={
+            match.params.action === "order"
+              ? () => window.close()
+              : () =>
+                  history.push(new URLSearchParams(location.search).get("from"))
           }
         >
           Done

@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 export default function buttonBayar(props) {
   const order = {
     amount: props.amount,
     orderNumber: props.orderNumber,
   };
+
   const handleCilck = (e) => {
     e.preventDefault();
+    localStorage.removeItem("orderInvoice");
     sessionStorage.setItem("bayarOrder", JSON.stringify(order));
 
     let popup = window.open(
@@ -15,12 +17,21 @@ export default function buttonBayar(props) {
       "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30"
     );
 
-    ////if close popup page will refresh
-    // popup.onload = () => {
-    //   popup.onbeforeunload = () => {
-    //     document.location.reload(true);
-    //   };
-    // };
+    //if close popup page will refresh
+    popup.onload = () => {
+      popup.onbeforeunload = () => {
+        // document.location.reload(true);
+        if (localStorage.getItem("orderInvoice")) {
+          props.onSuccess(
+            typeof window === "object"
+              ? localStorage.getItem("orderInvoice")
+                ? JSON.parse(localStorage.getItem("orderInvoice"))
+                : null
+              : null
+          );
+        }
+      };
+    };
   };
 
   return (

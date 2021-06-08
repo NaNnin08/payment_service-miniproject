@@ -96,7 +96,9 @@ const update = async (req, res, next) => {
         try {
           await req.context.models.Bank_Accounts.update(
             {
-              baac_saldo: bank.baac_saldo - dataValues.payt_credit,
+              baac_saldo:
+                parseFloat(bank.baac_saldo) -
+                parseFloat(dataValues.payt_credit),
             },
             {
               returning: true,
@@ -124,7 +126,7 @@ const update = async (req, res, next) => {
         await req.context.models.Bank_Accounts.update(
           {
             baac_saldo:
-              parseInt(bank.baac_saldo) + parseInt(payt_ref.payt_credit),
+              parseFloat(bank.baac_saldo) + parseFloat(payt_ref.payt_credit),
           },
           {
             returning: true,
@@ -147,7 +149,8 @@ const update = async (req, res, next) => {
         try {
           await req.context.models.Bank_Accounts.update(
             {
-              baac_saldo: bank.baac_saldo - dataValues.payt_dabet,
+              baac_saldo:
+                parseFloat(bank.baac_saldo) - parseFloat(dataValues.payt_dabet),
             },
             {
               returning: true,

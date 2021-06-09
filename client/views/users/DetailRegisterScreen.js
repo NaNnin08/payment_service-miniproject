@@ -35,7 +35,7 @@ export default function DetailRegisterScreen() {
   };
 
   if (isSuccess) {
-    history.push("/signin");
+    history.push("/login");
   }
 
   return (

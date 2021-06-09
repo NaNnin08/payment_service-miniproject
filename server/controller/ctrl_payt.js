@@ -182,6 +182,18 @@ const findOne = async (req, res, next) => {
   }
 };
 
+const findOneByUser = async (req, res) => {
+  const payt = await req.context.models.Payment_Transaction.findAll({
+    where: { payt_paac_account_number: req.params.id },
+  });
+
+  if (payt) {
+    return res.send(payt);
+  } else {
+    return res.status(404).send({ message: "data has not found" });
+  }
+};
+
 // create update
 const update = async (req, res) => {
   const { dataValues } = new req.context.models.Payment_Transaction(req.body);
@@ -230,4 +242,5 @@ export default {
   update,
   remove,
   dataValues,
+  findOneByUser,
 };

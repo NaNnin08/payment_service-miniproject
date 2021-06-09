@@ -8,6 +8,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import LoadingScreen from "../../components/layout/LoadingScreen";
 import { findBankById } from "../../actions/bankActions";
 import { Helmet } from "react-helmet";
+import { findOnePaymentByUser } from "../../actions/paymentAction";
 
 export default function LoginScreen() {
   const [values, setValues] = useState({

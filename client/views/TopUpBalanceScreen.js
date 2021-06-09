@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import bIcon from "../assets/images/B_icon.svg";
 import { XIcon } from "@heroicons/react/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { topupFromBank } from "../actions/paymentAction";
+import { findOnePaymentByUser, topupFromBank } from "../actions/paymentAction";
 import { findOneUser } from "../actions/userActions";
 import { PAYMENT_TOPUP_BANK_CLEAR } from "../constants/paymentConstants";
 import AlertInput from "../components/layout/AlertInput";
@@ -50,6 +50,7 @@ export default function TopUpBalanceScreen() {
   useEffect(() => {
     if (isSuccess) {
       dispatch(findOneUser(fund.user_id));
+      dispatch(findOnePaymentByUser(fund.payment_account.paac_account_number));
       history.push(
         `/topup/debit/success?id=${values.payt_bacc_acc_bank}&debet=${values.payt_dabet}&invoice=${topup.payt_trx_number}&from=/myaccount/summary`
       );

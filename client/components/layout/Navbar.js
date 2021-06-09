@@ -16,10 +16,10 @@ export default function Navbar() {
   };
   return (
     <header className="row-span-1 bg-blue-700 text-white flex items-center font-sans relative">
-      <div className="flex items-center ml-40">
+      <div className="flex items-center ml-10 md:ml-24 lg:ml-32 xl:ml-40">
         <img className="w-10 transform -rotate-6" src={Logo} alt="bayarLogo" />
       </div>
-      <div className="flex items-center ml-8 text-sm space-x-5">
+      <div className="hidden md:flex items-center ml-8 text-sm space-x-5">
         <Link to="/myaccount/summary">
           <h1
             className={
@@ -44,8 +44,20 @@ export default function Navbar() {
             Wallet
           </h1>
         </Link>
+        <Link to="/myaccount/transaction">
+          <h1
+            className={
+              "p-1 " +
+              (location.pathname == "/myaccount/transaction"
+                ? "border-b-2"
+                : "hover:border-b-2")
+            }
+          >
+            Aktivitas
+          </h1>
+        </Link>
       </div>
-      <div className="absolute right-10 flex flex-row">
+      <div className="absolute right-10 hidden md:flex flex-row">
         <Link to="/myaccount/profile">
           <button className="w-8 pb-1 mr-3 hover:border-b-2">
             <CogIcon className="" />

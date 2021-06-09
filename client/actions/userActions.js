@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BANK_CLEAR_SEARCH } from "../constants/bankConstants";
+import { PAYMENT_FIND_ONE_CLEAR } from "../constants/paymentConstants";
 import {
   USER_ADD_ADDRESS_FAIL,
   USER_ADD_ADDRESS_REQUEST,
@@ -54,6 +55,7 @@ export const signout = () => (dispatch) => {
   sessionStorage.removeItem("fund");
   dispatch({ type: USER_SIGNOUT });
   dispatch({ type: BANK_CLEAR_SEARCH });
+  dispatch({ type: PAYMENT_FIND_ONE_CLEAR });
 };
 
 export const register_1 = (user) => async (dispatch) => {

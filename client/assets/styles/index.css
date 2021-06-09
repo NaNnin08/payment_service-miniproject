@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .tableTransaction tr:nth-child(odd) {
+    @apply bg-gray-200;
+  }
+}

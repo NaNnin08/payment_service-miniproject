@@ -21,6 +21,7 @@ import OrderViews from "./views/OrderViews";
 import ProfilePageScreen from "./views/users/ProfilePageScreen";
 import AddPhotoProfileScreen from "./views/AddPhotoProfileScreen";
 import { ErrorAlert } from "./components/layout/ErrorAlert";
+import { TransactionScreen } from "./views/TransactionScreen";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -84,6 +85,11 @@ const MainRouter = () => {
             exact
             path="/myaccount/profile"
             component={ProfilePageScreen}
+          />
+          <PrivateRoute
+            exact
+            path="/myaccount/transaction"
+            component={TransactionScreen}
           />
         </MainLayout>
       </Switch>

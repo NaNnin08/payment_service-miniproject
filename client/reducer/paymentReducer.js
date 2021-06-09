@@ -1,4 +1,8 @@
 import {
+  PAYMENT_FIND_ONE_CLEAR,
+  PAYMENT_FIND_ONE_FAIL,
+  PAYMENT_FIND_ONE_REQUEST,
+  PAYMENT_FIND_ONE_SUCCESS,
   PAYMENT_ORDER_WALLET_FAIL,
   PAYMENT_ORDER_WALLET_REQUEST,
   PAYMENT_ORDER_WALLET_SUCCESS,
@@ -33,6 +37,21 @@ export const orderWalletReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case PAYMENT_TOPUP_BANK_CLEAR:
       return { ...state, isSuccess: false, error: false };
+    default:
+      return state;
+  }
+};
+
+export const findPaymentByUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_FIND_ONE_REQUEST:
+      return { loading: true };
+    case PAYMENT_FIND_ONE_SUCCESS:
+      return { loading: false, historyPayment: action.payload };
+    case PAYMENT_FIND_ONE_FAIL:
+      return { loading: false, error: action.payload };
+    case PAYMENT_FIND_ONE_CLEAR:
+      return {};
     default:
       return state;
   }

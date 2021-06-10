@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -5,7 +6,7 @@ import { orderFromWallet } from "../actions/paymentAction";
 import bIcon from "../assets/images/B_icon.svg";
 import { PinInputScreen } from "../components/layout/PinInputScreen";
 
-export default function OrderViews() {
+export default function OrderViews({ match }) {
   const { fund } = useSelector((state) => state.userFund);
   const { payment_account } = fund;
   const orderWallet = useSelector((state) => state.orderWallet);
@@ -21,15 +22,21 @@ export default function OrderViews() {
   const [order, setOrder] = useState("");
   const [confirm, setConfirm] = useState(false);
   const [payConfirm, setPayConfirm] = useState(false);
+  const [dummy, setDummy] = useState("");
+
+  const payment = async () => {
+    await axios
+      .get("/api/payment/save/" + match.params.id)
+      .then((data) => setOrder(data.data));
+  };
+
   useEffect(() => {
-    setOrder(
-      typeof window === "object"
-        ? sessionStorage.getItem("bayarOrder")
-          ? JSON.parse(sessionStorage.getItem("bayarOrder"))
-          : null
-        : null
-    );
+    payment();
   }, []);
+
+  if (dummy) {
+    console.log(dummy);
+  }
 
   useEffect(() => {
     if (orderSuccess) {
@@ -50,8 +57,8 @@ export default function OrderViews() {
     const isOrder = {
       payt_paac_account_number: payment_account.paac_account_number,
       payt_type: "order",
-      payt_credit: order.amount,
-      payt_order_number: order.orderNumber,
+      payt_credit: order.pays_amount,
+      payt_order_number: order.pays_order_number,
     };
     dispatch(orderFromWallet(isOrder));
     setPayConfirm(false);
@@ -72,12 +79,12 @@ export default function OrderViews() {
           <h1 className="text-center font-bold text-2xl">Order Checkout</h1>
           <div className="ml-8">
             <p className="font-mono mt-16 ml-10 text-xl">
-              Order Number: {order && order.orderNumber}
+              Order Number: {order && order.pays_order_number}
             </p>
             <p className="font-mono mt-3 ml-10 text-xl">
               Order Amount: Rp.{" "}
               {order &&
-                parseFloat(order.amount).toLocaleString("ID", {
+                parseFloat(order.pays_amount).toLocaleString("ID", {
                   minimumFractionDigits: 2,
                 })}
             </p>

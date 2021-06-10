@@ -1,37 +1,74 @@
 import React from "react";
+import axios from "axios";
 
 export default function buttonBayar(props) {
   const order = {
-    amount: props.amount,
-    orderNumber: props.orderNumber,
+    pays_amount: props.amount,
+    pays_order_number: props.orderNumber,
+  };
+
+  const lopalopa = async () => {
+    await axios.post("http://192.168.100.24:3030/api/payment/save", order);
+  };
+
+  const lopalalalllopa = async () => {
+    const { data } = await axios.get(
+      "http://192.168.100.24:3030/api/payt/order/" + order.pays_order_number
+    );
+    props.onSuccess(data);
   };
 
   const handleCilck = (e) => {
     e.preventDefault();
-    localStorage.removeItem("orderInvoice");
-    sessionStorage.setItem("bayarOrder", JSON.stringify(order));
+
+    lopalopa();
 
     let popup = window.open(
-      `http://localhost:3030/pay/order/wallet/`,
+      `http://192.168.100.24:3030/pay/order/wallet/${order.pays_order_number}`,
       "Popup",
       "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30"
     );
 
+    let timer = setInterval(function () {
+      if (popup.closed) {
+        clearInterval(timer);
+        lopalalalllopa();
+      }
+    }, 1000);
+
+    //same origin
+    // popup.onbeforeunload = () => {
+    //   alert("new window closed");
+    // };
+
     //if close popup page will refresh
-    popup.onload = () => {
-      popup.onbeforeunload = () => {
-        // document.location.reload(true);
-        if (localStorage.getItem("orderInvoice")) {
-          props.onSuccess(
-            typeof window === "object"
-              ? localStorage.getItem("orderInvoice")
-                ? JSON.parse(localStorage.getItem("orderInvoice"))
-                : null
-              : null
-          );
-        }
-      };
-    };
+
+    // popup.onload = () => {
+    //   popup.onbeforeunload = () => {
+    //     lopalalalllopa();
+    //     // document.location.reload(true);
+    //     // props.onSuccess(
+    //     //   await axios
+    //     //     .get(
+    //     //       "http://192.168.100.24:3030/api/payt/order/" +
+    //     //         order.pays_order_number
+    //     //     )
+    //     //     .then((result) => {
+    //     //       return result.data;
+    //     //     })
+    //     // );
+    //     // const { data } = await axios.get(
+    //     //   "http://192.168.100.24:3030/api/payt/order/:id"
+    //     // );
+    //     // if (data) {
+    //     //   props.onSuccess(data);
+    //     // }
+    //   };
+    // };
+
+    // popup.onunload = () => {
+    //   lopalalalllopa();
+    // };
   };
 
   return (

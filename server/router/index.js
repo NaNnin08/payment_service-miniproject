@@ -4,6 +4,7 @@ import route_bank from "./route_bank";
 import route_baac from "./route_bank_acc";
 import route_paac from "./route_paac";
 import route_payt from "./route_payt";
+import route_pays from "./route_pays";
 
 export default {
   route_user,
@@ -12,4 +13,5 @@ export default {
   route_baac,
   route_paac,
   route_payt,
+  route_pays,
 };

@@ -194,6 +194,18 @@ const findOneByUser = async (req, res) => {
   }
 };
 
+const findOneByOrder = async (req, res) => {
+  const payt = await req.context.models.Payment_Transaction.findOne({
+    where: { payt_order_number: req.params.id },
+  });
+
+  if (payt) {
+    return res.send(payt);
+  } else {
+    return res.status(404).send({ message: "data has not found" });
+  }
+};
+
 // create update
 const update = async (req, res) => {
   const { dataValues } = new req.context.models.Payment_Transaction(req.body);
@@ -243,4 +255,5 @@ export default {
   remove,
   dataValues,
   findOneByUser,
+  findOneByOrder,
 };

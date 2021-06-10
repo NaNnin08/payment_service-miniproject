@@ -86,3 +86,10 @@ CREATE TABLE payment_transaction(
 	FOREIGN KEY (payt_paac_account_number) REFERENCES payment_account(paac_account_number)
 	ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE payment_save (
+	pays_id SERIAL PRIMARY KEY,
+	pays_amount NUMERIC(20,2),
+	pays_order_number VARCHAR(150),
+	pays_desc VARCHAR(150)
+)

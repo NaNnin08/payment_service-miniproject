@@ -44,6 +44,7 @@ app.use("/api/bank", router.route_bank);
 app.use("/api/baac", router.route_baac);
 app.use("/api/paac", router.route_paac);
 app.use("/api/payt", router.route_payt);
+app.use("/api/payment/save", router.route_pays);
 app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Catch unauthorised errors

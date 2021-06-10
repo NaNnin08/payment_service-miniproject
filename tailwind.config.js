@@ -21,6 +21,9 @@ module.exports = {
         "90p": "90%",
         "100p": "100%",
       },
+      animation: {
+        "spin-5-f": "spin 3s linear",
+      },
     },
     height: {
       "5v": "5vh",
@@ -40,6 +43,7 @@ module.exports = {
   variants: {
     extend: {
       borderWidth: ["hover", "focus"],
+      animation: ["hover", "focus"],
     },
   },
   plugins: [require("@tailwindcss/forms")],

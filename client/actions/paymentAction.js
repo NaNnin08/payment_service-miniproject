@@ -31,7 +31,6 @@ export const orderFromWallet = (order) => async (dispatch) => {
   dispatch({ type: PAYMENT_ORDER_WALLET_REQUEST });
   try {
     const { data } = await axios.post("/api/payt/order", order);
-    localStorage.setItem("orderInvoice", JSON.stringify(data));
     dispatch({ type: PAYMENT_ORDER_WALLET_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

@@ -34,7 +34,11 @@ const MainRouter = () => {
       </Helmet>
       <Switch location={location} key={location.pathname}>
         <Route exact path="/dummy" component={Dummy} />
-        <PrivateRoute exact path="/pay/order/wallet/" component={OrderViews} />
+        <PrivateRoute
+          exact
+          path="/pay/order/wallet/:id"
+          component={OrderViews}
+        />
         <Route exact path="/login" component={LoginScreen} />
         <Route exact path="/" component={Landing} />
         <Route exact path="/register" component={RegisterScreen} />

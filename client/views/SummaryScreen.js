@@ -145,10 +145,10 @@ export default function SummaryScreen() {
       <div className="md:w-1/3">
         <div className="md:flex py-5 hidden">
           <div className="grid grid-cols-3 w-full lg:gap-16 xl:gap-20">
-            <Link to="#" className="col-span-1">
+            <Link to="#" className="col-span-1 ml-2">
               <div className="hover:underline">
                 <img
-                  className="w-16 h-10v bg-blue-500 p-3 rounded-full"
+                  className="w-16 bg-blue-500 p-3 rounded-full"
                   src={MoneyIcon}
                   alt="money send"
                 />
@@ -158,15 +158,15 @@ export default function SummaryScreen() {
             <Link to="#" className="col-span-1">
               <div className="hover:underline">
                 <img
-                  className="w-16 h-10v bg-blue-500 p-3 rounded-full transform rotate-180"
+                  className="w-16 bg-blue-500 p-3 rounded-full transform rotate-180"
                   src={MoneyIcon}
                   alt="money send"
                 />
                 <p className="text-center mt-1">Request</p>
               </div>
             </Link>
-            <div className="hover:underline cursor-pointer col-span-1">
-              <div className="w-16 h-10v text-blue-500 bg-white border border-blue-500 p-3 rounded-full">
+            <div className="hover:underline cursor-pointer col-span-1 mr-2">
+              <div className="w-16 text-blue-500 bg-white border border-blue-500 p-3 rounded-full">
                 <DotsVerticalIcon />
               </div>
               <p className="text-center mt-2">More</p>

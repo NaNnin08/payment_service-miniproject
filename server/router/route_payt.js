@@ -43,6 +43,15 @@ router.post(
   ctrl.Payt.remove,
   ctrl.Payt.create
 );
+router.post(
+  "/transferWallet",
+  ctrl.User.findOneEmailTransferWallet,
+  ctrl.User.findOneEmailTransferWallet,
+  ctrl.Paac.transferWallet,
+  ctrl.Paac.transferWallet,
+  ctrl.Payt.createTransferWallet,
+  ctrl.User.findOne
+);
 router.get("/", ctrl.Payt.findAll);
 router.get("/:id", ctrl.Payt.findOne);
 router.get("/user/:id", ctrl.Payt.findOneByUser);

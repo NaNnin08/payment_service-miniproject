@@ -8,6 +8,9 @@ import {
   USER_DELETE_ADDRESS_FAIL,
   USER_DELETE_ADDRESS_REQUEST,
   USER_DELETE_ADDRESS_SUCCESS,
+  USER_FIND_ONE_EMAIL_FAIL,
+  USER_FIND_ONE_EMAIL_REQUEST,
+  USER_FIND_ONE_EMAIL_SUCCESS,
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
   USER_FIND_ONE_SUCCESS,
@@ -190,6 +193,22 @@ export const deleteUserAddress = (id, userId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_DELETE_ADDRESS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const findOneEmail = (id) => async (dispatch) => {
+  dispatch({ type: USER_FIND_ONE_EMAIL_REQUEST });
+  try {
+    const { data } = await axios.get(`/api/users/email/${id}`);
+    dispatch({ type: USER_FIND_ONE_EMAIL_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_FIND_ONE_EMAIL_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

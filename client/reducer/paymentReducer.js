@@ -10,6 +10,7 @@ import {
   PAYMENT_TOPUP_BANK_FAIL,
   PAYMENT_TOPUP_BANK_REQUEST,
   PAYMENT_TOPUP_BANK_SUCCESS,
+  PAYMENT_TRANSFER_DATA,
 } from "../constants/paymentConstants";
 
 export const topupFromBankReducer = (state = {}, action) => {
@@ -52,6 +53,15 @@ export const findPaymentByUserReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case PAYMENT_FIND_ONE_CLEAR:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const paymentTransfer = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_TRANSFER_DATA:
+      return { transfer_data: action.payload };
     default:
       return state;
   }

@@ -5,9 +5,11 @@ import { bankAccFindReducer, bankFindReducer } from "./reducer/bankReducer";
 import {
   findPaymentByUserReducer,
   orderWalletReducer,
+  paymentTransfer,
   topupFromBankReducer,
 } from "./reducer/paymentReducer";
 import {
+  userFindEmailReducer,
   userFindOneReduccer,
   userRegisterReducer,
   userSigninReducer,
@@ -41,6 +43,8 @@ const reducer = combineReducers({
   payment: topupFromBankReducer,
   orderWallet: orderWalletReducer,
   paymentList: findPaymentByUserReducer,
+  emailUser: userFindEmailReducer,
+  paymentTransfer: paymentTransfer,
 });
 
 const store = createStore(

@@ -37,13 +37,27 @@ export default function RegisterScreen() {
     setIsError(error);
   }
 
+  if (isError) {
+    setTimeout(() => {
+      setIsError("");
+    }, 3000);
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
-    if (values.user_password === confirm) {
-      dispatch(register_1(values));
-      setNext(true);
+    if (
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        values.user_email
+      )
+    ) {
+      if (values.user_password === confirm) {
+        dispatch(register_1(values));
+        setNext(true);
+      } else {
+        setIsError("Password dan Confirm password tidak sama");
+      }
     } else {
-      setIsError("Password dan Confirm password tidak sama");
+      setIsError("Format email is invalid");
     }
   };
 

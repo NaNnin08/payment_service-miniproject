@@ -22,6 +22,8 @@ import ProfilePageScreen from "./views/users/ProfilePageScreen";
 import AddPhotoProfileScreen from "./views/AddPhotoProfileScreen";
 import { ErrorAlert } from "./components/layout/ErrorAlert";
 import { TransactionScreen } from "./views/TransactionScreen";
+import { TransferScreen } from "./views/TransferScreen";
+import { TransferWalletInput } from "./views/TransferWalletInput";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -94,6 +96,16 @@ const MainRouter = () => {
             exact
             path="/myaccount/transaction"
             component={TransactionScreen}
+          />
+          <PrivateRoute
+            exact
+            path="/myaccount/transfer/"
+            component={TransferScreen}
+          />
+          <PrivateRoute
+            exact
+            path="/myaccount/transfer/input"
+            component={TransferWalletInput}
           />
         </MainLayout>
       </Switch>

@@ -14,6 +14,7 @@ const signup = async (req, res, next) => {
   const salt = Auth.makeSalt();
   const hashPassword = Auth.hashPassword(dataValues.user_password, salt);
   const id = nanoid(16);
+
   dataValues.user_password = hashPassword;
   dataValues.user_salt = salt;
   dataValues.user_id = id;
@@ -89,6 +90,63 @@ const findAll = async (req, res) => {
     attributes: { exclude: ["user_password", "user_salt"] },
   });
   return res.send(users);
+};
+
+const findOneEmail = async (req, res) => {
+  try {
+    const users = await req.context.models.Users.findOne({
+      where: { user_email: req.params.id },
+      attributes: ["user_email", "user_id", "user_avatar"],
+    });
+
+    if (users) {
+      return res.send(users);
+    } else {
+      return res.status(404).send({ message: "email not found" });
+    }
+  } catch (err) {
+    return res.send(err.message);
+  }
+};
+
+const findOneEmailTransferWallet = async (req, res, next) => {
+  if (req.amountFromEmail) {
+    const { to_email } = req.body;
+    try {
+      const { dataValues } = await req.context.models.Users.findOne({
+        where: { user_email: to_email },
+        include: [
+          {
+            all: true,
+          },
+        ],
+      });
+
+      req.amountToEmail = dataValues;
+
+      next();
+    } catch (err) {
+      return res.send(err.message);
+    }
+  } else {
+    const { from_email } = req.body;
+    try {
+      const { dataValues } = await req.context.models.Users.findOne({
+        where: { user_email: from_email },
+        include: [
+          {
+            all: true,
+          },
+        ],
+      });
+
+      req.amountFromEmail = dataValues;
+
+      next();
+    } catch (err) {
+      return res.send(err.message);
+    }
+  }
 };
 
 const findOne = async (req, res) => {
@@ -219,6 +277,8 @@ export default {
   photo,
   findAll,
   findOne,
+  findOneEmail,
+  findOneEmailTransferWallet,
   update,
   remove,
   requireSignin,

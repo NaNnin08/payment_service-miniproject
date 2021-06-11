@@ -157,12 +157,84 @@ const refund = async (req, res, next) => {
   }
 };
 
+const transferWallet = async (req, res, next) => {
+  if (req.updateFromEmail) {
+    const users = req.amountToEmail;
+    const { amount } = req.body;
+
+    try {
+      const updateTo = await req.context.models.Payment_Account.update(
+        {
+          pacc_saldo:
+            parseFloat(users.payment_account.dataValues.pacc_saldo) +
+            parseFloat(amount),
+        },
+        {
+          returning: true,
+          where: {
+            paac_account_number:
+              users.payment_account.dataValues.paac_account_number,
+          },
+        }
+      );
+
+      req.data = {
+        dataValuesTo: {
+          payt_credit: amount,
+          payt_paac_account_number:
+            req.amountFromEmail.payment_account.dataValues.paac_account_number,
+          payt_type: "transferTo",
+          payt_desc: `Nama penerima: ${users.user_name} email: ${users.user_email} pesan: ${req.body.message}`,
+        },
+        dataValuesFrom: {
+          payt_dabet: amount,
+          payt_paac_account_number:
+            req.amountToEmail.payment_account.dataValues.paac_account_number,
+          payt_type: "transferFrom",
+          payt_desc: `Nama pengirim: ${req.amountFromEmail.user_name} email: ${req.amountFromEmail.user_email} pesan: ${req.body.message}`,
+        },
+      };
+
+      next();
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    const users = req.amountFromEmail;
+    const { amount } = req.body;
+
+    try {
+      const data = await req.context.models.Payment_Account.update(
+        {
+          pacc_saldo:
+            parseFloat(users.payment_account.dataValues.pacc_saldo) -
+            parseFloat(amount),
+        },
+        {
+          returning: true,
+          where: {
+            paac_account_number:
+              users.payment_account.dataValues.paac_account_number,
+          },
+        }
+      );
+
+      req.updateFromEmail = true;
+
+      next();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
+
 export default {
   create,
   findAll,
   findOne,
   update,
   remove,
+  transferWallet,
   topup,
   order,
   refund,

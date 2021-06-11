@@ -7,6 +7,7 @@ router.post("/signin", ctrl.User.signin);
 router.post("/signout", ctrl.User.signout);
 router.get("/", ctrl.User.findAll);
 router.get("/:id", ctrl.User.findOne);
+router.get("/email/:id", ctrl.User.findOneEmail);
 router.get("/download/:filename", ctrl.User.photo);
 router.get("/secured/find", ctrl.User.requireSignin, ctrl.User.findAll);
 router.put("/:id", ctrl.User.update, ctrl.User.findOne);

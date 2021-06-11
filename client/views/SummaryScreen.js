@@ -3,6 +3,8 @@ import { Menu, Transition } from "@headlessui/react";
 import MoneyIcon from "../assets/images/money_icon.svg";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
+import transferIn from "../assets/images/transfer_in.svg";
+import transferOut from "../assets/images/transfer_out.svg";
 import { DotsVerticalIcon, ShoppingBagIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -10,12 +12,8 @@ import { Helmet } from "react-helmet";
 import { findOnePaymentByUser } from "../actions/paymentAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCheck,
   faMoneyBill,
   faMoneyBillWave,
-  faMoneyCheck,
-  faMoneyCheckAlt,
-  faShippingFast,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function SummaryScreen() {
@@ -42,17 +40,11 @@ export default function SummaryScreen() {
   useEffect(() => {
     if (historyPayment && !paymentList) {
       setPaymentList(
-        historyPayment
-          .sort((a, b) =>
-            a.payt_id.length === b.payt_id.length
-              ? b.payt_id - a.payt_id
-              : a.payt_id.length - b.payt_id.length
-          )
-          .sort((a, b) =>
-            a.payt_id.length === b.payt_id.length
-              ? b.payt_id - a.payt_id
-              : a.payt_id.length - b.payt_id.length
-          )
+        historyPayment.sort((a, b) =>
+          a.payt_id.length === b.payt_id.length
+            ? b.payt_id - a.payt_id
+            : a.payt_id.length - b.payt_id.length
+        )
       );
     }
   }, [historyPayment]);
@@ -145,10 +137,10 @@ export default function SummaryScreen() {
       <div className="md:w-1/3">
         <div className="md:flex py-5 hidden">
           <div className="grid grid-cols-3 w-full lg:gap-16 xl:gap-20">
-            <Link to="#" className="col-span-1 ml-2">
+            <Link to="/myaccount/transfer" className="col-span-1 ml-2">
               <div className="hover:underline">
                 <img
-                  className="w-16 bg-blue-500 p-3 rounded-full"
+                  className="w-16 bg-blue-500 p-3 rounded-full transform rotate-180"
                   src={MoneyIcon}
                   alt="money send"
                 />
@@ -158,7 +150,7 @@ export default function SummaryScreen() {
             <Link to="#" className="col-span-1">
               <div className="hover:underline">
                 <img
-                  className="w-16 bg-blue-500 p-3 rounded-full transform rotate-180"
+                  className="w-16 bg-blue-500 p-3 rounded-full"
                   src={MoneyIcon}
                   alt="money send"
                 />
@@ -192,18 +184,34 @@ export default function SummaryScreen() {
                       size="2x"
                       icon={faMoneyBillWave}
                     />
-                  ) : (
+                  ) : data.payt_type === "refund" ? (
                     <FontAwesomeIcon size="2x" icon={faMoneyBill} />
+                  ) : data.payt_type === "transferFrom" ? (
+                    <img src={transferIn} className="w-10" alt="transfer_in" />
+                  ) : (
+                    <img
+                      src={transferOut}
+                      className="w-10"
+                      alt="transfer_out"
+                    />
                   )}
                 </div>
                 <div className="flex flex-col lg:flex-row space-x-2 py-2">
-                  <h1 className="capitalize text-lg">{data.payt_type}</h1>
+                  <h1 className="capitalize text-lg">
+                    {data.payt_type === "transferFrom"
+                      ? "transfer in"
+                      : data.payt_type === "transferTo"
+                      ? "transfer out"
+                      : data.payt_type}
+                  </h1>
                   <div className="mt-1">
-                    {data.payt_type === "order" ? (
+                    {data.payt_type === "order" ||
+                    data.payt_type === "transferTo" ? (
                       <p className="font-semibold font-mono text-red-400 text-sm">
                         - {data.payt_credit}
                       </p>
-                    ) : data.payt_type === "topup" ? (
+                    ) : data.payt_type === "topup" ||
+                      data.payt_type === "transferFrom" ? (
                       <p className="font-semibold font-mono text-green-400 text-sm">
                         + {data.payt_dabet}
                       </p>

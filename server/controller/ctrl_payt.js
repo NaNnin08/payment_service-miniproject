@@ -114,6 +114,26 @@ const create = async (req, res) => {
   // }
 };
 
+const createTransferWallet = async (req, res, next) => {
+  const { dataValuesFrom, dataValuesTo } = req.data;
+
+  try {
+    const paytFrom = await req.context.models.Payment_Transaction.create(
+      dataValuesFrom
+    );
+
+    const paytTo = await req.context.models.Payment_Transaction.create(
+      dataValuesTo
+    );
+
+    req.user_id = req.amountFromEmail.user_id;
+
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 //findAll = select * from regions
 const findAll = async (req, res) => {
   const payt = await req.context.models.Payment_Transaction.findAll();
@@ -256,4 +276,5 @@ export default {
   dataValues,
   findOneByUser,
   findOneByOrder,
+  createTransferWallet,
 };

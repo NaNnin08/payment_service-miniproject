@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 import {
   ChevronLeftIcon,
@@ -13,6 +13,7 @@ import image3 from "../assets/images/image3.jpg";
 import worldIcon from "../assets/images/globe1.svg";
 import shieldIcon from "../assets/images/shield1.svg";
 import securityIcon from "../assets/images/cyber-security1.svg";
+import { useSelector } from "react-redux";
 
 export default function Landing() {
   const [navBarTransparant, setNavBarTransparant] = useState(true);
@@ -21,6 +22,14 @@ export default function Landing() {
     image2: false,
     image3: true,
   });
+
+  const { userInfo } = useSelector((state) => state.userSignin);
+
+  const history = useHistory();
+
+  if (userInfo) {
+    history.push("/myaccount/summary");
+  }
 
   useEffect(() => {
     const changeNavbar = () => {

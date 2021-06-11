@@ -14,6 +14,9 @@ import {
   USER_DELETE_ADDRESS_FAIL,
   USER_DELETE_ADDRESS_REQUEST,
   USER_DELETE_ADDRESS_SUCCESS,
+  USER_FIND_ONE_EMAIL_FAIL,
+  USER_FIND_ONE_EMAIL_REQUEST,
+  USER_FIND_ONE_EMAIL_SUCCESS,
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
   USER_FIND_ONE_SUCCESS,
@@ -114,6 +117,21 @@ export const userFindOneReduccer = (state = {}, action) => {
     case USER_ADD_ADDRESS_FAIL:
     case USER_DELETE_ADDRESS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userFindEmailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_FIND_ONE_EMAIL_REQUEST:
+      return { loading: true };
+    case USER_FIND_ONE_EMAIL_SUCCESS:
+      return { loading: false, findEmail: action.payload, isSuccess: true };
+    case USER_FIND_ONE_EMAIL_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_SIGNOUT:
+      return {};
     default:
       return state;
   }

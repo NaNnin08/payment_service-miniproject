@@ -24,6 +24,8 @@ import { ErrorAlert } from "./components/layout/ErrorAlert";
 import { TransactionScreen } from "./views/TransactionScreen";
 import { TransferScreen } from "./views/TransferScreen";
 import { TransferWalletInput } from "./views/TransferWalletInput";
+import { TransferSendSelect } from "./views/TransferSendSelect";
+import { TransferWalletCheckout } from "./views/TransferWalletCheckout";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -106,6 +108,16 @@ const MainRouter = () => {
             exact
             path="/myaccount/transfer/input"
             component={TransferWalletInput}
+          />
+          <PrivateRoute
+            exact
+            path="/myaccount/transfer/select"
+            component={TransferSendSelect}
+          />
+          <PrivateRoute
+            exact
+            path="/myaccount/transfer/preview"
+            component={TransferWalletCheckout}
           />
         </MainLayout>
       </Switch>

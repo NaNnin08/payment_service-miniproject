@@ -53,7 +53,7 @@ export const TransferScreen = () => {
   }
   return (
     <div className="bg-gray-100 relative">
-      <div className="w-1/2 p-10 bg-white mx-auto mt-10 flex flex-col">
+      <div className="md:w-1/2 w-full p-10 bg-white mx-auto mt-10 flex flex-col">
         <h1 className="pt-5 pl-3 text-2xl font-semibold text-gray-500">
           Send payment to
         </h1>
@@ -66,7 +66,13 @@ export const TransferScreen = () => {
           type="text"
           placeholder="Email address"
           className="mt-5 mx-12 rounded-md"
-          onBlur={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.code === "Enter") {
+              e.preventDefault();
+              nextHandler();
+            }
+          }}
         />
         <button
           className="my-5 ml-10 self-start bg-blue-500 text-white text-lg py-2 rounded-3xl px-4"

@@ -56,6 +56,18 @@ export default function Navbar() {
               Wallet
             </h1>
           </Link>
+          <Link to="/myaccount/transfer">
+            <h1
+              className={
+                "p-1 " +
+                (location.pathname == "/myaccount/transfer"
+                  ? "border-b-2"
+                  : "hover:border-b-2")
+              }
+            >
+              Kirim
+            </h1>
+          </Link>
           <Link to="/myaccount/transaction">
             <h1
               className={
@@ -85,55 +97,6 @@ export default function Navbar() {
         >
           <MenuIcon className="w-10" />
         </div>
-        {/* {navbar && (
-          <div className="md:hidden block fixed top-0 right-0 h-100v w-full bg-black bg-opacity-50 z-50">
-            <motion.div
-              initial={{ x: "700px" }}
-              animate={{ x: 0 }}
-              transition={{ duration: 0.8, ease: [0.12, 0, 0.39, 0] }}
-              exit={{ x: "700px" }}
-              ref={navbarSlider}
-              className="bg-blue-700 w-1/2 h-100v absolute right-0 flex flex-col"
-            >
-              <div
-                className="ml-2 mt-2 border border-white w-1/4 rounded-xl text-center cursor-pointer p-1"
-                onClick={() => setNavbar(false)}
-              >
-                Cancel
-              </div>
-              <div className="ml-3 mt-3 flex flex-col space-y-2 text-xl font-medium border-b-2 border-white pb-2">
-                <Link to="/myaccount/summary" onClick={() => setNavbar(false)}>
-                  <h1 className="hover:text-black">Ringkasan</h1>
-                </Link>
-                <Link to="/myaccount/money" onClick={() => setNavbar(false)}>
-                  <h1 className="hover:text-black">Wallet</h1>
-                </Link>
-                <Link
-                  to="/myaccount/transaction"
-                  onClick={() => setNavbar(false)}
-                >
-                  <h1 className="hover:text-black">Aktivitas</h1>
-                </Link>
-              </div>
-              <div className="flex flex-row ml-3 mt-3 ">
-                <Link to="/myaccount/profile">
-                  <button
-                    className="w-8 pb-1 mr-3 hover:text-black"
-                    onClick={() => setNavbar(false)}
-                  >
-                    <CogIcon className="" />
-                  </button>
-                </Link>
-                <button
-                  className="text-sm hover:text-black"
-                  onClick={signoutHandler}
-                >
-                  LOG OUT
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )} */}
         <Transition
           show={navbar}
           className="md:hidden block fixed top-0 left-0 h-100v w-full bg-black bg-opacity-50 z-50"
@@ -159,6 +122,9 @@ export default function Navbar() {
               </Link>
               <Link to="/myaccount/money" onClick={() => setNavbar(false)}>
                 <h1 className="hover:text-black">Wallet</h1>
+              </Link>
+              <Link to="/myaccount/transfer" onClick={() => setNavbar(false)}>
+                <h1 className="hover:text-black">Kirim</h1>
               </Link>
               <Link
                 to="/myaccount/transaction"

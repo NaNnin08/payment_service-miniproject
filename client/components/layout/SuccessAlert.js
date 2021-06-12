@@ -7,7 +7,11 @@ import {
   BANK_CLEAR_SEARCH,
   BANK_LINK_CLEAR,
 } from "../../constants/bankConstants";
-import { PAYMENT_TOPUP_BANK_CLEAR } from "../../constants/paymentConstants";
+import {
+  PAYMENT_FIND_ONE_CLEAR,
+  PAYMENT_TOPUP_BANK_CLEAR,
+  PAYMENT_TRANSFER_DATA_CLEAR,
+} from "../../constants/paymentConstants";
 
 export default function SuccessAlert({ match }) {
   const history = useHistory();
@@ -21,6 +25,8 @@ export default function SuccessAlert({ match }) {
   useEffect(() => {
     if (userSuccess) {
       dispatch({ type: BANK_LINK_CLEAR });
+      dispatch({ type: PAYMENT_FIND_ONE_CLEAR });
+      dispatch({ type: PAYMENT_TRANSFER_DATA_CLEAR });
     }
     if (paymentSuccess) {
       dispatch({ type: PAYMENT_TOPUP_BANK_CLEAR });
@@ -37,7 +43,11 @@ export default function SuccessAlert({ match }) {
             match.params.action === "order"
               ? () => window.close()
               : () =>
-                  history.push(new URLSearchParams(location.search).get("from"))
+                  history.push(
+                    new URLSearchParams(location.search).get("from")
+                      ? new URLSearchParams(location.search).get("from")
+                      : "/myaccount/summary"
+                  )
           }
         >
           <XIcon />
@@ -51,7 +61,12 @@ export default function SuccessAlert({ match }) {
         </div>
         <div className="font-serif text-2xl mx-auto capitalize mt-10 text-center">
           <p>
-            {match.params.action} {match.params.type}
+            {match.params.action} {match.params.type}{" "}
+            {new URLSearchParams(location.search).get("toWalletAmount") &&
+              "Sebesar Rp " +
+                new URLSearchParams(location.search).get("toWalletAmount")}{" "}
+            {new URLSearchParams(location.search).get("toWalletEmail") &&
+              "ke " + new URLSearchParams(location.search).get("toWalletEmail")}
           </p>
           <p>
             {new URLSearchParams(location.search).get("id") &&
@@ -82,7 +97,11 @@ export default function SuccessAlert({ match }) {
             match.params.action === "order"
               ? () => window.close()
               : () =>
-                  history.push(new URLSearchParams(location.search).get("from"))
+                  history.push(
+                    new URLSearchParams(location.search).get("from")
+                      ? new URLSearchParams(location.search).get("from")
+                      : "/myaccount/summary"
+                  )
           }
         >
           Done

@@ -11,6 +11,7 @@ import {
   PAYMENT_TOPUP_BANK_REQUEST,
   PAYMENT_TOPUP_BANK_SUCCESS,
   PAYMENT_TRANSFER_DATA,
+  PAYMENT_TRANSFER_DATA_CLEAR,
 } from "../constants/paymentConstants";
 
 export const topupFromBankReducer = (state = {}, action) => {
@@ -62,6 +63,8 @@ export const paymentTransfer = (state = {}, action) => {
   switch (action.type) {
     case PAYMENT_TRANSFER_DATA:
       return { transfer_data: action.payload };
+    case PAYMENT_TRANSFER_DATA_CLEAR:
+      return {};
     default:
       return state;
   }

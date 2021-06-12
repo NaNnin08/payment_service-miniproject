@@ -8,6 +8,13 @@ import {
   BANK_REMOVE_SUCCESS,
 } from "../constants/bankConstants";
 import {
+  PAYMENT_FIND_ONE_CLEAR,
+  PAYMENT_TRANSFER_WALLET_CLEAR,
+  PAYMENT_TRANSFER_WALLET_FAIL,
+  PAYMENT_TRANSFER_WALLET_REQUEST,
+  PAYMENT_TRANSFER_WALLET_SUCCESS,
+} from "../constants/paymentConstants";
+import {
   USER_ADD_ADDRESS_FAIL,
   USER_ADD_ADDRESS_REQUEST,
   USER_ADD_ADDRESS_SUCCESS,
@@ -93,6 +100,7 @@ export const userFindOneReduccer = (state = {}, action) => {
     case BANK_LINK_SUCCESS:
       return { loading: false, fund: action.payload, isSuccess: true };
     case BANK_LINK_CLEAR:
+    case PAYMENT_TRANSFER_WALLET_CLEAR:
       return { ...state, isSuccess: false };
     case BANK_LINK_FAIL:
       return { loading: false, error: action.payload };
@@ -110,12 +118,15 @@ export const userFindOneReduccer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_ADD_ADDRESS_REQUEST:
     case USER_DELETE_ADDRESS_REQUEST:
+    case PAYMENT_TRANSFER_WALLET_REQUEST:
       return { loading: true };
     case USER_ADD_ADDRESS_SUCCESS:
     case USER_DELETE_ADDRESS_SUCCESS:
+    case PAYMENT_TRANSFER_WALLET_SUCCESS:
       return { loading: false, fund: action.payload, isSuccess: true };
     case USER_ADD_ADDRESS_FAIL:
     case USER_DELETE_ADDRESS_FAIL:
+    case PAYMENT_TRANSFER_WALLET_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -131,6 +142,7 @@ export const userFindEmailReducer = (state = {}, action) => {
     case USER_FIND_ONE_EMAIL_FAIL:
       return { loading: false, error: action.payload };
     case USER_SIGNOUT:
+    case PAYMENT_FIND_ONE_CLEAR:
       return {};
     default:
       return state;

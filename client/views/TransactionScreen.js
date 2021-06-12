@@ -7,6 +7,8 @@ import {
   ArrowCircleDownIcon,
   ArrowCircleUpIcon,
 } from "@heroicons/react/outline";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/solid";
 
 export const TransactionScreen = () => {
   const { fund } = useSelector((state) => state.userFund);
@@ -56,7 +58,11 @@ export const TransactionScreen = () => {
   const handleSearch = () => {
     if (search.type && !search.end && !search.start) {
       setPaymentList(
-        historyPayment.filter((data) => data.payt_type === search.type)
+        historyPayment.filter(
+          (data) =>
+            data.payt_type === search.type ||
+            data.payt_trx_number === search.type
+        )
       );
       setHistoryPage("");
       setClearSeacrh(true);
@@ -96,7 +102,8 @@ export const TransactionScreen = () => {
           (data) =>
             new Date(data.payt_date) <= new Date(search.end) &&
             new Date(data.payt_date) >= new Date(search.start) &&
-            data.payt_type === search.type
+            (data.payt_type === search.type ||
+              data.payt_trx_number === search.type)
         )
       );
       setHistoryPage("");
@@ -143,7 +150,11 @@ export const TransactionScreen = () => {
         if (search.type && !search.end && !search.start) {
           setPaymentList(
             historyPayment
-              .filter((data) => data.payt_type === search.type)
+              .filter(
+                (data) =>
+                  data.payt_type === search.type ||
+                  data.payt_trx_number === search.type
+              )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
                   ? b.payt_id - a.payt_id
@@ -207,7 +218,8 @@ export const TransactionScreen = () => {
                 (data) =>
                   new Date(data.payt_date) <= new Date(search.end) &&
                   new Date(data.payt_date) >= new Date(search.start) &&
-                  data.payt_type === search.type
+                  (data.payt_type === search.type ||
+                    data.payt_trx_number === search.type)
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -222,7 +234,11 @@ export const TransactionScreen = () => {
         if (search.type && !search.end && !search.start) {
           setPaymentList(
             historyPayment
-              .filter((data) => data.payt_type === search.type)
+              .filter(
+                (data) =>
+                  data.payt_type === search.type ||
+                  data.payt_trx_number === search.type
+              )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
                   ? a.payt_id - b.payt_id
@@ -286,7 +302,8 @@ export const TransactionScreen = () => {
                 (data) =>
                   new Date(data.payt_date) <= new Date(search.end) &&
                   new Date(data.payt_date) >= new Date(search.start) &&
-                  data.payt_type === search.type
+                  (data.payt_type === search.type ||
+                    data.payt_trx_number === search.type)
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -367,74 +384,303 @@ export const TransactionScreen = () => {
           </h1>
         )}
       </div>
-      <table className="w-5/6 mx-auto mt-5 whitespace-nowrap rounded-sm bg-white shadow-md overflow-hidden tableTransaction">
-        <thead>
-          <tr>
-            <th>
-              {historyPayment && historyPage.length > 0 ? (
-                <h1 className="py-5 pl-3 text-xl font-semibold text-left bg-white">
-                  Completed
-                </h1>
-              ) : (
-                <div>
-                  <h1 className="pl-3 pt-3 text-xl font-semibold text-center bg-white">
-                    No transactions yet.
-                  </h1>
-                  <h1 className="pl-3 pb-3 text-lg font-semibold text-center bg-white">
-                    Want to try again with different dates?
-                  </h1>
-                </div>
-              )}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+
+      <div className="w-full px-4 pt-5">
+        <div className="w-full max-w-6xl p-2 mx-auto bg-white rounded-2xl space-y-2">
+          {historyPayment && historyPage.length > 0 ? (
+            <h1 className="py-5 pl-3 text-xl font-semibold text-left bg-white">
+              Completed
+            </h1>
+          ) : (
+            <div>
+              <h1 className="pl-3 pt-3 text-xl font-semibold text-center bg-white">
+                No transactions yet.
+              </h1>
+              <h1 className="pl-3 pb-3 text-lg font-semibold text-center bg-white">
+                Want to try again with different dates?
+              </h1>
+            </div>
+          )}
           {historyPage &&
             historyPage[page] &&
             historyPage[page].map((data) => (
-              <tr key={data.payt_id}>
-                <td>
-                  <div className="flex flex-row md:divide-x-2 divide-gray-100">
-                    <div
-                      style={{ width: "10%" }}
-                      className="text-lg text-center py-1 font-semibold"
-                    >
-                      <p>{format(new Date(data.payt_date), "MMMM")}</p>
-                      <p>{format(new Date(data.payt_date), "dd")}</p>
-                    </div>
-                    <div style={{ width: "90%" }} className="relative">
-                      <div className="flex flex-col mt-2 ml-5">
-                        <p className="capitalize mb-1 text-lg">
-                          {data.payt_type}
-                        </p>
-                        <p>{data.payt_trx_number}</p>
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75 relative">
+                      <div
+                        className="absolute w-1 bg-black left-0 top-0"
+                        style={{ height: "100%" }}
+                      ></div>
+                      <div className="flex flex-row md:divide-x-2 divide-gray-100">
+                        <div className="text-lg text-center py-1 font-semibold">
+                          <p>{format(new Date(data.payt_date), "MMMM")}</p>
+                          <p>{format(new Date(data.payt_date), "dd")}</p>
+                        </div>
+                        <div className="relative">
+                          <div className="flex flex-col mt-2 ml-5">
+                            <p className="capitalize mb-1 text-lg">
+                              {data.payt_type === "transferTo"
+                                ? "transfer out"
+                                : data.payt_type === "transferFrom"
+                                ? "transfer in"
+                                : data.payt_type}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex md:flex-col flex-row md:absolute mt-2 md:mt-0 right-20 top-4">
-                        {data.payt_type === "order" ? (
-                          <p className="font-semibold font-mono text-red-400 text-lg">
+                      <div className="flex">
+                        {data.payt_type === "order" ||
+                        data.payt_type === "transferTo" ? (
+                          <p className="font-semibold font-mono text-red-400 text-lg mr-20">
                             - {data.payt_credit}
                           </p>
-                        ) : data.payt_type === "topup" ? (
-                          <p className="font-semibold font-mono text-green-400 text-lg">
+                        ) : data.payt_type === "topup" ||
+                          data.payt_type === "transferFrom" ? (
+                          <p className="font-semibold font-mono text-green-400 text-lg mr-20">
                             + {data.payt_dabet}
                           </p>
-                        ) : (
-                          <div className=" -mr-10">
-                            {data.payt_trx_number_ref && (
-                              <p className="font-semibold font-mono text-black text-lg">
-                                ref: {data.payt_trx_number_ref}
-                              </p>
-                            )}
-                          </div>
-                        )}
+                        ) : null}
+                        <ChevronUpIcon
+                          className={`${
+                            open ? "transform rotate-180" : ""
+                          } w-5 h-5 text-blue-500`}
+                        />
                       </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-base relative">
+                      <div
+                        className="absolute w-1 bg-gray-300 left-0"
+                        style={{ height: "100%", top: "-7px" }}
+                      ></div>
+                      {data.payt_type === "order" ? (
+                        <div className="md:ml-16 ml-5 flex flex-row">
+                          <div className="w-1/2">
+                            <h1 className="font-semibold">Order</h1>
+                            <h1 className="font-mono">
+                              {data.payt_order_number}
+                            </h1>
+
+                            <h1 className="font-semibold mt-10">
+                              Transaction ID
+                            </h1>
+                            <div>
+                              <h1 className="font-mono">
+                                {data.payt_trx_number}
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="w-1/2 -mt-10">
+                            <h1 className="font-semibold mt-10">Details</h1>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Payment credit</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_credit).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                            <div
+                              className="bg-black"
+                              style={{ width: "95%", height: "1px" }}
+                            ></div>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Total</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_credit).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      ) : data.payt_type === "topup" ? (
+                        <div className="md:ml-16 ml-5 flex flex-row">
+                          <div className="w-1/2">
+                            <h1 className="font-semibold">
+                              Topup Wallet Bayar
+                            </h1>
+                            <h1 className="font-mono">
+                              No. Bank/Card: {data.payt_bacc_acc_bank}
+                            </h1>
+
+                            <h1 className="font-semibold mt-10">
+                              Transaction ID
+                            </h1>
+                            <div>
+                              <h1 className="font-mono">
+                                {data.payt_trx_number}
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="w-1/2 -mt-10">
+                            <h1 className="font-semibold mt-10">Details</h1>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Payment dabet</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_dabet).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                            <div
+                              className="bg-black"
+                              style={{ width: "95%", height: "1px" }}
+                            ></div>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Total</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_dabet).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      ) : data.payt_type === "refund" ? (
+                        <div className="md:ml-16 ml-5 flex flex-row">
+                          <div className="w-1/2">
+                            <h1 className="font-semibold">Refund</h1>
+                            <h1 className="font-mono">
+                              ref: {data.payt_trx_number_ref}
+                            </h1>
+
+                            <h1 className="font-semibold mt-10">
+                              Transaction ID
+                            </h1>
+                            <div>
+                              <h1 className="font-mono">
+                                {data.payt_trx_number}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      ) : data.payt_type === "transferTo" ? (
+                        <div className="md:ml-16 ml-5 flex flex-row">
+                          <div className="w-1/2">
+                            <h1 className="font-semibold text-red-500">
+                              Transfer Out
+                            </h1>
+                            <h1 className="font-semibold mt-3">Note:</h1>
+                            <h1 className="font-mono max-w-md">
+                              {data.payt_desc}
+                            </h1>
+                            <h1 className="font-semibold mt-10">
+                              Transaction ID
+                            </h1>
+                            <div>
+                              <h1 className="font-mono">
+                                {data.payt_trx_number}
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="w-1/2 -mt-10">
+                            <h1 className="font-semibold mt-10">Details</h1>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Payment credit</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_credit).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                            <div
+                              className="bg-black"
+                              style={{ width: "95%", height: "1px" }}
+                            ></div>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Total</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_credit).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      ) : data.payt_type === "transferFrom" ? (
+                        <div className="md:ml-16 ml-5 flex flex-row">
+                          <div className="w-1/2">
+                            <h1 className="font-semibold text-green-500">
+                              Transfer In
+                            </h1>
+                            <h1 className="font-semibold mt-3">Note:</h1>
+                            <h1 className="font-mono max-w-md">
+                              {data.payt_desc}
+                            </h1>
+                            <h1 className="font-semibold mt-10">
+                              Transaction ID
+                            </h1>
+                            <div>
+                              <h1 className="font-mono">
+                                {data.payt_trx_number}
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="w-1/2 -mt-10">
+                            <h1 className="font-semibold mt-10">Details</h1>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Payment dabet</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_dabet).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                            <div
+                              className="bg-black"
+                              style={{ width: "95%", height: "1px" }}
+                            ></div>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Total</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_dabet).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
             ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
       <div className="mt-5 md:ml-28 grid md:grid-cols-6 grid-cols-3">
         {page > 0 && (
           <div

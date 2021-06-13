@@ -52,6 +52,25 @@ router.post(
   ctrl.Payt.createTransferWallet,
   ctrl.User.findOne
 );
+router.post(
+  "/transferWalletBank",
+  ctrl.User.findOneEmailTransferWallet,
+  ctrl.User.findOneEmailTransferWallet,
+  ctrl.Baac.findOne,
+  ctrl.Baac.update,
+  ctrl.Paac.transferWallet,
+  ctrl.Payt.createTransferWalletBank,
+  ctrl.User.findOne
+);
+router.post(
+  "/transferBank",
+  ctrl.User.findOneEmailTransferWallet,
+  ctrl.Paac.transferWallet,
+  ctrl.Baac.findOne,
+  ctrl.Baac.update,
+  ctrl.Payt.createTransferBank,
+  ctrl.User.findOne
+);
 router.get("/", ctrl.Payt.findAll);
 router.get("/:id", ctrl.Payt.findOne);
 router.get("/user/:id", ctrl.Payt.findOneByUser);

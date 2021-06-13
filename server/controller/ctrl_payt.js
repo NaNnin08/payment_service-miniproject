@@ -134,6 +134,62 @@ const createTransferWallet = async (req, res, next) => {
   }
 };
 
+const createTransferWalletBank = async (req, res, next) => {
+  const data = {
+    dataValuesTo: {
+      payt_credit: req.body.amount,
+      payt_paac_account_number:
+        req.amountFromEmail.payment_account.dataValues.paac_account_number,
+      payt_type: "transferTo",
+      payt_desc: `Nama penerima: ${req.amountToEmail.user_name} email: ${req.amountToEmail.user_email} pesan: ${req.body.message}`,
+      payt_bacc_acc_bank: req.body.bank,
+    },
+    dataValuesFrom: {
+      payt_dabet: parseFloat(req.body.amount) - parseFloat(req.body.biaya),
+      payt_paac_account_number:
+        req.amountToEmail.payment_account.dataValues.paac_account_number,
+      payt_type: "transferFrom",
+      payt_desc: `Nama pengirim: ${req.amountFromEmail.user_name} email: ${req.amountFromEmail.user_email} pesan: ${req.body.message}`,
+    },
+  };
+
+  try {
+    const paytFrom = await req.context.models.Payment_Transaction.create(
+      data.dataValuesFrom
+    );
+
+    const paytTo = await req.context.models.Payment_Transaction.create(
+      data.dataValuesTo
+    );
+
+    req.user_id = req.amountFromEmail.user_id;
+
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const createTransferBank = async (req, res, next) => {
+  const data = {
+    payt_credit: req.body.amount,
+    payt_paac_account_number:
+      req.amountFromEmail.payment_account.dataValues.paac_account_number,
+    payt_type: "transferToBank",
+    payt_bacc_acc_bank: req.body.bank,
+  };
+
+  try {
+    const payt = await req.context.models.Payment_Transaction.create(data);
+
+    req.user_id = req.amountFromEmail.user_id;
+
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 //findAll = select * from regions
 const findAll = async (req, res) => {
   const payt = await req.context.models.Payment_Transaction.findAll();
@@ -277,4 +333,6 @@ export default {
   findOneByUser,
   findOneByOrder,
   createTransferWallet,
+  createTransferWalletBank,
+  createTransferBank,
 };

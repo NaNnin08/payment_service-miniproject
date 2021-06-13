@@ -30,7 +30,17 @@ const findOne = async (req, res, next) => {
       return res.send("data has not found");
     }
   } else {
-    if (req.data.payt_ref) {
+    if (req.body.bank) {
+      const { bank } = req.body;
+
+      const result = await req.context.models.Bank_Accounts.findOne({
+        where: { baac_acc_bank: bank },
+      });
+
+      req.bank = result;
+
+      next();
+    } else if (req.data.payt_ref) {
       const { dataValues, payt_ref } = req.data;
 
       const bank = await req.context.models.Bank_Accounts.findOne({
@@ -89,16 +99,45 @@ const update = async (req, res, next) => {
     });
     return res.send(bacc);
   } else {
-    const { dataValues, bank } = req.data;
+    if (req.data) {
+      const { dataValues, bank } = req.data;
 
-    if (dataValues.payt_type === "order") {
-      if (bank.baac_saldo - dataValues.payt_credit > 10000) {
+      if (dataValues.payt_type === "order") {
+        if (bank.baac_saldo - dataValues.payt_credit > 10000) {
+          try {
+            await req.context.models.Bank_Accounts.update(
+              {
+                baac_saldo:
+                  parseFloat(bank.baac_saldo) -
+                  parseFloat(dataValues.payt_credit),
+              },
+              {
+                returning: true,
+                where: { baac_acc_bank: dataValues.payt_bacc_acc_bank },
+              }
+            );
+
+            req.data = {
+              dataValues: dataValues,
+            };
+
+            next();
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          return res.send("saldo tidak cukup");
+        }
+      }
+
+      if (dataValues.payt_type === "refund") {
+        const { payt_ref } = req.data;
+
         try {
           await req.context.models.Bank_Accounts.update(
             {
               baac_saldo:
-                parseFloat(bank.baac_saldo) -
-                parseFloat(dataValues.payt_credit),
+                parseFloat(bank.baac_saldo) + parseFloat(payt_ref.payt_credit),
             },
             {
               returning: true,
@@ -114,60 +153,76 @@ const update = async (req, res, next) => {
         } catch (err) {
           console.log(err);
         }
-      } else {
-        return res.send("saldo tidak cukup");
       }
-    }
 
-    if (dataValues.payt_type === "refund") {
-      const { payt_ref } = req.data;
+      if (dataValues.payt_type === "topup") {
+        if (bank.baac_saldo - dataValues.payt_dabet > 10000) {
+          try {
+            await req.context.models.Bank_Accounts.update(
+              {
+                baac_saldo:
+                  parseFloat(bank.baac_saldo) -
+                  parseFloat(dataValues.payt_dabet),
+              },
+              {
+                returning: true,
+                where: { baac_acc_bank: dataValues.payt_bacc_acc_bank },
+              }
+            );
+
+            req.data = {
+              dataValues: dataValues,
+            };
+
+            next();
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          return res.status(501).send({ message: "saldo tidak cukup" });
+        }
+      }
+    } else if (req.bank && req.updateFromEmail) {
+      const { baac_acc_bank, baac_saldo } = req.bank;
+      const { amount, biaya } = req.body;
 
       try {
         await req.context.models.Bank_Accounts.update(
           {
             baac_saldo:
-              parseFloat(bank.baac_saldo) + parseFloat(payt_ref.payt_credit),
+              parseFloat(baac_saldo) + (parseFloat(amount) - parseFloat(biaya)),
           },
           {
             returning: true,
-            where: { baac_acc_bank: dataValues.payt_bacc_acc_bank },
+            where: { baac_acc_bank: baac_acc_bank },
           }
         );
-
-        req.data = {
-          dataValues: dataValues,
-        };
 
         next();
       } catch (err) {
         console.log(err);
       }
-    }
+    } else {
+      const { baac_acc_bank, baac_saldo } = req.bank;
+      const { amount, biaya } = req.body;
 
-    if (dataValues.payt_type === "topup") {
-      if (bank.baac_saldo - dataValues.payt_dabet > 10000) {
-        try {
-          await req.context.models.Bank_Accounts.update(
-            {
-              baac_saldo:
-                parseFloat(bank.baac_saldo) - parseFloat(dataValues.payt_dabet),
-            },
-            {
-              returning: true,
-              where: { baac_acc_bank: dataValues.payt_bacc_acc_bank },
-            }
-          );
+      try {
+        await req.context.models.Bank_Accounts.update(
+          {
+            baac_saldo:
+              parseFloat(baac_saldo) - (parseFloat(amount) + parseFloat(biaya)),
+          },
+          {
+            returning: true,
+            where: { baac_acc_bank: baac_acc_bank },
+          }
+        );
 
-          req.data = {
-            dataValues: dataValues,
-          };
+        req.updateFromEmail = true;
 
-          next();
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        return res.status(501).send({ message: "saldo tidak cukup" });
+        next();
+      } catch (err) {
+        console.log(err);
       }
     }
   }

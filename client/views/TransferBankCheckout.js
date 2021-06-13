@@ -6,13 +6,10 @@ import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { transferBank } from "../actions/paymentAction";
 
 export const TransferBankCheckout = () => {
-  const { fund } = useSelector((state) => state.userFund);
-  const {
-    bank_accounts,
-    payment_account: { pacc_saldo, paac_account_number },
-  } = fund;
+  const { fund, isSuccess } = useSelector((state) => state.userFund);
   const { transfer_data } = useSelector((state) => state.paymentTransfer);
 
   const dispatch = useDispatch();
@@ -24,10 +21,11 @@ export const TransferBankCheckout = () => {
   const handleNext = () => {
     const data = {
       ...transfer_data,
-      wallet: paac_account_number,
+      from_email: fund.user_email,
       biaya: Biaya,
+      amount: parseFloat(transfer_data.amount) + parseFloat(Biaya),
     };
-    console.log(data);
+    dispatch(transferBank(data));
   };
 
   const backHandler = () => {
@@ -36,6 +34,12 @@ export const TransferBankCheckout = () => {
 
   if (!transfer_data || !transfer_data.amount) {
     history.push("/transfer/bank/input");
+  }
+
+  if (isSuccess) {
+    history.push(
+      `/wallet/transfer/success?toWalletAmount=${transfer_data.amount}&toWalletEmail=${transfer_data.bank}&from=/myaccount/summary`
+    );
   }
   return (
     <div className="bg-gray-100 flex">
@@ -76,14 +80,15 @@ export const TransferBankCheckout = () => {
           <div className="ml-3 mt-6">
             <h1>Saldo Bayar</h1>
             <h1 className="font-mono">
-              Rp {fund && pacc_saldo}{" "}
+              Rp {fund && fund.payment_account.pacc_saldo}{" "}
               <span className="font-semibold">tersedia</span>
             </h1>
           </div>
         </div>
-        {bank_accounts &&
+        {fund &&
+          fund.bank_accounts &&
           transfer_data &&
-          bank_accounts
+          fund.bank_accounts
             .filter((y) => y.baac_acc_bank === transfer_data.bank)
             .map((x, index) => (
               <div

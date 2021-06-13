@@ -5,7 +5,7 @@ import bIcon from "../assets/images/B_icon.svg";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
 import { useHistory } from "react-router-dom";
-import { transferWallet } from "../actions/paymentAction";
+import { transferWallet, transferWalletBank } from "../actions/paymentAction";
 
 export const TransferWalletCheckout = () => {
   const { transfer_data } = useSelector((state) => state.paymentTransfer);
@@ -27,9 +27,10 @@ export const TransferWalletCheckout = () => {
     } else {
       const data = {
         ...transfer_data,
-        sum: parseFloat(transfer_data.amount) + Biaya,
+        amount: parseFloat(transfer_data.amount) + Biaya,
+        biaya: Biaya,
       };
-      console.log(data);
+      dispatch(transferWalletBank(data));
     }
   };
 

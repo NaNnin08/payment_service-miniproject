@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/outline";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
+import { Helmet } from "react-helmet";
 
 export const TransactionScreen = () => {
   const { fund } = useSelector((state) => state.userFund);
@@ -320,6 +321,9 @@ export const TransactionScreen = () => {
 
   return (
     <div className="bg-gray-100">
+      <Helmet>
+        <title>Bayar: Activity</title>
+      </Helmet>
       <div className="grid grid-cols-6 mt-5 gap-2">
         <div className="col-span-1 col-start-2 w-full">
           <label htmlFor="start" className="relative">

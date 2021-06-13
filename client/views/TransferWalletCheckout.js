@@ -15,9 +15,21 @@ export const TransferWalletCheckout = () => {
 
   const history = useHistory();
 
+  const Biaya = transfer_data
+    ? transfer_data.method === "wallet"
+      ? 0
+      : 2000
+    : null;
+
   const handleNext = () => {
     if (transfer_data.method === "wallet") {
       dispatch(transferWallet(transfer_data));
+    } else {
+      const data = {
+        ...transfer_data,
+        sum: parseFloat(transfer_data.amount) + Biaya,
+      };
+      console.log(data);
     }
   };
 
@@ -74,13 +86,9 @@ export const TransferWalletCheckout = () => {
           <h1>Biaya Bayar</h1>
           <h1 className="font-mono absolute right-10">
             Rp{" "}
-            {transfer_data && transfer_data.method === "wallet"
-              ? parseFloat(0).toLocaleString("ID", {
-                  minimumFractionDigits: 2,
-                })
-              : parseFloat(2000).toLocaleString("ID", {
-                  minimumFractionDigits: 2,
-                })}
+            {parseFloat(Biaya).toLocaleString("ID", {
+              minimumFractionDigits: 2,
+            })}
           </h1>
         </div>
         <div className="ml-3 flex items-center relative w-full text-lg font-serif mx-10 mt-5">
@@ -88,7 +96,7 @@ export const TransferWalletCheckout = () => {
           <h1 className="font-mono absolute right-10">
             Rp{" "}
             {transfer_data &&
-              parseFloat(transfer_data.amount).toLocaleString("ID", {
+              (parseFloat(transfer_data.amount) + Biaya).toLocaleString("ID", {
                 minimumFractionDigits: 2,
               })}
           </h1>

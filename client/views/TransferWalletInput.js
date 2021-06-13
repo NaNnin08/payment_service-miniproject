@@ -8,7 +8,6 @@ import {
   PAYMENT_TRANSFER_DATA_CLEAR,
 } from "../constants/paymentConstants";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
-import { useEffect } from "react";
 
 export const TransferWalletInput = () => {
   const [dataTransfer, setDataTransfer] = useState({

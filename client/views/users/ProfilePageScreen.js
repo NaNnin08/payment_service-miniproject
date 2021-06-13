@@ -170,7 +170,7 @@ export default function ProfilePageScreen() {
       className="flex md:flex-row flex-col md:w-5/6 w-full mx-auto font-sans
     "
     >
-      <div className="md:w-1/2 w-full p-5 space-y-5">
+      <div className="lg:w-1/2 w-full p-5 space-y-5">
         <div className="bg-white shadow-lg px-3 py-3 flex flex-row relative">
           <div className="ml-1">
             <h1 className="text-2xl">Profile</h1>
@@ -360,7 +360,7 @@ export default function ProfilePageScreen() {
           </div>
         </div>
       </div>
-      <div className="md:w-1/2 w-full p-5 space-y-5">
+      <div className="lg:w-1/2 w-full p-5 space-y-5">
         <div className="bg-white shadow-lg px-3 py-2 relative space-y-3">
           <h1 className="text-2xl font-semibold">Addresses</h1>
           <button

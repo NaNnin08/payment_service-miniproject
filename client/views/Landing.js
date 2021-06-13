@@ -129,7 +129,7 @@ export default function Landing() {
             : "bg-opacity-100 bg-white text-black")
         }
       >
-        <div className="flex items-center ml-40 w-32">
+        <div className="flex items-center lg:ml-40 md:ml-32 ml-10 w-32">
           <svg
             viewBox="0 0 291 95"
             fill="none"

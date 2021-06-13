@@ -26,6 +26,9 @@ import { TransferScreen } from "./views/TransferScreen";
 import { TransferWalletInput } from "./views/TransferWalletInput";
 import { TransferSendSelect } from "./views/TransferSendSelect";
 import { TransferWalletCheckout } from "./views/TransferWalletCheckout";
+import { TransferBankSelect } from "./views/TransferBankSelect";
+import { TransferBankInput } from "./views/TransferBankInput";
+import { TransferBankCheckout } from "./views/TransferBankCheckout";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -77,6 +80,21 @@ const MainRouter = () => {
           exact
           path="/myaccount/add/profile"
           component={AddPhotoProfileScreen}
+        />
+        <PrivateRoute
+          exact
+          path="/transfer/bank"
+          component={TransferBankSelect}
+        />
+        <PrivateRoute
+          exact
+          path="/transfer/bank/input"
+          component={TransferBankInput}
+        />
+        <PrivateRoute
+          exact
+          path="/transfer/bank/checkout"
+          component={TransferBankCheckout}
         />
         <MainLayout>
           <PrivateRoute

@@ -7,8 +7,9 @@ import cardIcon from "../assets/images/card.svg";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { PAYMENT_TRANSFER_DATA } from "../constants/paymentConstants";
+import { useEffect } from "react";
 
-export const TransferSendSelect = () => {
+export const TransferBankSelect = () => {
   const { fund } = useSelector((state) => state.userFund);
   const { bank_accounts } = fund;
   const { transfer_data } = useSelector((state) => state.paymentTransfer);
@@ -19,61 +20,45 @@ export const TransferSendSelect = () => {
 
   const [method, setMethod] = useState("");
 
-  if (!transfer_data) {
-    history.push("/myaccount/transfer");
-  }
-
   const handleNext = () => {
     if (method) {
-      if (method === "wallet") {
-        dispatch({
-          type: PAYMENT_TRANSFER_DATA,
-          payload: { ...transfer_data, method: method },
-        });
-      } else {
-        dispatch({
-          type: PAYMENT_TRANSFER_DATA,
-          payload: { ...transfer_data, bank: method, method: "bank/card" },
-        });
-      }
-      history.push("/myaccount/transfer/preview");
+      dispatch({
+        type: PAYMENT_TRANSFER_DATA,
+        payload: { bank: method },
+      });
     }
   };
 
   const backHandler = () => {
-    history.push("/myaccount/transfer/input");
+    history.push(
+      new URLSearchParams(location.search).get("from")
+        ? new URLSearchParams(location.search).get("from")
+        : "/myaccount/summary"
+    );
   };
+
+  if (transfer_data) {
+    history.push("/transfer/bank/input");
+  }
+
   return (
     <div className="bg-gray-100 flex">
       <div className="mx-auto w-full md:w-1/3 bg-white h-100v">
         <button className="mt-2 ml-2 text-gray-500" onClick={backHandler}>
           <ArrowLeftIcon className="w-10" />
         </button>
-        <h1 className="text-2xl w-2/3 mx-auto mt-10">
-          Dengan cara apa Anda ingin membayar?
-        </h1>
-        <div className="mt-5 border-b-2 border-t-2 border-gray-400 mx-8 p-3 flex">
-          <input
-            type="radio"
-            name="wallet"
-            id="wallet"
-            value="wallet"
-            style={{ width: "30px", height: "30px" }}
-            onChange={(e) => setMethod(e.target.value)}
-          />
-          <label htmlFor="wallet" className="flex">
-            <div className="bg-blue-300 rounded-full shadow-2xl w-16 ml-3">
-              <img src={bIcon} alt="bayar icon" />
-            </div>
-            <div className="ml-3">
-              <h1>Saldo Bayar</h1>
-              <h1 className="font-mono">Biaya: Rp 0,00</h1>
-            </div>
-          </label>
+        <div className="bg-blue-300 rounded-full shadow-2xl w-16 mx-auto">
+          <img src={bIcon} alt="bayar icon" />
         </div>
+        <h1 className="text-3xl font-semibold text-center mt-10 mb-10">
+          Transfer ke bank Anda
+        </h1>
         {bank_accounts &&
-          bank_accounts.map((x) => (
-            <div className="border-b-2 border-gray-400 mx-8 p-3 flex">
+          bank_accounts.map((x, index) => (
+            <div
+              className="border-b-2 border-t-2 border-gray-400 mx-8 p-3 flex"
+              key={index}
+            >
               <input
                 type="radio"
                 name="wallet"

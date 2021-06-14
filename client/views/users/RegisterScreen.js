@@ -31,10 +31,16 @@ export default function RegisterScreen() {
 
   const dispatch = useDispatch();
 
-  if (register && next) {
-    history.push("/registerDetail");
-  } else if (error) {
-    setIsError(error);
+  useEffect(() => {
+    if (error) {
+      setIsError(error);
+    }
+  }, [dispatch, error]);
+
+  if (register) {
+    if (next) {
+      history.push("/registerDetail");
+    }
   }
 
   if (isError) {

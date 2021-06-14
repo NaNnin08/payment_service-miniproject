@@ -424,7 +424,8 @@ export const TransactionScreen = () => {
                         <div className="relative">
                           <div className="flex flex-col mt-2 ml-5">
                             <p className="capitalize mb-1 text-lg">
-                              {data.payt_type === "transferTo"
+                              {data.payt_type === "transferTo" ||
+                              data.payt_type === "transferToBank"
                                 ? "transfer out"
                                 : data.payt_type === "transferFrom"
                                 ? "transfer in"
@@ -435,7 +436,8 @@ export const TransactionScreen = () => {
                       </div>
                       <div className="flex">
                         {data.payt_type === "order" ||
-                        data.payt_type === "transferTo" ? (
+                        data.payt_type === "transferTo" ||
+                        data.payt_type === "transferToBank" ? (
                           <p className="font-semibold font-mono text-red-400 text-lg mr-20">
                             - {data.payt_credit}
                           </p>
@@ -581,6 +583,22 @@ export const TransactionScreen = () => {
                             <h1 className="font-semibold text-red-500">
                               Transfer Out
                             </h1>
+                            {data.payt_bacc_acc_bank && (
+                              <div>
+                                <h1 className="font-semibold mt-3">
+                                  From:{" "}
+                                  <span className="font-mono font-normal">
+                                    Bank/Card
+                                  </span>
+                                </h1>
+                                <h1 className="font-semibold mt-3">
+                                  Rek:{" "}
+                                  <span className="font-mono font-normal">
+                                    {data.payt_bacc_acc_bank}
+                                  </span>{" "}
+                                </h1>
+                              </div>
+                            )}
                             <h1 className="font-semibold mt-3">Note:</h1>
                             <h1 className="font-mono max-w-md">
                               {data.payt_desc}
@@ -600,14 +618,31 @@ export const TransactionScreen = () => {
                               <h1>Payment credit</h1>
                               <h1 className="font-mono">
                                 Rp{" "}
-                                {parseFloat(data.payt_credit).toLocaleString(
-                                  "ID",
-                                  {
-                                    minimumFractionDigits: 2,
-                                  }
-                                )}
+                                {data.payt_bacc_acc_bank
+                                  ? (
+                                      parseFloat(data.payt_credit) - 2000
+                                    ).toLocaleString("ID", {
+                                      minimumFractionDigits: 2,
+                                    })
+                                  : parseFloat(data.payt_credit).toLocaleString(
+                                      "ID",
+                                      {
+                                        minimumFractionDigits: 2,
+                                      }
+                                    )}
                               </h1>
                             </div>
+                            {data.payt_bacc_acc_bank && (
+                              <div className="flex justify-between mr-10 mt-2">
+                                <h1>Biaya</h1>
+                                <h1 className="font-mono">
+                                  Rp{" "}
+                                  {parseFloat(2000).toLocaleString("ID", {
+                                    minimumFractionDigits: 2,
+                                  })}
+                                </h1>
+                              </div>
+                            )}
                             <div
                               className="bg-black"
                               style={{ width: "95%", height: "1px" }}
@@ -668,6 +703,82 @@ export const TransactionScreen = () => {
                               <h1 className="font-mono">
                                 Rp{" "}
                                 {parseFloat(data.payt_dabet).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      ) : data.payt_type === "transferToBank" ? (
+                        <div className="md:ml-16 ml-5 flex flex-row">
+                          <div className="w-1/2">
+                            <h1 className="font-semibold text-red-500">
+                              Transfer Out
+                            </h1>
+                            <h1 className="font-semibold mt-3">
+                              To:{" "}
+                              <span className="font-mono font-normal">
+                                Bank/Card
+                              </span>
+                            </h1>
+                            <h1 className="font-semibold mt-3">
+                              From:{" "}
+                              <span className="font-mono font-normal">
+                                Wallet
+                              </span>
+                            </h1>
+                            <h1 className="font-semibold mt-3">
+                              Rek:{" "}
+                              <span className="font-mono font-normal">
+                                {data.payt_bacc_acc_bank}
+                              </span>{" "}
+                            </h1>
+                            <h1 className="font-mono max-w-md">
+                              {data.payt_desc}
+                            </h1>
+                            <h1 className="font-semibold mt-10">
+                              Transaction ID
+                            </h1>
+                            <div>
+                              <h1 className="font-mono">
+                                {data.payt_trx_number}
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="w-1/2 -mt-10">
+                            <h1 className="font-semibold mt-10">Details</h1>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Payment credit</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {(
+                                  parseFloat(data.payt_credit) - 2000
+                                ).toLocaleString("ID", {
+                                  minimumFractionDigits: 2,
+                                })}
+                              </h1>
+                            </div>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Biaya</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(2000).toLocaleString("ID", {
+                                  minimumFractionDigits: 2,
+                                })}
+                              </h1>
+                            </div>
+                            <div
+                              className="bg-black"
+                              style={{ width: "95%", height: "1px" }}
+                            ></div>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Total</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_credit).toLocaleString(
                                   "ID",
                                   {
                                     minimumFractionDigits: 2,

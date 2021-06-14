@@ -1,11 +1,15 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, useRef } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import MoneyIcon from "../assets/images/money_icon.svg";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
 import transferIn from "../assets/images/transfer_in.svg";
 import transferOut from "../assets/images/transfer_out.svg";
-import { DotsVerticalIcon, ShoppingBagIcon } from "@heroicons/react/solid";
+import {
+  DocumentAddIcon,
+  DotsVerticalIcon,
+  ShoppingBagIcon,
+} from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -15,6 +19,7 @@ import {
   faMoneyBill,
   faMoneyBillWave,
 } from "@fortawesome/free-solid-svg-icons";
+import { Dialog } from "@headlessui/react";
 
 export default function SummaryScreen() {
   const [wallet, setWallet] = useState({});
@@ -28,12 +33,18 @@ export default function SummaryScreen() {
   const dispatch = useDispatch();
 
   const [paymentList, setPaymentList] = useState("");
+  const [pinModal, setPinModal] = useState(false);
 
   useEffect(() => {
     if (fund) {
       setWallet(fund.payment_account);
       setBank(fund.bank_accounts);
       dispatch(findOnePaymentByUser(fund.payment_account.paac_account_number));
+    }
+    if (fund && fund.payment_account) {
+      if (!fund.payment_account.pacc_pin_number) {
+        setPinModal(true);
+      }
     }
   }, []);
 
@@ -54,11 +65,82 @@ export default function SummaryScreen() {
     setPaymentList(container);
   }
 
+  const cancelButtonRef = useRef();
+
   return (
     <div className="min-h-screen w-5/6 flex flex-col md:flex-row mx-auto bg-gray-100">
       <Helmet>
         <title>Bayar: Summary</title>
       </Helmet>
+      <Transition.Root show={pinModal} as={Fragment}>
+        <Dialog
+          as="div"
+          static
+          className="fixed z-10 inset-0 overflow-y-auto"
+          initialFocus={cancelButtonRef}
+          open={pinModal}
+          onClose={setPinModal}
+        >
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            </Transition.Child>
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-xl leading-6 font-medium text-gray-900 text-center"
+                      >
+                        Set your Pin to order various things in merchant partner
+                      </Dialog.Title>
+                      <Link to="/myaccount/profile">
+                        <div className="mt-5 text-center hover:underline text-blue-500">
+                          Set Pin
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="button"
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={() => setPinModal(false)}
+                    ref={cancelButtonRef}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
       <div className="md:w-2/3 mb-5">
         <div className="bg-white w-5/6 mx-auto mt-10 rounded-xl shadow-lg p-5 text-lg relative">
           <>
@@ -202,13 +284,15 @@ export default function SummaryScreen() {
                   <h1 className="capitalize text-lg">
                     {data.payt_type === "transferFrom"
                       ? "transfer in"
-                      : data.payt_type === "transferTo"
+                      : data.payt_type === "transferTo" ||
+                        data.payt_type === "transferToBank"
                       ? "transfer out"
                       : data.payt_type}
                   </h1>
                   <div className="mt-1">
                     {data.payt_type === "order" ||
-                    data.payt_type === "transferTo" ? (
+                    data.payt_type === "transferTo" ||
+                    data.payt_type === "transferToBank" ? (
                       <p className="font-semibold font-mono text-red-400 text-sm">
                         - {data.payt_credit}
                       </p>

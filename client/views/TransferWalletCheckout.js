@@ -63,23 +63,31 @@ export const TransferWalletCheckout = () => {
             <img
               src={
                 transfer_data &&
-                (transfer_data.method === "debit"
-                  ? bankIcon
-                  : transfer_data.method === "card"
-                  ? cardIcon
-                  : bIcon)
+                (transfer_data.method === "bank/card" ? bankIcon : bIcon)
               }
               alt="bayar icon"
             />
           </div>
           <div className="ml-3 flex items-center relative w-full text-lg text-gray-500 font-serif">
-            <h1>Saldo Bayar</h1>
-            <h1 className="font-mono absolute right-2">
-              Rp{" "}
+            <h1>
+              {" "}
               {transfer_data &&
-                parseFloat(transfer_data.amount).toLocaleString("ID", {
-                  minimumFractionDigits: 2,
-                })}
+              transfer_data.bank &&
+              transfer_data.method === "bank/card"
+                ? "Bank/Card"
+                : "Saldo Bayar"}
+            </h1>
+            <h1 className="font-mono absolute right-2">
+              {transfer_data &&
+              transfer_data.bank &&
+              transfer_data.method === "bank/card"
+                ? transfer_data.bank
+                : "Rp " +
+                  parseFloat(
+                    transfer_data ? transfer_data.amount : null
+                  ).toLocaleString("ID", {
+                    minimumFractionDigits: 2,
+                  })}
             </h1>
           </div>
         </div>

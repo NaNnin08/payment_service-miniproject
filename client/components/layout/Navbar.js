@@ -25,11 +25,13 @@ export default function Navbar() {
     <AnimatePresence>
       <div className="row-span-1 bg-blue-700 text-white flex items-center font-sans relative">
         <div className="flex items-center ml-10 md:ml-24 lg:ml-32 xl:ml-40">
-          <img
-            className="w-10 transform -rotate-6"
-            src={Logo}
-            alt="bayarLogo"
-          />
+          <Link to="/myaccount/summary">
+            <img
+              className="w-10 transform -rotate-6"
+              src={Logo}
+              alt="bayarLogo"
+            />
+          </Link>
         </div>
         <div className="hidden md:flex items-center ml-8 text-sm space-x-5">
           <Link to="/myaccount/summary">

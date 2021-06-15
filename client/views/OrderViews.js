@@ -30,6 +30,20 @@ export default function OrderViews({ match }) {
       .then((data) => setOrder(data.data));
   };
 
+  const lupa = async () => {
+    try {
+      await axios
+        .get("/api/payt/order/" + match.params.id)
+        .then((data) => setDummy(false));
+    } catch (err) {
+      setDummy(true);
+    }
+  };
+
+  useEffect(() => {
+    lupa();
+  }, []);
+
   useEffect(() => {
     payment();
   }, []);
@@ -50,7 +64,11 @@ export default function OrderViews({ match }) {
   }, [orderSuccess, errorPayment]);
 
   const handlePay = () => {
-    setConfirm(true);
+    if (dummy) {
+      setConfirm(true);
+    } else {
+      alert(`Order Number: ${order.pays_order_number} is already Paid`);
+    }
   };
 
   if (payConfirm) {

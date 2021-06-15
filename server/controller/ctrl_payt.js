@@ -323,6 +323,53 @@ const remove = async (req, res, next) => {
   }
 };
 
+const sedRequestPayment = async (req, res) => {
+  const { email } = req.body;
+
+  const fs = require("fs");
+  const nodemailer = require("nodemailer");
+  const ejs = require("ejs");
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "chloe63@ethereal.email", // generated ethereal user
+      pass: "AJMpGcQ5g75CQMsKCp", // generated ethereal password
+    },
+  });
+
+  const data = await ejs.renderFile(process.cwd() + "/test.ejs", {
+    name: "Stranger",
+  });
+
+  let msg = {
+    from: '"Test" <chloe63@ethereal.email>', // sender address
+    to: `${email}`, // list of receivers
+    subject: "Hello ✔", // Subject line
+    // text: "Hello world?", // plain text body
+    html: data, // html body
+  };
+
+  //send email
+  let info = await transporter.sendMail(msg, (err, info) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Message sent: " + info.response);
+      res.send("email has been send");
+    }
+  });
+
+  // console.log("Message sent: %s", info.messageId);
+  // // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  // // Preview only available when sending through an Ethereal account
+  // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+};
+
 export default {
   create,
   findAll,
@@ -335,4 +382,5 @@ export default {
   createTransferWallet,
   createTransferWalletBank,
   createTransferBank,
+  sedRequestPayment,
 };

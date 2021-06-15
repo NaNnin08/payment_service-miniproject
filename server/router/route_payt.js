@@ -3,6 +3,7 @@ import ctrl from "../controller";
 
 const router = Router();
 router.post("/", ctrl.Payt.create);
+router.post("/mail", ctrl.Payt.sedRequestPayment);
 router.post(
   "/topup",
   ctrl.Payt.dataValues,

@@ -6,7 +6,7 @@ export default function Dummy() {
   const [amount, setAmount] = useState(6250);
   const [payt, setPayt] = useState("");
   return (
-    <div>
+    <div className="w-1/5">
       <ButtonBayar
         amount={amount}
         onSuccess={setPayt}

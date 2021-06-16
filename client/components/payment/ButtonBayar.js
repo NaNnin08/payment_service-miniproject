@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function buttonBayar(props) {
+export default function ButtonBayar(props) {
   const order = {
     pays_amount: props.amount,
     pays_order_number: props.orderNumber,
@@ -79,15 +79,17 @@ export default function buttonBayar(props) {
           display: "flex",
           flexDirection: "row",
           padding: "0.5rem 1.25rem",
-          width: "13rem",
-          borderRadius: "1rem",
+          width: "90%",
+          borderRadius: "5px",
           boxShadow:
             "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
           cursor: "pointer",
+          alignItems: "center",
+          margin: "0 auto",
         }}
         onClick={(e) => handleCilck(e)}
       >
-        <div style={{ width: "5rem", marginLeft: "-0.5rem" }}>
+        <div style={{ width: "25%", margin: "0 auto", padding: "2px 0" }}>
           <svg
             viewBox="0 0 291 95"
             fill="none"
@@ -119,7 +121,6 @@ export default function buttonBayar(props) {
             </g>
           </svg>
         </div>
-        <div style={{ marginLeft: "0.75rem", fontWeight: "700" }}>Checkout</div>
       </div>
     </div>
   );

@@ -190,6 +190,25 @@ const createTransferBank = async (req, res, next) => {
   }
 };
 
+const createRequest = async (req, res, next) => {
+  const data = {
+    payt_dabet: req.body.payt_dabet,
+    payt_paac_account_number: req.body.payt_paac_account_number,
+    payt_type: "request",
+    payt_desc: req.body.payt_desc,
+  };
+
+  try {
+    const payt = await req.context.models.Payment_Transaction.create(data);
+
+    req.payt = payt;
+
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 //findAll = select * from regions
 const findAll = async (req, res) => {
   const payt = await req.context.models.Payment_Transaction.findAll();
@@ -323,36 +342,71 @@ const remove = async (req, res, next) => {
   }
 };
 
-const sedRequestPayment = async (req, res) => {
-  const { email } = req.body;
-
+const sendRequestPayment = async (req, res) => {
+  const { to_email, from_email } = req.body;
+  const { payt_trx_number, payt_dabet, payt_desc, payt_date } = req.payt;
   const fs = require("fs");
   const nodemailer = require("nodemailer");
   const ejs = require("ejs");
+  const date = require("date-fns");
+  const smtpTransport = require("nodemailer-smtp-transport");
+  const mailgun = require("mailgun-js");
+  const DOMAIN = "sandboxb0fdc15074174fbeab465a48e1523db8.mailgun.org";
+  const { htmlToText } = require("html-to-text");
+  const juice = require("juice");
+
+  var EmailTemplate = require("email-templates");
+
+  const hbs = require("nodemailer-express-handlebars");
+
+  // const mg = mailgun({
+  //   apiKey: "67dc2d46486400f3bd4be0dc97f431bb-24e2ac64-8846c47f",
+  //   domain: DOMAIN,
+  // });
 
   let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    service: "gmail",
     auth: {
-      user: "chloe63@ethereal.email", // generated ethereal user
-      pass: "AJMpGcQ5g75CQMsKCp", // generated ethereal password
+      user: "services.bayar@gmail.com", // generated ethereal user
+      pass: "jk89312htsad5612RT", // generated ethereal password
     },
   });
-
   const data = await ejs.renderFile(process.cwd() + "/test.ejs", {
-    name: "Stranger",
+    to_email: to_email,
+    from_email: from_email,
+    note: payt_desc,
+    trx: payt_trx_number,
+    date: date.format(new Date(payt_date), "dd MMMM yyyy"),
+    amount: payt_dabet,
   });
 
+  // const text = htmlToText(data);
+  const htmlWithStylesInlined = juice(data);
+
+  // mg.messages().send(
+  //   {
+  //     from: "Amazona <amazona@mg.yourdomain.com>",
+  //     to: `nidasunandar.apu@gmail.com`,
+  //     subject: `New order`,
+  //     html: template(),
+  //   },
+  //   (error, body) => {
+  //     if (error) {
+  //       console.log(error);
+  //     } else {
+  //       console.log(body);
+  //     }
+  //   }
+  // );
+  // res.send({ message: "Order Paid" });
   let msg = {
-    from: '"Test" <chloe63@ethereal.email>', // sender address
-    to: `${email}`, // list of receivers
+    from: '"Test" <dagmar97@ethereal.email>', // sender address
+    to: `${to_email}`, // list of receivers
     subject: "Hello ✔", // Subject line
     // text: "Hello world?", // plain text body
-    html: data, // html body
+    html: htmlWithStylesInlined, // html body
   };
-
-  //send email
+  // // send email
   let info = await transporter.sendMail(msg, (err, info) => {
     if (err) {
       console.log(err);
@@ -361,13 +415,11 @@ const sedRequestPayment = async (req, res) => {
       res.send("email has been send");
     }
   });
-
   // console.log("Message sent: %s", info.messageId);
   // // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
   // // Preview only available when sending through an Ethereal account
   // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  // // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 };
 
 export default {
@@ -382,5 +434,6 @@ export default {
   createTransferWallet,
   createTransferWalletBank,
   createTransferBank,
-  sedRequestPayment,
+  sendRequestPayment,
+  createRequest,
 };

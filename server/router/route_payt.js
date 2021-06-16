@@ -3,7 +3,6 @@ import ctrl from "../controller";
 
 const router = Router();
 router.post("/", ctrl.Payt.create);
-router.post("/mail", ctrl.Payt.sedRequestPayment);
 router.post(
   "/topup",
   ctrl.Payt.dataValues,
@@ -71,6 +70,11 @@ router.post(
   ctrl.Baac.update,
   ctrl.Payt.createTransferBank,
   ctrl.User.findOne
+);
+router.post(
+  "/requestPayment",
+  ctrl.Payt.createRequest,
+  ctrl.Payt.sendRequestPayment
 );
 router.get("/", ctrl.Payt.findAll);
 router.get("/:id", ctrl.Payt.findOne);

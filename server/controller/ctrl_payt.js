@@ -345,19 +345,12 @@ const remove = async (req, res, next) => {
 const sendRequestPayment = async (req, res) => {
   const { to_email, from_email } = req.body;
   const { payt_trx_number, payt_dabet, payt_desc, payt_date } = req.payt;
-  const fs = require("fs");
   const nodemailer = require("nodemailer");
   const ejs = require("ejs");
   const date = require("date-fns");
-  const smtpTransport = require("nodemailer-smtp-transport");
-  const mailgun = require("mailgun-js");
-  const DOMAIN = "sandboxb0fdc15074174fbeab465a48e1523db8.mailgun.org";
-  const { htmlToText } = require("html-to-text");
+  // const mailgun = require("mailgun-js");
+  // const DOMAIN = "sandboxb0fdc15074174fbeab465a48e1523db8.mailgun.org";
   const juice = require("juice");
-
-  var EmailTemplate = require("email-templates");
-
-  const hbs = require("nodemailer-express-handlebars");
 
   // const mg = mailgun({
   //   apiKey: "67dc2d46486400f3bd4be0dc97f431bb-24e2ac64-8846c47f",
@@ -367,8 +360,8 @@ const sendRequestPayment = async (req, res) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "services.bayar@gmail.com", // generated ethereal user
-      pass: "jk89312htsad5612RT", // generated ethereal password
+      user: "services.bayar@gmail.com",
+      pass: "jk89312htsad5612RT",
     },
   });
   const data = await ejs.renderFile(process.cwd() + "/test.ejs", {
@@ -380,7 +373,6 @@ const sendRequestPayment = async (req, res) => {
     amount: payt_dabet,
   });
 
-  // const text = htmlToText(data);
   const htmlWithStylesInlined = juice(data);
 
   // mg.messages().send(
@@ -399,13 +391,15 @@ const sendRequestPayment = async (req, res) => {
   //   }
   // );
   // res.send({ message: "Order Paid" });
+
   let msg = {
-    from: '"Test" <dagmar97@ethereal.email>', // sender address
-    to: `${to_email}`, // list of receivers
-    subject: "Hello ✔", // Subject line
-    // text: "Hello world?", // plain text body
-    html: htmlWithStylesInlined, // html body
+    from: '"Test" <dagmar97@ethereal.email>',
+    to: `${to_email}`,
+    subject: "Hello ✔",
+    // text: "Hello world?",
+    html: htmlWithStylesInlined,
   };
+
   // // send email
   let info = await transporter.sendMail(msg, (err, info) => {
     if (err) {
@@ -415,6 +409,7 @@ const sendRequestPayment = async (req, res) => {
       res.send("email has been send");
     }
   });
+
   // console.log("Message sent: %s", info.messageId);
   // // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
   // // Preview only available when sending through an Ethereal account

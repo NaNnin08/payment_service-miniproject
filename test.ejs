@@ -70,10 +70,11 @@
   }
   .conten_jumlah {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     max-width: 90%;
     margin: 10px auto;
     font-size: larger;
+    position: relative;
   }
   .button_pay {
     background-color: #184afc;
@@ -120,21 +121,27 @@
     <div class="conten">
       <div class="conten_trx">
         <p>ID Transaksi:</p>
-        <p><%=trx%></p>
+        <p style="font-family: monospace; margin-left: 10px"><%=trx%></p>
       </div>
       <div class="conten_trx">
         <p>Tanggal Transaksi:</p>
-        <p><%=date%></p>
+        <p style="font-family: monospace; margin-left: 10px"><%=date%></p>
       </div>
     </div>
     <div class="dot_line"></div>
     <div class="conten_jumlah">
       <p>Jumlah yang diminta:</p>
-      <p style="font-family: monospace">Rp <%=amount%></p>
+      <p style="font-family: monospace; margin-left: 10px; font-size: 120%">
+        Rp <%=amount%>
+      </p>
     </div>
     <div class="dot_line"></div>
   </div>
   <div class="button_pay">
-    <a href="https://www.google.com/" target="_blank">Bayar Sekarang</a>
+    <a
+      href="http://192.168.100.24:3030/myaccount/transfer/select?from_email=<%=from_email%>&to_email=<%=to_email%>&amount=<%=amount%>&note=<%=note%>"
+      target="_blank"
+      >Bayar Sekarang</a
+    >
   </div>
 </div>

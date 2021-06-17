@@ -13,7 +13,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           to={{
             pathname: "/login",
             state: { from: props.location.state },
-            search: `?redirect=${props.location.pathname}`,
+            search:
+              `?redirect=${props.location.pathname}` +
+              (props.location.search
+                ? `&search=true&${props.location.search}`
+                : ""),
           }}
         />
       )

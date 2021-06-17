@@ -9,6 +9,7 @@ import {
 } from "../../constants/bankConstants";
 import {
   PAYMENT_FIND_ONE_CLEAR,
+  PAYMENT_REQUEST_WALLET_CLEAR,
   PAYMENT_TOPUP_BANK_CLEAR,
   PAYMENT_TRANSFER_DATA_CLEAR,
 } from "../../constants/paymentConstants";
@@ -20,6 +21,9 @@ export default function SuccessAlert({ match }) {
   const { isSuccess: userSuccess } = user;
   const payment = useSelector((state) => state.payment);
   const { isSuccess: paymentSuccess } = payment;
+  const { isSuccess: requestSuccess } = useSelector(
+    (state) => state.requestWallet
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,6 +35,9 @@ export default function SuccessAlert({ match }) {
     if (paymentSuccess) {
       dispatch({ type: PAYMENT_TOPUP_BANK_CLEAR });
       dispatch({ type: BANK_CLEAR_SEARCH });
+    }
+    if (requestSuccess) {
+      dispatch({ type: PAYMENT_REQUEST_WALLET_CLEAR });
     }
   }, []);
 

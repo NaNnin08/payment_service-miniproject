@@ -37,8 +37,10 @@ export const TransactionScreen = () => {
     }
     if (historyPayment && historyPayment.length > 0 && !paymentList) {
       setPaymentList(
-        historyPayment.sort(
-          (a, b) => new Date(a.payt_date) - new Date(b.payt_date)
+        historyPayment.sort((a, b) =>
+          a.payt_id.length === b.payt_id.length
+            ? a.payt_id - b.payt_id
+            : a.payt_id.length - b.payt_id.length
         )
       );
     }
@@ -61,8 +63,8 @@ export const TransactionScreen = () => {
       setPaymentList(
         historyPayment.filter(
           (data) =>
-            data.payt_type === search.type ||
-            data.payt_trx_number === search.type
+            new RegExp(search.type, "i").test(data.payt_type) ||
+            new RegExp(search.type, "i").test(data.payt_trx_number)
         )
       );
       setHistoryPage("");
@@ -103,8 +105,8 @@ export const TransactionScreen = () => {
           (data) =>
             new Date(data.payt_date) <= new Date(search.end) &&
             new Date(data.payt_date) >= new Date(search.start) &&
-            (data.payt_type === search.type ||
-              data.payt_trx_number === search.type)
+            (new RegExp(search.type, "i").test(data.payt_type) ||
+              new RegExp(search.type, "i").test(data.payt_trx_number))
         )
       );
       setHistoryPage("");
@@ -113,7 +115,13 @@ export const TransactionScreen = () => {
   };
 
   const handleClear = () => {
-    setPaymentList(historyPayment);
+    setPaymentList(
+      historyPayment.sort((a, b) =>
+        a.payt_id.length === b.payt_id.length
+          ? a.payt_id - b.payt_id
+          : a.payt_id.length - b.payt_id.length
+      )
+    );
     setHistoryPage("");
     setSearch({
       start: "",
@@ -121,6 +129,7 @@ export const TransactionScreen = () => {
       type: "",
     });
     setClearSeacrh(false);
+    setPage(0);
   };
 
   const handleSort = () => {
@@ -153,8 +162,8 @@ export const TransactionScreen = () => {
             historyPayment
               .filter(
                 (data) =>
-                  data.payt_type === search.type ||
-                  data.payt_trx_number === search.type
+                  new RegExp(search.type, "i").test(data.payt_type) ||
+                  new RegExp(search.type, "i").test(data.payt_trx_number)
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -219,8 +228,8 @@ export const TransactionScreen = () => {
                 (data) =>
                   new Date(data.payt_date) <= new Date(search.end) &&
                   new Date(data.payt_date) >= new Date(search.start) &&
-                  (data.payt_type === search.type ||
-                    data.payt_trx_number === search.type)
+                  (new RegExp(search.type, "i").test(data.payt_type) ||
+                    new RegExp(search.type, "i").test(data.payt_trx_number))
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -237,8 +246,8 @@ export const TransactionScreen = () => {
             historyPayment
               .filter(
                 (data) =>
-                  data.payt_type === search.type ||
-                  data.payt_trx_number === search.type
+                  new RegExp(search.type, "i").test(data.payt_type) ||
+                  new RegExp(search.type, "i").test(data.payt_trx_number)
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -303,8 +312,8 @@ export const TransactionScreen = () => {
                 (data) =>
                   new Date(data.payt_date) <= new Date(search.end) &&
                   new Date(data.payt_date) >= new Date(search.start) &&
-                  (data.payt_type === search.type ||
-                    data.payt_trx_number === search.type)
+                  (new RegExp(search.type, "i").test(data.payt_type) ||
+                    new RegExp(search.type, "i").test(data.payt_trx_number))
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -359,6 +368,12 @@ export const TransactionScreen = () => {
               placeholder="Search activities"
               value={search.type}
               onChange={handleChange("type")}
+              onKeyDown={(e) => {
+                if (e.code === "Enter") {
+                  e.preventDefault();
+                  handleSearch();
+                }
+              }}
             />
             <SearchIcon
               className="absolute w-10 right-0 text-white shadow-md cursor-pointer bg-blue-500 -mr-10 rounded-r-md self-center"
@@ -411,7 +426,7 @@ export const TransactionScreen = () => {
               <Disclosure>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75 relative">
+                    <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75 relative">
                       <div
                         className="absolute w-1 bg-black left-0 top-0"
                         style={{ height: "100%" }}
@@ -421,8 +436,8 @@ export const TransactionScreen = () => {
                           <p>{format(new Date(data.payt_date), "MMMM")}</p>
                           <p>{format(new Date(data.payt_date), "dd")}</p>
                         </div>
-                        <div className="relative">
-                          <div className="flex flex-col mt-2 ml-5">
+                        <div className="relative mt-3">
+                          <div className="flex flex-col mt-2 ml-5 items-center">
                             <p className="capitalize mb-1 text-lg">
                               {data.payt_type === "transferTo" ||
                               data.payt_type === "transferToBank"
@@ -445,6 +460,10 @@ export const TransactionScreen = () => {
                           data.payt_type === "transferFrom" ? (
                           <p className="font-semibold font-mono text-green-400 text-lg mr-20">
                             + {data.payt_dabet}
+                          </p>
+                        ) : data.payt_type === "request" ? (
+                          <p className="font-semibold font-mono text-lg mr-20">
+                            {data.payt_dabet}
                           </p>
                         ) : null}
                         <ChevronUpIcon
@@ -779,6 +798,52 @@ export const TransactionScreen = () => {
                               <h1 className="font-mono">
                                 Rp{" "}
                                 {parseFloat(data.payt_credit).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      ) : data.payt_type === "request" ? (
+                        <div className="md:ml-16 ml-5 flex flex-row">
+                          <div className="w-1/2">
+                            <h1 className="font-semibold">Request</h1>
+
+                            <h1 className="font-semibold mt-10">
+                              Transaction ID
+                            </h1>
+                            <div>
+                              <h1 className="font-mono">
+                                {data.payt_trx_number}
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="w-1/2 -mt-10">
+                            <h1 className="font-semibold mt-10">Details</h1>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Payment request</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_dabet).toLocaleString(
+                                  "ID",
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
+                              </h1>
+                            </div>
+                            <div
+                              className="bg-black"
+                              style={{ width: "95%", height: "1px" }}
+                            ></div>
+                            <div className="flex justify-between mr-10 mt-2">
+                              <h1>Total</h1>
+                              <h1 className="font-mono">
+                                Rp{" "}
+                                {parseFloat(data.payt_dabet).toLocaleString(
                                   "ID",
                                   {
                                     minimumFractionDigits: 2,

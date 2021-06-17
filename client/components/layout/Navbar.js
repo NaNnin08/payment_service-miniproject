@@ -62,7 +62,8 @@ export default function Navbar() {
             <h1
               className={
                 "p-1 " +
-                (location.pathname == "/myaccount/transfer"
+                (location.pathname == "/myaccount/transfer" ||
+                location.pathname == "/myaccount/transfer/request"
                   ? "border-b-2"
                   : "hover:border-b-2")
               }

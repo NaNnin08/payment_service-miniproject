@@ -147,7 +147,13 @@ export default function SummaryScreen() {
             </span>
           </p>
           <p className="text-sm font-thin font-mono">Available</p>
-          <Link to="/transfer/bank?from=/myaccount/summary">
+          <Link
+            to={
+              fund.bank_accounts.length > 0
+                ? "/transfer/bank?from=/myaccount/summary"
+                : "#"
+            }
+          >
             <button className="border border-blue-700 rounded-xl p-1 text-blue-700 hover:text-blue-900 hover:border-blue-900 text-base mt-5">
               Transfer Funds
             </button>
@@ -168,7 +174,7 @@ export default function SummaryScreen() {
                 <p className="text-center mt-1 ">Send</p>
               </div>
             </Link>
-            <Link to="#" className="col-span-1">
+            <Link to="/myaccount/transfer/request" className="col-span-1">
               <div className="hover:underline">
                 <img
                   className="w-16 bg-blue-500 p-3 rounded-full"
@@ -205,7 +211,8 @@ export default function SummaryScreen() {
                       size="2x"
                       icon={faMoneyBillWave}
                     />
-                  ) : data.payt_type === "refund" ? (
+                  ) : data.payt_type === "refund" ||
+                    data.payt_type === "request" ? (
                     <FontAwesomeIcon size="2x" icon={faMoneyBill} />
                   ) : data.payt_type === "transferFrom" ? (
                     <img src={transferIn} className="w-10" alt="transfer_in" />
@@ -238,7 +245,7 @@ export default function SummaryScreen() {
                       <p className="font-semibold font-mono text-green-400 text-sm">
                         + {data.payt_dabet}
                       </p>
-                    ) : (
+                    ) : data.payt_type === "refund" ? (
                       <div className="">
                         {data.payt_trx_number_ref && (
                           <p className="font-semibold font-mono text-black text-sm">
@@ -246,7 +253,11 @@ export default function SummaryScreen() {
                           </p>
                         )}
                       </div>
-                    )}
+                    ) : data.payt_type === "request" ? (
+                      <p className="font-semibold font-mono text-black text-sm">
+                        {data.payt_dabet}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>

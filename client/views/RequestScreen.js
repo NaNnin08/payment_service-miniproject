@@ -1,24 +1,19 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Helmet } from "react-helmet";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { findOneEmail } from "../actions/userActions";
+import { useSelector } from "react-redux";
 import AlertInput from "../components/layout/AlertInput";
 import { HeaderSendAndRequest } from "../components/layout/HeaderSendAndRequest";
+import { ModalRequest } from "./ModalRequest";
 
-export const TransferScreen = () => {
+export const RequestScreen = () => {
   const [email, setEmail] = useState("");
   const [isError, setIsError] = useState(false);
+  const [requestModal, setRequestModal] = useState(false);
 
-  const history = useHistory();
+  const cancelButtonRef = useRef();
 
-  const { findEmail, error } = useSelector((state) => state.emailUser);
   const { fund } = useSelector((state) => state.userFund);
   const { user_email } = fund;
-
-  const dispatch = useDispatch();
 
   const nextHandler = () => {
     if (email) {
@@ -28,7 +23,7 @@ export const TransferScreen = () => {
         )
       ) {
         if (email !== user_email) {
-          dispatch(findOneEmail(email));
+          setRequestModal(true);
         } else {
           setIsError("Email must not same with email login");
         }
@@ -38,16 +33,6 @@ export const TransferScreen = () => {
     }
   };
 
-  if (findEmail) {
-    history.push("/myaccount/transfer/input");
-  }
-
-  useEffect(() => {
-    if (error) {
-      setIsError(error);
-    }
-  }, [error]);
-
   if (isError) {
     setTimeout(() => {
       setIsError(false);
@@ -56,12 +41,18 @@ export const TransferScreen = () => {
   return (
     <div className="bg-gray-100 relative">
       <Helmet>
-        <title>Bayar: Send Money</title>
+        <title>Bayar: Request Money</title>
       </Helmet>
       <HeaderSendAndRequest />
+      <ModalRequest
+        cancelButtonRef={cancelButtonRef}
+        pinModal={requestModal}
+        setPinModal={setRequestModal}
+        email={email}
+      />
       <div className="md:w-1/2 w-full p-10 bg-white mx-auto mt-10 flex flex-col">
         <h1 className="pt-5 pl-3 text-2xl font-semibold text-gray-500">
-          Send payment to
+          Request payment to
         </h1>
         {isError && (
           <div className="mx-12">

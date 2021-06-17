@@ -6,6 +6,7 @@ import {
   findPaymentByUserReducer,
   orderWalletReducer,
   paymentTransfer,
+  requestPaymentReducer,
   topupFromBankReducer,
 } from "./reducer/paymentReducer";
 import {
@@ -45,6 +46,7 @@ const reducer = combineReducers({
   paymentList: findPaymentByUserReducer,
   emailUser: userFindEmailReducer,
   paymentTransfer: paymentTransfer,
+  requestWallet: requestPaymentReducer,
 });
 
 const store = createStore(

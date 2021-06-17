@@ -12,6 +12,10 @@ import router from "./router";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger/swagger.json";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const app = express();
 
 // parse body params and attache them to req.body

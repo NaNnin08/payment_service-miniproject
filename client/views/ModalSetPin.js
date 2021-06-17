@@ -1,8 +1,45 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, { Fragment, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserPin } from "../actions/userActions";
+import AlertInput from "../components/layout/AlertInput";
 
 export const ModalSetPin = (props) => {
+  const [userPin, setUserPin] = useState({
+    pin: "",
+    pinConfirm: "",
+  });
+  const [isError, setIsError] = useState("");
+
+  const { fund } = useSelector((state) => state.userFund);
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (userPin.pin.length === 6 && userPin.pinConfirm.length === 6) {
+      if (userPin.pin === userPin.pinConfirm) {
+        const pinUser = {
+          paac_account_number: fund.payment_account.paac_account_number,
+          pacc_pin_number: userPin.pin,
+        };
+
+        dispatch(updateUserPin(pinUser, fund.user_id));
+        props.setPinModal(false);
+      } else {
+        setIsError("Pin and Confirm Pin must same");
+      }
+    } else {
+      setIsError("Pin must 6 contain numbers");
+    }
+  };
+
+  if (isError) {
+    setTimeout(() => {
+      setIsError("");
+    }, 3000);
+  }
   return (
     <Transition.Root show={props.pinModal} as={Fragment}>
       <Dialog
@@ -50,23 +87,38 @@ export const ModalSetPin = (props) => {
                     >
                       Set your Pin to order various things in merchant partner
                     </Dialog.Title>
-                    <Link to="/myaccount/profile">
-                      <div className="mt-5 text-center hover:underline text-blue-500">
-                        Set Pin
+                    <form onSubmit={handleSubmit} className="space-y-2 mt-8">
+                      {isError && <AlertInput data={isError} />}
+                      <input
+                        type="password"
+                        maxLength="6"
+                        className="w-full rounded-md"
+                        placeholder="New pin (must contain only 6 numbers)"
+                        onChange={(e) =>
+                          setUserPin({ ...userPin, pin: e.target.value })
+                        }
+                      />
+                      <input
+                        type="password"
+                        maxLength="6"
+                        className="w-full rounded-md"
+                        placeholder="Confirm new pin"
+                        onChange={(e) =>
+                          setUserPin({ ...userPin, pinConfirm: e.target.value })
+                        }
+                      />
+                      <div className="flex flex-row-reverse">
+                        <button
+                          type="submit"
+                          className="bg-blue-500 px-3 py-2 text-white font-semibold rounded-2xl mt-5 mb-3"
+                          ref={props.cancelButtonRef}
+                        >
+                          Save Change
+                        </button>
                       </div>
-                    </Link>
+                    </form>
                   </div>
                 </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  type="button"
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => props.setPinModal(false)}
-                  ref={props.cancelButtonRef}
-                >
-                  Cancel
-                </button>
               </div>
             </div>
           </Transition.Child>

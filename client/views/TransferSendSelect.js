@@ -5,7 +5,7 @@ import bIcon from "../assets/images/B_icon.svg";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { PAYMENT_TRANSFER_DATA } from "../constants/paymentConstants";
 
 export const TransferSendSelect = () => {
@@ -17,24 +17,54 @@ export const TransferSendSelect = () => {
 
   const history = useHistory();
 
+  const location = useLocation();
+
   const [method, setMethod] = useState("");
 
-  if (!transfer_data) {
+  const [note, setNote] = useState("");
+
+  const objParams = location.search
+    ? Object.fromEntries(new URLSearchParams(location.search))
+    : "";
+
+  console.log(objParams);
+
+  if (!transfer_data && !objParams) {
     history.push("/myaccount/transfer");
   }
 
   const handleNext = () => {
     if (method) {
-      if (method === "wallet") {
-        dispatch({
-          type: PAYMENT_TRANSFER_DATA,
-          payload: { ...transfer_data, method: method },
-        });
+      if (objParams) {
+        const data = {
+          from_email: objParams["to_email"],
+          to_email: objParams["?from_email"],
+          amount: objParams["amount"],
+          message: note,
+        };
+        if (method === "wallet") {
+          dispatch({
+            type: PAYMENT_TRANSFER_DATA,
+            payload: { ...data, method: method },
+          });
+        } else {
+          dispatch({
+            type: PAYMENT_TRANSFER_DATA,
+            payload: { ...data, bank: method, method: "bank/card" },
+          });
+        }
       } else {
-        dispatch({
-          type: PAYMENT_TRANSFER_DATA,
-          payload: { ...transfer_data, bank: method, method: "bank/card" },
-        });
+        if (method === "wallet") {
+          dispatch({
+            type: PAYMENT_TRANSFER_DATA,
+            payload: { ...transfer_data, method: method },
+          });
+        } else {
+          dispatch({
+            type: PAYMENT_TRANSFER_DATA,
+            payload: { ...transfer_data, bank: method, method: "bank/card" },
+          });
+        }
       }
       history.push("/myaccount/transfer/preview");
     }
@@ -105,6 +135,19 @@ export const TransferSendSelect = () => {
               </label>
             </div>
           ))}
+        {objParams && (
+          <div className="flex mt-5">
+            <textarea
+              name="pesan"
+              id="pesan"
+              cols="40"
+              rows="3"
+              className="mx-auto rounded-xl"
+              placeholder="Pesan"
+              onChange={(e) => setNote(e.target.value)}
+            ></textarea>
+          </div>
+        )}
         <div className="flex mt-10">
           <button
             className=" mx-auto bg-blue-500 text-white text-xl px-3 py-2 rounded-3xl"

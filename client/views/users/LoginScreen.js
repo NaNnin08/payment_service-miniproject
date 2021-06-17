@@ -48,7 +48,11 @@ export default function LoginScreen() {
         ? new URLSearchParams(location.search).get("redirect")
         : "/myaccount/summary";
 
-      history.push(redirect);
+      const search = new URLSearchParams(location.search).get("search")
+        ? "?" + new URLSearchParams(location.search)
+        : "";
+
+      history.push(redirect + search);
     }
   }, [userInfo, history, fund]);
   return (

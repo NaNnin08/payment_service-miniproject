@@ -6,6 +6,10 @@ import {
   PAYMENT_ORDER_WALLET_FAIL,
   PAYMENT_ORDER_WALLET_REQUEST,
   PAYMENT_ORDER_WALLET_SUCCESS,
+  PAYMENT_REQUEST_WALLET_CLEAR,
+  PAYMENT_REQUEST_WALLET_FAIL,
+  PAYMENT_REQUEST_WALLET_REQUEST,
+  PAYMENT_REQUEST_WALLET_SUCCESS,
   PAYMENT_TOPUP_BANK_CLEAR,
   PAYMENT_TOPUP_BANK_FAIL,
   PAYMENT_TOPUP_BANK_REQUEST,
@@ -64,6 +68,21 @@ export const paymentTransfer = (state = {}, action) => {
     case PAYMENT_TRANSFER_DATA:
       return { transfer_data: action.payload };
     case PAYMENT_TRANSFER_DATA_CLEAR:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const requestPaymentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_REQUEST_WALLET_REQUEST:
+      return { loading: true };
+    case PAYMENT_REQUEST_WALLET_SUCCESS:
+      return { loading: false, message: action.payload, isSuccess: true };
+    case PAYMENT_REQUEST_WALLET_FAIL:
+      return { loading: false, error: action.payload };
+    case PAYMENT_REQUEST_WALLET_CLEAR:
       return {};
     default:
       return state;

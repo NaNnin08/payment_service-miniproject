@@ -360,8 +360,8 @@ const sendRequestPayment = async (req, res) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "services.bayar@gmail.com",
-      pass: "jk89312htsad5612RT",
+      user: process.env.USER_GMAIL,
+      pass: process.env.PASS_GMAIL,
     },
   });
   const data = await ejs.renderFile(process.cwd() + "/test.ejs", {
@@ -393,9 +393,9 @@ const sendRequestPayment = async (req, res) => {
   // res.send({ message: "Order Paid" });
 
   let msg = {
-    from: '"Test" <dagmar97@ethereal.email>',
+    from: `${from_email}`,
     to: `${to_email}`,
-    subject: "Hello ✔",
+    subject: "Request Payment, Bayar ✔",
     // text: "Hello world?",
     html: htmlWithStylesInlined,
   };

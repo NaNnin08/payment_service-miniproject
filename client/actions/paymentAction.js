@@ -6,6 +6,9 @@ import {
   PAYMENT_ORDER_WALLET_FAIL,
   PAYMENT_ORDER_WALLET_REQUEST,
   PAYMENT_ORDER_WALLET_SUCCESS,
+  PAYMENT_REQUEST_WALLET_FAIL,
+  PAYMENT_REQUEST_WALLET_REQUEST,
+  PAYMENT_REQUEST_WALLET_SUCCESS,
   PAYMENT_TOPUP_BANK_FAIL,
   PAYMENT_TOPUP_BANK_REQUEST,
   PAYMENT_TOPUP_BANK_SUCCESS,
@@ -121,6 +124,22 @@ export const transferBank = (payment) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PAYMENT_TRANSFER_BANK_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const postRequestPaymentAction = (request) => async (dispatch) => {
+  dispatch({ type: PAYMENT_REQUEST_WALLET_REQUEST });
+  try {
+    const { data } = await axios.post("/api/payt/requestPayment", request);
+    dispatch({ type: PAYMENT_REQUEST_WALLET_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PAYMENT_REQUEST_WALLET_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

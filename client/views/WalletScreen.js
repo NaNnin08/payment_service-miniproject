@@ -31,6 +31,7 @@ export default function WalletScreen(props) {
     fund.payment_account && setWallet(fund.payment_account);
     fund.payment_account && setIsBank(fund.bank_accounts);
   }, [dispatch, fund, isBank, wallet]);
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Helmet>

@@ -38,6 +38,8 @@ module.exports = {
       "80v": "80vh",
       "90v": "90vh",
       "100v": "100vh",
+      "0v": 0,
+      "12v": "12vh",
     },
   },
   variants: {

@@ -37,7 +37,7 @@ export const TransferSendSelect = () => {
     if (method) {
       if (objParams) {
         const data = {
-          from_email: objParams["to_email"],
+          from_email: fund.user_email,
           to_email: objParams["?from_email"],
           amount: objParams["amount"],
           message: note,

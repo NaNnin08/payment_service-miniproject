@@ -1,15 +1,11 @@
 import React, { useEffect, useState, Fragment, useRef } from "react";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, Transition, Disclosure } from "@headlessui/react";
 import MoneyIcon from "../assets/images/money_icon.svg";
 import bankIcon from "../assets/images/bank.svg";
 import cardIcon from "../assets/images/card.svg";
 import transferIn from "../assets/images/transfer_in.svg";
 import transferOut from "../assets/images/transfer_out.svg";
-import {
-  DocumentAddIcon,
-  DotsVerticalIcon,
-  ShoppingBagIcon,
-} from "@heroicons/react/solid";
+import { DotsVerticalIcon, ShoppingBagIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -19,7 +15,6 @@ import {
   faMoneyBill,
   faMoneyBillWave,
 } from "@fortawesome/free-solid-svg-icons";
-import { Dialog } from "@headlessui/react";
 import { ModalSetPin } from "./ModalSetPin";
 
 export default function SummaryScreen() {
@@ -162,12 +157,12 @@ export default function SummaryScreen() {
         <div></div>
       </div>
       <div className="md:w-1/3">
-        <div className="md:flex py-5 hidden">
-          <div className="grid grid-cols-3 w-full lg:gap-16 xl:gap-20">
+        <div className="md:flex md:py-5 hidden">
+          <div className="grid grid-cols-3 w-full lg:gap-16 xl:gap-20 relative">
             <Link to="/myaccount/transfer" className="col-span-1 ml-2">
               <div className="hover:underline">
                 <img
-                  className="w-16 bg-blue-500 p-3 rounded-full transform rotate-180"
+                  className="w-16 h-10v bg-blue-500 p-3 rounded-full transform rotate-180"
                   src={MoneyIcon}
                   alt="money send"
                 />
@@ -177,19 +172,64 @@ export default function SummaryScreen() {
             <Link to="/myaccount/transfer/request" className="col-span-1">
               <div className="hover:underline">
                 <img
-                  className="w-16 bg-blue-500 p-3 rounded-full"
+                  className="w-16 h-10v bg-blue-500 p-3 rounded-full"
                   src={MoneyIcon}
                   alt="money send"
                 />
                 <p className="text-center mt-1">Request</p>
               </div>
             </Link>
-            <div className="hover:underline cursor-pointer col-span-1 mr-2">
-              <div className="w-16 text-blue-500 bg-white border border-blue-500 p-3 rounded-full">
-                <DotsVerticalIcon />
-              </div>
-              <p className="text-center mt-2">More</p>
-            </div>
+            <Disclosure as="div" className="">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="hover:underline cursor-pointer col-span-1 mr-2 focus:outline-none">
+                    <div className="w-16 text-blue-500 bg-white border border-blue-500 p-3 rounded-full relative h-10v">
+                      {open ? (
+                        <div>
+                          <DotsVerticalIcon className="transform rotate-45 absolute top-0 -ml-3" />
+                          <DotsVerticalIcon className="transform -rotate-45 absolute top-0 -ml-3" />
+                        </div>
+                      ) : (
+                        <DotsVerticalIcon />
+                      )}
+                    </div>
+                    <p className="text-center mt-2">
+                      {open ? "Close" : "More"}
+                    </p>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="h-7v">
+                    <Transition
+                      enter="transform transition ease-linear duration-300"
+                      enterFrom="-translate-y-10 opacity-0 scale-y-0"
+                      enterTo="translate-y-0 opacity-100 scale-y-100"
+                      className="absolute left-5 bg-blue-500 rounded text-white font-serif text-lg flex flex-col pl-5 py-2 h-12v"
+                      style={{ width: "95%" }}
+                    >
+                      <Link
+                        className="hover:text-gray-300"
+                        to="/myaccount/money"
+                      >
+                        Go to Bayar balance
+                      </Link>
+                      <div
+                        style={{
+                          height: "1px",
+                          width: "120%",
+                          borderTop: "1px white dotted",
+                        }}
+                        className="-ml-5"
+                      ></div>
+                      <Link
+                        className="hover:text-gray-300"
+                        to="/myaccount/topup/balance"
+                      >
+                        Add Balance
+                      </Link>
+                    </Transition>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
           </div>
         </div>
         <div className="p-5 text-lg">

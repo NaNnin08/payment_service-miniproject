@@ -422,8 +422,8 @@ export const TransactionScreen = () => {
           )}
           {historyPage &&
             historyPage[page] &&
-            historyPage[page].map((data) => (
-              <Disclosure>
+            historyPage[page].map((data, index) => (
+              <Disclosure key={index}>
                 {({ open }) => (
                   <>
                     <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75 relative">
@@ -864,7 +864,10 @@ export const TransactionScreen = () => {
       <div className="mt-5 md:ml-28 grid md:grid-cols-6 grid-cols-3">
         {page > 0 && (
           <div
-            onClick={() => setPage(Number(page - 1))}
+            onClick={() => {
+              setPage(Number(page - 1));
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             className="py-2 text-center rounded-lg bg-blue-500 w-32 text-white text-lg col-span-1 cursor-pointer"
           >
             Prev
@@ -872,7 +875,10 @@ export const TransactionScreen = () => {
         )}
         {page < historyPage.length - 1 && (
           <div
-            onClick={() => setPage(Number(page + 1))}
+            onClick={() => {
+              setPage(Number(page + 1));
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             className="py-2 text-center rounded-lg bg-blue-500 w-32 text-white text-lg cols-span-1 col-start-6 cursor-pointer"
           >
             Next

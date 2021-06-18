@@ -12,6 +12,7 @@ import AlertInput from "../../components/layout/AlertInput";
 import { SuccessModalAlert } from "../../components/layout/SuccessModalAlert";
 import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function ProfilePageScreen() {
   const userFund = useSelector((state) => state.userFund);
@@ -37,6 +38,8 @@ export default function ProfilePageScreen() {
     phone: false,
     addres: false,
   });
+  const [oldPassword, setOldPassword] = useState("");
+  const [oldPin, setOldPin] = useState("");
 
   useEffect(() => {
     if (fund && !userData) {
@@ -95,21 +98,35 @@ export default function ProfilePageScreen() {
       user.append("user_password", userData.user_password);
 
     if (userData.user_password) {
-      if (userData.user_password === confirm.password) {
-        dispatch(updateUser(user, userData.user_id));
-        setUserData({
-          ...userData,
-          user_password: "",
-        });
-        setConfirm({
-          ...confirm,
-          password: "",
-        });
-        setPassChange(true);
-      } else {
-        setIsError({
-          ...isError,
-          password: "password and confirm password not same",
+      if (oldPassword) {
+        const data = { user_email: fund.user_email, oldPassword: oldPassword };
+
+        axios.post(`/api/users/comparePassword`, data).then((rsl) => {
+          if (rsl.data.error) {
+            setIsError({
+              ...isError,
+              password: "Old password wrong!",
+            });
+          } else {
+            if (userData.user_password === confirm.password) {
+              dispatch(updateUser(user, userData.user_id));
+              setUserData({
+                ...userData,
+                user_password: "",
+              });
+              setConfirm({
+                ...confirm,
+                password: "",
+              });
+              setOldPassword("");
+              setPassChange(true);
+            } else {
+              setIsError({
+                ...isError,
+                password: "password and confirm password not same",
+              });
+            }
+          }
         });
       }
     }
@@ -123,23 +140,31 @@ export default function ProfilePageScreen() {
       });
     }
     if (userPin) {
-      if (userPin.length === 6 && new RegExp("^[0-9]+$").test(userPin)) {
-        if (userPin === confirm.pin) {
-          const pinUser = {
-            paac_account_number: fund.payment_account.paac_account_number,
-            pacc_pin_number: userPin,
-          };
-          dispatch(updateUserPin(pinUser, userData.user_id));
-          setUserPin("");
-          setConfirm({ ...confirm, pin: "" });
-          setPinChange(true);
+      if (oldPin === fund.payment_account.pacc_pin_number) {
+        if (userPin.length === 6 && new RegExp("^[0-9]+$").test(userPin)) {
+          if (userPin === confirm.pin) {
+            const pinUser = {
+              paac_account_number: fund.payment_account.paac_account_number,
+              pacc_pin_number: userPin,
+            };
+            dispatch(updateUserPin(pinUser, userData.user_id));
+            setUserPin("");
+            setConfirm({ ...confirm, pin: "" });
+            setOldPin("");
+            setPinChange(true);
+          } else {
+            setIsError({ ...isError, pin: "pin and confirm pin not same" });
+          }
         } else {
-          setIsError({ ...isError, pin: "pin and confirm pin not same" });
+          setIsError({
+            ...isError,
+            pin: "pin must contain number and length must 6",
+          });
         }
       } else {
         setIsError({
           ...isError,
-          pin: "pin must contain number and length must 6",
+          pin: "Old pin wrong!",
         });
       }
     }
@@ -300,6 +325,13 @@ export default function ProfilePageScreen() {
             <form onSubmit={handleSubmit} className="space-y-2">
               <input
                 type="password"
+                className="w-full rounded-md mb-3"
+                placeholder="Old password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+              <input
+                type="password"
                 className="w-full rounded-md"
                 placeholder="New password"
                 value={userData.user_password}
@@ -332,6 +364,14 @@ export default function ProfilePageScreen() {
             {isError.pin && <AlertInput data={isError.pin} />}
             {pinChange && <SuccessModalAlert data="Change pin done" />}
             <form onSubmit={handleSubmit} className="space-y-2">
+              <input
+                type="password"
+                maxLength="6"
+                className="w-full rounded-md mb-3"
+                placeholder="Old Pin"
+                value={oldPin}
+                onChange={(e) => setOldPin(e.target.value)}
+              />
               <input
                 type="password"
                 maxLength="6"

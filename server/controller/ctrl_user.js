@@ -270,6 +270,42 @@ const photo = async (req, res) => {
   }
 };
 
+const ComparePassword = async (req, res) => {
+  const { user_email, oldPassword } = req.body;
+
+  try {
+    const users = await req.context.models.Users.findOne({
+      where: { user_email: user_email },
+    });
+
+    if (!users) {
+      return res.status("400").json({
+        error: "Users not found",
+      });
+    }
+
+    if (
+      !Auth.authenticate(
+        oldPassword,
+        users.dataValues.user_password,
+        users.dataValues.user_salt
+      )
+    ) {
+      return res.send({
+        error: "Email and password doesn't match",
+      });
+    } else {
+      return res.send({
+        success: "oldPassword match with user password",
+      });
+    }
+  } catch (err) {
+    return res.status("400").json({
+      error: "Could not retrieve user",
+    });
+  }
+};
+
 export default {
   signup,
   signin,
@@ -282,4 +318,5 @@ export default {
   update,
   remove,
   requireSignin,
+  ComparePassword,
 };

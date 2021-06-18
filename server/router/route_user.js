@@ -12,5 +12,6 @@ router.get("/download/:filename", ctrl.User.photo);
 router.get("/secured/find", ctrl.User.requireSignin, ctrl.User.findAll);
 router.put("/:id", ctrl.User.update, ctrl.User.findOne);
 router.delete("/:id", ctrl.User.remove);
+router.post("/comparePassword", ctrl.User.ComparePassword);
 
 export default router;

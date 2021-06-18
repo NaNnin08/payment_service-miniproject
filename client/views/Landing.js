@@ -462,11 +462,11 @@ export default function Landing() {
           <Disclosure>
             {({ open }) => (
               <div className="border border-l-0 border-r-0 border-gray-300">
-                <Disclosure.Button className="flex w-full px-4 py-5 text-xl items-center text-left relative ">
+                <Disclosure.Button className="flex w-full px-4 py-5 text-xl items-center text-left relative focus:outline-none">
                   <img className="h-10v" src={worldIcon} alt="world icon" />
                   <span className="ml-3 text-2xl">All-in-one Service</span>
                   <ChevronUpIcon
-                    className={`absolute right-2 ${
+                    className={`absolute right-2 top-1 ${
                       open ? "transform rotate-180" : ""
                     } w-10 h-10`}
                   />
@@ -481,11 +481,11 @@ export default function Landing() {
           <Disclosure>
             {({ open }) => (
               <div className="border border-l-0 border-r-0 border-gray-300">
-                <Disclosure.Button className="flex w-full px-4 py-5 text-xl items-center text-left relative ">
+                <Disclosure.Button className="flex w-full px-4 py-5 text-xl items-center text-left relative focus:outline-none">
                   <img className="h-10v" src={shieldIcon} alt="world icon" />
                   <span className="ml-3 text-2xl">Advanced System</span>
                   <ChevronUpIcon
-                    className={`absolute right-2 ${
+                    className={`absolute right-2 top-1 ${
                       open ? "transform rotate-180" : ""
                     } w-10 h-10`}
                   />
@@ -500,11 +500,11 @@ export default function Landing() {
           <Disclosure>
             {({ open }) => (
               <div className="border border-l-0 border-r-0 border-gray-300">
-                <Disclosure.Button className="flex w-full px-4 py-5 text-xl items-center text-left relative ">
+                <Disclosure.Button className="flex w-full px-4 py-5 text-xl items-center text-left relative focus:outline-none">
                   <img className="h-10v" src={worldIcon} alt="world icon" />
                   <span className="ml-3 text-2xl">Guaranteed Security</span>
                   <ChevronUpIcon
-                    className={`absolute right-2 ${
+                    className={`absolute right-2 top-1 ${
                       open ? "transform rotate-180" : ""
                     } w-10 h-10`}
                   />

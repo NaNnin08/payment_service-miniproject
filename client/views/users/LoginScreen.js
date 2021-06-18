@@ -48,8 +48,10 @@ export default function LoginScreen() {
         ? new URLSearchParams(location.search).get("redirect")
         : "/myaccount/summary";
 
-      const search = new URLSearchParams(location.search).get("search")
+      const search = new URLSearchParams(location.search).get("?from_email")
         ? "?" + new URLSearchParams(location.search)
+        : new URLSearchParams(location.search).get("?id")
+        ? "?id=" + new URLSearchParams(location.search).get("?id")
         : "";
 
       history.push(redirect + search);

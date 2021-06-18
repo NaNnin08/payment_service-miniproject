@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CreditCardIcon } from "@heroicons/react/outline";
 import addBank from "../assets/images/addBank.svg";
 import addCard from "../assets/images/credit-cards-payment 1.svg";
@@ -20,17 +20,65 @@ export default function WalletScreen(props) {
   const [isBank, setIsBank] = useState("");
   const [isBalance, setIsBalance] = useState(!location.search);
 
+  const [isSmall, setIsSmall] = useState(
+    window.innerWidth <= 750 ? true : false
+  );
+
   const userFund = useSelector((state) => state.userFund);
   const { fund } = userFund;
   const bank = useSelector((state) => state.bank);
   const { bankId } = bank;
   const dispatch = useDispatch();
 
+  const selectRef = useRef();
+  const infoRef = useRef();
+
   useEffect(() => {
     dispatch(bankFindById(""));
     fund.payment_account && setWallet(fund.payment_account);
     fund.payment_account && setIsBank(fund.bank_accounts);
   }, [dispatch, fund, isBank, wallet]);
+
+  useEffect(() => {
+    const innerWidthSmall = () => {
+      if (window.innerWidth <= 750) {
+        setIsSmall(true);
+      }
+      if (window.innerWidth > 750) {
+        setIsSmall(false);
+      }
+    };
+
+    window.addEventListener("resize", innerWidthSmall);
+
+    return () => {
+      window.removeEventListener("resize", innerWidthSmall);
+    };
+  }, []);
+
+  const handleClickSmall = () => {
+    if (isSmall) {
+      selectRef.current.classList.add("hidden");
+      infoRef.current.classList.remove("hidden");
+    }
+  };
+
+  const handleCancleClickSmall = () => {
+    if (isSmall) {
+      selectRef.current.classList.remove("hidden");
+      infoRef.current.classList.add("hidden");
+    }
+  };
+
+  if (!isSmall) {
+    selectRef.current &&
+      selectRef.current.classList.contains("hidden") &&
+      selectRef.current.classList.remove("hidden");
+
+    infoRef.current &&
+      !infoRef.current.classList.contains("hidden") &&
+      infoRef.current.classList.add("hidden");
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -65,7 +113,7 @@ export default function WalletScreen(props) {
         )
       ) : null}
       <div className="w-5/6 flex flex-row mx-auto">
-        <div className="md:w-1/4 w-full">
+        <div className="md:w-1/4 w-full" ref={selectRef}>
           <div className="flex flex-row space-x-6 mx-20 md:mx-auto md:-ml-7 lg:ml-5 mt-5">
             <div className="text-blue-500 font-semibold hover:text-blue-700">
               <Link to="/myaccount/money/banks/new">
@@ -92,7 +140,10 @@ export default function WalletScreen(props) {
                 <Link to="/myaccount/money">
                   <h1
                     className="text-blue-700 hover:text-black"
-                    onClick={() => setIsBalance(true)}
+                    onClick={() => {
+                      setIsBalance(true);
+                      handleClickSmall();
+                    }}
                   >
                     Bayar balance
                   </h1>
@@ -145,7 +196,10 @@ export default function WalletScreen(props) {
                         >
                           <h1
                             className="text-blue-700 hover:text-black truncate"
-                            onClick={() => setIsBalance(false)}
+                            onClick={() => {
+                              setIsBalance(false);
+                              handleClickSmall();
+                            }}
                           >
                             {bankId
                               ? bankId.find((y) => y.bank_id === x.baac_bank_id)
@@ -169,7 +223,18 @@ export default function WalletScreen(props) {
               : null
             : null}
         </div>
-        <div className={`w-3/4 bg-white min-h-screen hidden md:block`}>
+        <div
+          className="w-full md:w-3/4 bg-white min-h-screen hidden md:block relative"
+          ref={infoRef}
+        >
+          {isSmall && (
+            <button
+              className="absolute top-3 ml-3 border border-blue-500 text-blue-500 px-2 rounded"
+              onClick={handleCancleClickSmall}
+            >
+              back
+            </button>
+          )}
           {isBalance ? (
             <div>
               <div className="bg-white mt-10 p-5 text-2xl flex">

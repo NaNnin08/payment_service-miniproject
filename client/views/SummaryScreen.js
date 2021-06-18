@@ -40,11 +40,7 @@ export default function SummaryScreen() {
     if (fund) {
       setWallet(fund.payment_account);
       setBank(fund.bank_accounts);
-      if (!historyPayment) {
-        dispatch(
-          findOnePaymentByUser(fund.payment_account.paac_account_number)
-        );
-      }
+      dispatch(findOnePaymentByUser(fund.payment_account.paac_account_number));
     }
     if (fund && fund.payment_account) {
       if (!fund.payment_account.pacc_pin_number) {

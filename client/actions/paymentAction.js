@@ -6,6 +6,9 @@ import {
   PAYMENT_ORDER_WALLET_FAIL,
   PAYMENT_ORDER_WALLET_REQUEST,
   PAYMENT_ORDER_WALLET_SUCCESS,
+  PAYMENT_PAGING_FAIL,
+  PAYMENT_PAGING_REQUEST,
+  PAYMENT_PAGING_SUCCESS,
   PAYMENT_REQUEST_WALLET_FAIL,
   PAYMENT_REQUEST_WALLET_REQUEST,
   PAYMENT_REQUEST_WALLET_SUCCESS,
@@ -140,6 +143,22 @@ export const postRequestPaymentAction = (request) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PAYMENT_REQUEST_WALLET_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getPagingPaymentAction = (request, params) => async (dispatch) => {
+  dispatch({ type: PAYMENT_PAGING_REQUEST });
+  try {
+    const { data } = await axios.get(request, { params });
+    dispatch({ type: PAYMENT_PAGING_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PAYMENT_PAGING_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

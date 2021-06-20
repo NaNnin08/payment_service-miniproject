@@ -80,6 +80,8 @@ router.get("/", ctrl.Payt.findAll);
 router.get("/:id", ctrl.Payt.findOne);
 router.get("/user/:id", ctrl.Payt.findOneByUser);
 router.get("/order/:id", ctrl.Payt.findOneByOrder);
+router.get("/payment/paging", ctrl.Payt.paymentPaging);
+router.get("/payment/paging/:id", ctrl.Payt.paymentPaging);
 router.put("/:id", ctrl.Payt.update);
 router.delete("/:id", ctrl.Payt.remove);
 

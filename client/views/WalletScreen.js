@@ -12,6 +12,7 @@ import cardIcon from "../assets/images/card.svg";
 import { useLocation } from "react-router-dom";
 import WalletChildScreen from "./WalletChildScreen";
 import { Helmet } from "react-helmet";
+import { PAYMENT_TRANSFER_WALLET_CLEAR } from "../constants/paymentConstants";
 
 export default function WalletScreen(props) {
   const location = useLocation();
@@ -25,7 +26,7 @@ export default function WalletScreen(props) {
   );
 
   const userFund = useSelector((state) => state.userFund);
-  const { fund } = userFund;
+  const { fund, isSuccess: transferSuccess } = userFund;
   const bank = useSelector((state) => state.bank);
   const { bankId } = bank;
   const dispatch = useDispatch();
@@ -80,6 +81,9 @@ export default function WalletScreen(props) {
       infoRef.current.classList.add("hidden");
   }
 
+  if (transferSuccess) {
+    dispatch({ type: PAYMENT_TRANSFER_WALLET_CLEAR });
+  }
   return (
     <div className="min-h-screen bg-gray-100">
       <Helmet>

@@ -30,6 +30,7 @@ import { TransferBankSelect } from "./views/TransferBankSelect";
 import { TransferBankInput } from "./views/TransferBankInput";
 import { TransferBankCheckout } from "./views/TransferBankCheckout";
 import { RequestScreen } from "./views/RequestScreen";
+import { TransactionScreenV2 } from "./views/TransactionScreenV2";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -41,7 +42,7 @@ const MainRouter = () => {
         <link rel="shortcut icon" href={icon} />
       </Helmet>
       <Switch location={location} key={location.pathname}>
-        <Route exact path="/dummy" component={Dummy} />
+        <Route exact path="/dummy" component={TransactionScreenV2} />
         <PrivateRoute
           exact
           path="/pay/order/wallet/:id"

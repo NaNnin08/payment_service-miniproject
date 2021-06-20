@@ -46,6 +46,10 @@ export const TransactionScreen = () => {
     }
   }, [historyPayment, paymentList, dispatch]);
 
+  useEffect(() => {
+    handleSearch();
+  }, [search.end, search.start]);
+
   if (paymentList && !historyPage) {
     const container = [];
     while (paymentList.length) {
@@ -61,57 +65,84 @@ export const TransactionScreen = () => {
   const handleSearch = () => {
     if (search.type && !search.end && !search.start) {
       setPaymentList(
-        historyPayment.filter(
-          (data) =>
-            new RegExp(search.type, "i").test(data.payt_type) ||
-            new RegExp(search.type, "i").test(data.payt_trx_number)
-        )
+        historyPayment
+          .filter(
+            (data) =>
+              new RegExp(search.type, "i").test(data.payt_type) ||
+              new RegExp(search.type, "i").test(data.payt_trx_number)
+          )
+          .sort((a, b) =>
+            a.payt_id.length === b.payt_id.length
+              ? a.payt_id - b.payt_id
+              : a.payt_id.length - b.payt_id.length
+          )
       );
       setHistoryPage("");
       setClearSeacrh(true);
     }
     if (!search.type && !search.end && search.start) {
       setPaymentList(
-        historyPayment.filter(
-          (data) => new Date(data.payt_date) >= new Date(search.start)
-        )
+        historyPayment
+          .filter((data) => new Date(data.payt_date) >= new Date(search.start))
+          .sort((a, b) =>
+            a.payt_id.length === b.payt_id.length
+              ? a.payt_id - b.payt_id
+              : a.payt_id.length - b.payt_id.length
+          )
       );
       setHistoryPage("");
       setClearSeacrh(true);
     }
     if (!search.type && search.end && !search.start) {
       setPaymentList(
-        historyPayment.filter(
-          (data) => new Date(data.payt_date) <= new Date(search.end)
-        )
+        historyPayment
+          .filter((data) => new Date(data.payt_date) <= new Date(search.end))
+          .sort((a, b) =>
+            a.payt_id.length === b.payt_id.length
+              ? a.payt_id - b.payt_id
+              : a.payt_id.length - b.payt_id.length
+          )
       );
       setHistoryPage("");
       setClearSeacrh(true);
     }
     if (!search.type && search.end && search.start) {
       setPaymentList(
-        historyPayment.filter(
-          (data) =>
-            new Date(data.payt_date) <= new Date(search.end) &&
-            new Date(data.payt_date) >= new Date(search.start)
-        )
+        historyPayment
+          .filter(
+            (data) =>
+              new Date(data.payt_date) <= new Date(search.end) &&
+              new Date(data.payt_date) >= new Date(search.start)
+          )
+          .sort((a, b) =>
+            a.payt_id.length === b.payt_id.length
+              ? a.payt_id - b.payt_id
+              : a.payt_id.length - b.payt_id.length
+          )
       );
       setHistoryPage("");
       setClearSeacrh(true);
     }
     if (search.type && search.end && search.start) {
       setPaymentList(
-        historyPayment.filter(
-          (data) =>
-            new Date(data.payt_date) <= new Date(search.end) &&
-            new Date(data.payt_date) >= new Date(search.start) &&
-            (new RegExp(search.type, "i").test(data.payt_type) ||
-              new RegExp(search.type, "i").test(data.payt_trx_number))
-        )
+        historyPayment
+          .filter(
+            (data) =>
+              new Date(data.payt_date) <= new Date(search.end) &&
+              new Date(data.payt_date) >= new Date(search.start) &&
+              (new RegExp(search.type, "i").test(data.payt_type) ||
+                new RegExp(search.type, "i").test(data.payt_trx_number))
+          )
+          .sort((a, b) =>
+            a.payt_id.length === b.payt_id.length
+              ? a.payt_id - b.payt_id
+              : a.payt_id.length - b.payt_id.length
+          )
       );
       setHistoryPage("");
       setClearSeacrh(true);
     }
+    setPage(0);
   };
 
   const handleClear = () => {
@@ -453,16 +484,16 @@ export const TransactionScreen = () => {
                         {data.payt_type === "order" ||
                         data.payt_type === "transferTo" ||
                         data.payt_type === "transferToBank" ? (
-                          <p className="font-semibold font-mono text-red-400 text-lg mr-20">
+                          <p className="font-semibold font-mono text-red-400 text-lg  mr-0 md:mr-20">
                             - {data.payt_credit}
                           </p>
                         ) : data.payt_type === "topup" ||
                           data.payt_type === "transferFrom" ? (
-                          <p className="font-semibold font-mono text-green-400 text-lg mr-20">
+                          <p className="font-semibold font-mono text-green-400 text-lg mr-0 md:mr-20">
                             + {data.payt_dabet}
                           </p>
                         ) : data.payt_type === "request" ? (
-                          <p className="font-semibold font-mono text-lg mr-20">
+                          <p className="font-semibold font-mono text-lg mr-0 md:mr-20">
                             {data.payt_dabet}
                           </p>
                         ) : null}

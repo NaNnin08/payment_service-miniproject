@@ -1,3 +1,6 @@
+import { Op } from "sequelize";
+import Pagination from "../helpers/Pagination";
+
 const dataValues = async (req, res, next) => {
   try {
     const { dataValues } = new req.context.models.Payment_Transaction(req.body);
@@ -417,6 +420,58 @@ const sendRequestPayment = async (req, res) => {
   // // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 };
 
+const paymentPaging = async (req, res) => {
+  const { page, size, cari, order } = req.query;
+  const Account = req.params.id ? req.params.id : null;
+
+  let condition =
+    Account && cari
+      ? {
+          payt_paac_account_number: Account,
+          [Op.or]: [
+            { payt_trx_number: { [Op.iLike]: `%${cari}%` } },
+            { payt_type: { [Op.iLike]: `%${cari}%` } },
+            { payt_order_number: { [Op.iLike]: `%${cari}%` } },
+          ],
+        }
+      : cari
+      ? {
+          [Op.or]: [
+            { payt_trx_number: { [Op.iLike]: `%${cari}%` } },
+            { payt_type: { [Op.iLike]: `%${cari}%` } },
+            { payt_order_number: { [Op.iLike]: `%${cari}%` } },
+          ],
+        }
+      : Account
+      ? {
+          payt_paac_account_number: Account,
+        }
+      : null;
+
+  let orderBy = order
+    ? order === "asc"
+      ? [["payt_id", "ASC"]]
+      : [["payt_id", "DESC"]]
+    : [["payt_id", "DESC"]];
+
+  const { limit, offset } = Pagination.getPagination(page, size);
+
+  try {
+    const payt = await req.context.models.Payment_Transaction.findAndCountAll({
+      where: condition,
+      limit,
+      offset,
+      order: orderBy,
+    });
+
+    const response = Pagination.getPagingData(payt, page, limit);
+
+    res.send(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export default {
   create,
   findAll,
@@ -431,4 +486,5 @@ export default {
   createTransferBank,
   sendRequestPayment,
   createRequest,
+  paymentPaging,
 };

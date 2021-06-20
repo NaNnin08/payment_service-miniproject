@@ -218,11 +218,11 @@ export default function ProfilePageScreen() {
           <div className="ml-10 mt-5 space-y-2">
             <h1 className="text-2xl font-semibold">
               {change.profile ? (
-                <div className="text-lg font-normal">
+                <div className="text-lg font-normal flex flex-col md:flex-row">
                   <span>Name: </span>
                   <input
                     type="text"
-                    className="lg:ml-3 md:ml-2 ml-1 w-60 rounded-lg"
+                    className="lg:ml-6 md:ml-2 -ml-2 w-48 md:w-60 rounded-lg"
                     value={userData.user_name}
                     onChange={handleChange("user_name")}
                   />
@@ -231,12 +231,12 @@ export default function ProfilePageScreen() {
                 fund && fund.user_name
               )}
             </h1>
-            <h1 className="text-lg">
+            <h1 className="text-lg flex md:flex-row flex-col">
               Birtdate:
               {change.profile ? (
                 <input
                   type="date"
-                  className="ml-1 w-60 rounded-lg"
+                  className="lg:ml-2 md:ml-2 -ml-2 w-48 md:w-60 rounded-lg"
                   value={userData.user_birthdate}
                   onChange={handleChange("user_birthdate")}
                 />
@@ -247,12 +247,12 @@ export default function ProfilePageScreen() {
                 </span>
               )}
             </h1>
-            <h1 className="text-lg capitalize">
+            <h1 className="text-lg capitalize flex flex-col md:flex-row">
               Gender:{" "}
               {change.profile ? (
                 <select
                   value={userData.user_gender}
-                  className="ml-1 w-60 rounded-lg"
+                  className="lg:ml-3 md:ml-2 -ml-2 w-48 md:w-60 rounded-lg"
                   onChange={handleChange("user_gender")}
                 >
                   <option value="male">Male</option>
@@ -262,12 +262,12 @@ export default function ProfilePageScreen() {
                 <span className="ml-3">{fund && fund.user_gender}</span>
               )}
             </h1>
-            <h1 className="text-lg capitalize">
+            <h1 className="text-lg capitalize flex flex-col md:flex-row">
               ID Card:{" "}
               {change.profile ? (
                 <input
                   type="text"
-                  className="ml-1 w-60 rounded-lg"
+                  className="lg:ml-3 md:ml-2 -ml-2 w-48 md:w-60 rounded-lg"
                   value={userData.user_id_card}
                   onChange={handleChange("user_id_card")}
                 />
@@ -298,19 +298,21 @@ export default function ProfilePageScreen() {
                 </button>
               </div>
             ) : (
-              <button
-                className="text-blue-500 font-semibold absolute right-5 md:bottom-4 bottom-1 hover:underline"
-                onClick={() => {
-                  setChange({
-                    profile: true,
-                    email: false,
-                    phone: false,
-                    addres: false,
-                  });
-                }}
-              >
-                Change data
-              </button>
+              <div className="flex flex-row-reverse">
+                <button
+                  className="text-blue-500 font-semibold hover:underline"
+                  onClick={() => {
+                    setChange({
+                      profile: true,
+                      email: false,
+                      phone: false,
+                      addres: false,
+                    });
+                  }}
+                >
+                  Change data
+                </button>
+              </div>
             )}
           </div>
         </div>

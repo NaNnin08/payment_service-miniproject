@@ -65,10 +65,11 @@ export const bankLink = (update) => async (dispatch) => {
   }
 };
 
-export const bankRemoveCard = (id, id_user) => async (dispatch) => {
+export const bankRemoveCard = (id, id_user) => async (dispatch, getState) => {
   dispatch({ type: BANK_REMOVE_REQUEST, payload: { id, id_user } });
   try {
-    const remove = await axios.delete(`/api/baac/${id}`);
+    const bank_acc = { baac_acc_bank: id, baac_user_id: null };
+    await axios.put(`/api/baac/${id}`, bank_acc);
     const { data } = await axios.get(`/api/users/${id_user}`);
     sessionStorage.removeItem("fund");
     sessionStorage.setItem("fund", JSON.stringify(data));

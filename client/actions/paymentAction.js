@@ -1,6 +1,9 @@
 import axios from "axios";
 import {
   PAYMENT_FIND_ONE_FAIL,
+  PAYMENT_FIND_ONE_ID_FAIL,
+  PAYMENT_FIND_ONE_ID_REQUEST,
+  PAYMENT_FIND_ONE_ID_SUCCESS,
   PAYMENT_FIND_ONE_REQUEST,
   PAYMENT_FIND_ONE_SUCCESS,
   PAYMENT_ORDER_WALLET_FAIL,
@@ -73,6 +76,22 @@ export const findOnePaymentByUser = (idUser) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PAYMENT_FIND_ONE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const findPaymentByIdAction = (id) => async (dispatch) => {
+  dispatch({ type: PAYMENT_FIND_ONE_ID_REQUEST });
+  try {
+    const { data } = await axios.get("/api/payt/" + id);
+    dispatch({ type: PAYMENT_FIND_ONE_ID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PAYMENT_FIND_ONE_ID_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

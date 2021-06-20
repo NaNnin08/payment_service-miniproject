@@ -8,6 +8,9 @@ import {
   USER_ADD_ADDRESS_FAIL,
   USER_ADD_ADDRESS_REQUEST,
   USER_ADD_ADDRESS_SUCCESS,
+  USER_CLOSE_ACCOUNT_FAIL,
+  USER_CLOSE_ACCOUNT_REQUEST,
+  USER_CLOSE_ACCOUNT_SUCCESS,
   USER_DELETE_ADDRESS_FAIL,
   USER_DELETE_ADDRESS_REQUEST,
   USER_DELETE_ADDRESS_SUCCESS,
@@ -63,6 +66,7 @@ export const signout = () => (dispatch) => {
   dispatch({ type: BANK_CLEAR_SEARCH });
   dispatch({ type: PAYMENT_FIND_ONE_CLEAR });
   dispatch({ type: PAYMENT_TRANSFER_DATA_CLEAR });
+  document.location.href = "/login";
 };
 
 export const register_1 = (user) => async (dispatch) => {
@@ -213,6 +217,22 @@ export const findOneEmail = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_FIND_ONE_EMAIL_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteUserAccountAction = (id) => async (dispatch) => {
+  dispatch({ type: USER_CLOSE_ACCOUNT_REQUEST });
+  try {
+    const { data } = await axios.delete(`/api/users/${id}`);
+    dispatch({ type: USER_CLOSE_ACCOUNT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_CLOSE_ACCOUNT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

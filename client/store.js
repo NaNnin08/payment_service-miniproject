@@ -3,6 +3,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import { bankAccFindReducer, bankFindReducer } from "./reducer/bankReducer";
 import {
+  findPaymentByIdReducer,
   findPaymentByUserReducer,
   orderWalletReducer,
   paymentTransfer,
@@ -10,6 +11,7 @@ import {
   topupFromBankReducer,
 } from "./reducer/paymentReducer";
 import {
+  userCloseAccountReducer,
   userFindEmailReducer,
   userFindOneReduccer,
   userRegisterReducer,
@@ -47,6 +49,8 @@ const reducer = combineReducers({
   emailUser: userFindEmailReducer,
   paymentTransfer: paymentTransfer,
   requestWallet: requestPaymentReducer,
+  paymentById: findPaymentByIdReducer,
+  closeAccount: userCloseAccountReducer,
 });
 
 const store = createStore(

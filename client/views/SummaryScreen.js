@@ -7,7 +7,7 @@ import transferIn from "../assets/images/transfer_in.svg";
 import transferOut from "../assets/images/transfer_out.svg";
 import { DotsVerticalIcon, ShoppingBagIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { findOnePaymentByUser } from "../actions/paymentAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,6 +30,8 @@ export default function SummaryScreen() {
 
   const [paymentList, setPaymentList] = useState("");
   const [pinModal, setPinModal] = useState(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     if (fund) {
@@ -144,7 +146,7 @@ export default function SummaryScreen() {
           <p className="text-sm font-thin font-mono">Available</p>
           <Link
             to={
-              fund.bank_accounts.length > 0
+              fund && fund.bank_accounts.length > 0
                 ? "/transfer/bank?from=/myaccount/summary"
                 : "#"
             }
@@ -240,7 +242,12 @@ export default function SummaryScreen() {
             paymentList.map((data) => (
               <div
                 key={data.payt_id}
-                className="border-b-2 border-gray-300 bg-white flex flex-row space-x-7"
+                className="border-b-2 border-gray-300 bg-white flex flex-row space-x-7 cursor-pointer"
+                onClick={() =>
+                  history.push({
+                    pathname: "/myaccount/transaction/detail/" + data.payt_id,
+                  })
+                }
               >
                 <div className="ml-5 mt-3">
                   {data.payt_type === "order" ? (

@@ -123,11 +123,12 @@ export default function Landing() {
       {/* //Navbar */}
       <header
         className={
-          "h-10v  flex items-center z-50 text-lg border-b-2 font-semibold fixed top-0 w-full " +
+          "h-10v  flex items-center z-50 text-lg font-semibold fixed top-0 w-full " +
           (navBarTransparant
             ? "bg-opacity-0 text-white border-white"
             : "bg-opacity-100 bg-white text-black")
         }
+        style={{ borderBottomWidth: "1px" }}
       >
         <div className="flex items-center lg:ml-40 md:ml-32 ml-10 w-32">
           <svg

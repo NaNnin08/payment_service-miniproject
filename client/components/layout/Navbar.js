@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { signout } from "../../actions/userActions";
 import Logo from "../../assets/images/B_icon_navbar.svg";
 import { useHistory, useLocation } from "react-router-dom";
-import { CogIcon, MenuIcon } from "@heroicons/react/outline";
+import { CogIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { AnimatePresence, motion } from "framer-motion";
 import { Transition } from "@headlessui/react";
 
@@ -13,7 +13,6 @@ export default function Navbar() {
   const location = useLocation();
   const dispatch = useDispatch();
   const signoutHandler = () => {
-    history.push("/login");
     dispatch(signout());
   };
 
@@ -23,7 +22,7 @@ export default function Navbar() {
 
   return (
     <AnimatePresence>
-      <div className="row-span-1 bg-blue-700 text-white flex items-center font-sans relative">
+      <div className="row-span-1 bg-blue-700 text-white flex items-center font-sans relative no-print">
         <div className="flex items-center ml-10 md:ml-24 lg:ml-32 xl:ml-40">
           <Link to="/myaccount/summary">
             <img
@@ -114,10 +113,10 @@ export default function Navbar() {
             className="bg-blue-700 w-1/2 h-100v absolute right-0 flex flex-col"
           >
             <div
-              className="ml-2 mt-2 border border-white w-1/4 rounded-xl text-center cursor-pointer p-1"
+              className="cursor-pointer flex flex-row-reverse py-2 pr-2 -mb-7"
               onClick={() => setNavbar(false)}
             >
-              Cancel
+              <XIcon className="w-10" />
             </div>
             <div className="ml-3 mt-3 flex flex-col space-y-2 text-xl font-medium border-b-2 border-white pb-2">
               <Link to="/myaccount/summary" onClick={() => setNavbar(false)}>

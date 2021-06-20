@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUserAddress,
@@ -13,6 +13,7 @@ import { SuccessModalAlert } from "../../components/layout/SuccessModalAlert";
 import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ModalCloseAccount } from "../ModalCloseAccount";
 
 export default function ProfilePageScreen() {
   const userFund = useSelector((state) => state.userFund);
@@ -40,6 +41,9 @@ export default function ProfilePageScreen() {
   });
   const [oldPassword, setOldPassword] = useState("");
   const [oldPin, setOldPin] = useState("");
+  const [closeAccount, setCloseAccount] = useState(false);
+
+  const cancelButtonRef = useRef();
 
   useEffect(() => {
     if (fund && !userData) {
@@ -563,7 +567,22 @@ export default function ProfilePageScreen() {
             </button>
           )}
         </div>
+        <div className="bg-white shadow-lg px-3 py-4 relative space-y-3">
+          <h1
+            className="text-xl font-semibold text-red-500 cursor-pointer hover:underline"
+            onClick={() => setCloseAccount(true)}
+          >
+            Close Account
+          </h1>
+        </div>
       </div>
+      <ModalCloseAccount
+        cancelButtonRef={cancelButtonRef}
+        pinModal={closeAccount}
+        setPinModal={setCloseAccount}
+        email={fund && fund.user_email}
+        id={fund && fund.user_id}
+      />
     </div>
   );
 }

@@ -7,7 +7,9 @@ export default function MainLayout(props) {
       <div className="grid grid-rows-layout grid-cols-1 h-100v">
         <Navbar />
         <div className="row-span-1 bg-gray-100">{props.children}</div>
-        <footer className={"relative bg-gray-100 pt-2 pb-2 row-span-1"}>
+        <footer
+          className={"relative bg-gray-100 pt-2 pb-2 row-span-1 no-print"}
+        >
           <div className="mx-auto">
             <div className="border-t-2 border-gray-300 bg-gray-100 flex flex-col items-center">
               <div className="sm:w-2/3 text-center py-4">

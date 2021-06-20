@@ -24,6 +24,9 @@ import {
   USER_ADD_ADDRESS_FAIL,
   USER_ADD_ADDRESS_REQUEST,
   USER_ADD_ADDRESS_SUCCESS,
+  USER_CLOSE_ACCOUNT_FAIL,
+  USER_CLOSE_ACCOUNT_REQUEST,
+  USER_CLOSE_ACCOUNT_SUCCESS,
   USER_DELETE_ADDRESS_FAIL,
   USER_DELETE_ADDRESS_REQUEST,
   USER_DELETE_ADDRESS_SUCCESS,
@@ -156,6 +159,19 @@ export const userFindEmailReducer = (state = {}, action) => {
     case USER_SIGNOUT:
     case PAYMENT_FIND_ONE_CLEAR:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userCloseAccountReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_CLOSE_ACCOUNT_REQUEST:
+      return { loading: true };
+    case USER_CLOSE_ACCOUNT_SUCCESS:
+      return { loading: false, message: action.payload, isSuccess: true };
+    case USER_CLOSE_ACCOUNT_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

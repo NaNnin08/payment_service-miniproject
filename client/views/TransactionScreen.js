@@ -10,6 +10,7 @@ import {
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 export const TransactionScreen = () => {
   const { fund } = useSelector((state) => state.userFund);
@@ -69,7 +70,8 @@ export const TransactionScreen = () => {
           .filter(
             (data) =>
               new RegExp(search.type, "i").test(data.payt_type) ||
-              new RegExp(search.type, "i").test(data.payt_trx_number)
+              new RegExp(search.type, "i").test(data.payt_trx_number) ||
+              new RegExp(search.type, "i").test(data.payt_desc)
           )
           .sort((a, b) =>
             a.payt_id.length === b.payt_id.length
@@ -131,7 +133,8 @@ export const TransactionScreen = () => {
               new Date(data.payt_date) <= new Date(search.end) &&
               new Date(data.payt_date) >= new Date(search.start) &&
               (new RegExp(search.type, "i").test(data.payt_type) ||
-                new RegExp(search.type, "i").test(data.payt_trx_number))
+                new RegExp(search.type, "i").test(data.payt_trx_number) ||
+                new RegExp(search.type, "i").test(data.payt_desc))
           )
           .sort((a, b) =>
             a.payt_id.length === b.payt_id.length
@@ -194,7 +197,8 @@ export const TransactionScreen = () => {
               .filter(
                 (data) =>
                   new RegExp(search.type, "i").test(data.payt_type) ||
-                  new RegExp(search.type, "i").test(data.payt_trx_number)
+                  new RegExp(search.type, "i").test(data.payt_trx_number) ||
+                  new RegExp(search.type, "i").test(data.payt_desc)
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -260,7 +264,8 @@ export const TransactionScreen = () => {
                   new Date(data.payt_date) <= new Date(search.end) &&
                   new Date(data.payt_date) >= new Date(search.start) &&
                   (new RegExp(search.type, "i").test(data.payt_type) ||
-                    new RegExp(search.type, "i").test(data.payt_trx_number))
+                    new RegExp(search.type, "i").test(data.payt_trx_number) ||
+                    new RegExp(search.type, "i").test(data.payt_desc))
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -278,7 +283,8 @@ export const TransactionScreen = () => {
               .filter(
                 (data) =>
                   new RegExp(search.type, "i").test(data.payt_type) ||
-                  new RegExp(search.type, "i").test(data.payt_trx_number)
+                  new RegExp(search.type, "i").test(data.payt_trx_number) ||
+                  new RegExp(search.type, "i").test(data.payt_desc)
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -344,7 +350,8 @@ export const TransactionScreen = () => {
                   new Date(data.payt_date) <= new Date(search.end) &&
                   new Date(data.payt_date) >= new Date(search.start) &&
                   (new RegExp(search.type, "i").test(data.payt_type) ||
-                    new RegExp(search.type, "i").test(data.payt_trx_number))
+                    new RegExp(search.type, "i").test(data.payt_trx_number) ||
+                    new RegExp(search.type, "i").test(data.payt_desc))
               )
               .sort((a, b) =>
                 a.payt_id.length === b.payt_id.length
@@ -510,8 +517,8 @@ export const TransactionScreen = () => {
                         style={{ height: "100%", top: "-7px" }}
                       ></div>
                       {data.payt_type === "order" ? (
-                        <div className="md:ml-16 ml-5 flex flex-row">
-                          <div className="w-1/2">
+                        <div className="md:ml-16 ml-5 flex flex-col md:flex-row">
+                          <div className="w-full md:w-1/2">
                             <h1 className="font-semibold">Order</h1>
                             <h1 className="font-mono">
                               {data.payt_order_number}
@@ -526,7 +533,7 @@ export const TransactionScreen = () => {
                               </h1>
                             </div>
                           </div>
-                          <div className="w-1/2 -mt-10">
+                          <div className="w-full md:w-1/2 md:-mt-10">
                             <h1 className="font-semibold mt-10">Details</h1>
                             <div className="flex justify-between mr-10 mt-2">
                               <h1>Payment credit</h1>
@@ -559,8 +566,8 @@ export const TransactionScreen = () => {
                           </div>
                         </div>
                       ) : data.payt_type === "topup" ? (
-                        <div className="md:ml-16 ml-5 flex flex-row">
-                          <div className="w-1/2">
+                        <div className="md:ml-16 ml-5 flex flex-col md:flex-row">
+                          <div className="w-full md:w-1/2">
                             <h1 className="font-semibold">
                               Topup Wallet Bayar
                             </h1>
@@ -577,7 +584,7 @@ export const TransactionScreen = () => {
                               </h1>
                             </div>
                           </div>
-                          <div className="w-1/2 -mt-10">
+                          <div className="w-full md:w-1/2 md:-mt-10">
                             <h1 className="font-semibold mt-10">Details</h1>
                             <div className="flex justify-between mr-10 mt-2">
                               <h1>Payment dabet</h1>
@@ -611,7 +618,7 @@ export const TransactionScreen = () => {
                         </div>
                       ) : data.payt_type === "refund" ? (
                         <div className="md:ml-16 ml-5 flex flex-row">
-                          <div className="w-1/2">
+                          <div className="w-full md:w-1/2">
                             <h1 className="font-semibold">Refund</h1>
                             <h1 className="font-mono">
                               ref: {data.payt_trx_number_ref}
@@ -628,8 +635,8 @@ export const TransactionScreen = () => {
                           </div>
                         </div>
                       ) : data.payt_type === "transferTo" ? (
-                        <div className="md:ml-16 ml-5 flex flex-row">
-                          <div className="w-1/2">
+                        <div className="md:ml-16 ml-5 flex flex-col md:flex-row">
+                          <div className="w-full md:w-1/2">
                             <h1 className="font-semibold text-red-500">
                               Transfer Out
                             </h1>
@@ -662,7 +669,7 @@ export const TransactionScreen = () => {
                               </h1>
                             </div>
                           </div>
-                          <div className="w-1/2 -mt-10">
+                          <div className="w-full md:w-1/2 md:-mt-10">
                             <h1 className="font-semibold mt-10">Details</h1>
                             <div className="flex justify-between mr-10 mt-2">
                               <h1>Payment credit</h1>
@@ -712,8 +719,8 @@ export const TransactionScreen = () => {
                           </div>
                         </div>
                       ) : data.payt_type === "transferFrom" ? (
-                        <div className="md:ml-16 ml-5 flex flex-row">
-                          <div className="w-1/2">
+                        <div className="md:ml-16 ml-5 flex flex-col md:flex-row">
+                          <div className="w-full md:w-1/2">
                             <h1 className="font-semibold text-green-500">
                               Transfer In
                             </h1>
@@ -730,7 +737,7 @@ export const TransactionScreen = () => {
                               </h1>
                             </div>
                           </div>
-                          <div className="w-1/2 -mt-10">
+                          <div className="w-full md:w-1/2 md:-mt-10">
                             <h1 className="font-semibold mt-10">Details</h1>
                             <div className="flex justify-between mr-10 mt-2">
                               <h1>Payment dabet</h1>
@@ -763,8 +770,8 @@ export const TransactionScreen = () => {
                           </div>
                         </div>
                       ) : data.payt_type === "transferToBank" ? (
-                        <div className="md:ml-16 ml-5 flex flex-row">
-                          <div className="w-1/2">
+                        <div className="md:ml-16 ml-5 flex flex-col md:flex-row">
+                          <div className="w-full md:w-1/2">
                             <h1 className="font-semibold text-red-500">
                               Transfer Out
                             </h1>
@@ -798,7 +805,7 @@ export const TransactionScreen = () => {
                               </h1>
                             </div>
                           </div>
-                          <div className="w-1/2 -mt-10">
+                          <div className="w-full md:w-1/2 md:-mt-10">
                             <h1 className="font-semibold mt-10">Details</h1>
                             <div className="flex justify-between mr-10 mt-2">
                               <h1>Payment credit</h1>
@@ -839,8 +846,8 @@ export const TransactionScreen = () => {
                           </div>
                         </div>
                       ) : data.payt_type === "request" ? (
-                        <div className="md:ml-16 ml-5 flex flex-row">
-                          <div className="w-1/2">
+                        <div className="md:ml-16 ml-5 flex flex-col md:flex-row">
+                          <div className="w-full md:w-1/2">
                             <h1 className="font-semibold">Request</h1>
 
                             <h1 className="font-semibold mt-10">
@@ -852,7 +859,7 @@ export const TransactionScreen = () => {
                               </h1>
                             </div>
                           </div>
-                          <div className="w-1/2 -mt-10">
+                          <div className="w-full md:w-1/2 md:-mt-10">
                             <h1 className="font-semibold mt-10">Details</h1>
                             <div className="flex justify-between mr-10 mt-2">
                               <h1>Payment request</h1>
@@ -885,6 +892,13 @@ export const TransactionScreen = () => {
                           </div>
                         </div>
                       ) : null}
+                      <div className="flex flex-row-reverse text-blue-500 hover:underline mt-5">
+                        <Link
+                          to={`/myaccount/transaction/detail/${data.payt_id}`}
+                        >
+                          Details/Print
+                        </Link>
+                      </div>
                     </Disclosure.Panel>
                   </>
                 )}

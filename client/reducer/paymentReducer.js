@@ -1,6 +1,9 @@
 import {
   PAYMENT_FIND_ONE_CLEAR,
   PAYMENT_FIND_ONE_FAIL,
+  PAYMENT_FIND_ONE_ID_FAIL,
+  PAYMENT_FIND_ONE_ID_REQUEST,
+  PAYMENT_FIND_ONE_ID_SUCCESS,
   PAYMENT_FIND_ONE_REQUEST,
   PAYMENT_FIND_ONE_SUCCESS,
   PAYMENT_ORDER_WALLET_FAIL,
@@ -87,6 +90,21 @@ export const requestPaymentReducer = (state = {}, action) => {
     case PAYMENT_REQUEST_WALLET_SUCCESS:
       return { loading: false, message: action.payload, isSuccess: true };
     case PAYMENT_REQUEST_WALLET_FAIL:
+      return { loading: false, error: action.payload };
+    case PAYMENT_REQUEST_WALLET_CLEAR:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const findPaymentByIdReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_FIND_ONE_ID_REQUEST:
+      return { loading: true };
+    case PAYMENT_FIND_ONE_ID_SUCCESS:
+      return { loading: false, payment: action.payload };
+    case PAYMENT_FIND_ONE_ID_FAIL:
       return { loading: false, error: action.payload };
     case PAYMENT_REQUEST_WALLET_CLEAR:
       return {};

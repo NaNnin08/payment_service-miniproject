@@ -6,4 +6,10 @@
   .tableTransaction tr:nth-child(odd) {
     @apply bg-gray-200;
   }
+
+  @media print {
+    .no-print {
+      display: none;
+    }
+  }
 }

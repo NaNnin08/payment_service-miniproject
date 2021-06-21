@@ -43,6 +43,24 @@ const findOne = async (req, res, next) => {
     } else {
       return res.send("data has not found");
     }
+  } else if (req.data.payt_ref && req.data.dataValues.payt_trx_number_ref) {
+    const { dataValues, payt_ref } = req.data;
+
+    const paac = await req.context.models.Payment_Account.findOne({
+      where: { paac_account_number: payt_ref.payt_paac_account_number },
+    });
+
+    req.data = {
+      dataValues: {
+        ...dataValues,
+        payt_paac_account_number: payt_ref.payt_paac_account_number,
+        payt_type: "refund",
+      },
+      paac: paac,
+      payt_ref: payt_ref,
+    };
+
+    next();
   } else {
     const { dataValues } = req.data;
 

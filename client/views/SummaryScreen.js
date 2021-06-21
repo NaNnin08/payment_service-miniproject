@@ -9,7 +9,10 @@ import { DotsVerticalIcon, ShoppingBagIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { findOnePaymentByUser } from "../actions/paymentAction";
+import {
+  findOnePaymentByUser,
+  getPagingPaymentAction,
+} from "../actions/paymentAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMoneyBill,
@@ -23,8 +26,12 @@ export default function SummaryScreen() {
   const userFund = useSelector((state) => state.userFund);
   const { fund } = userFund;
 
-  const payment = useSelector((state) => state.paymentList);
-  const { historyPayment } = payment;
+  // const payment = useSelector((state) => state.paymentList);
+  // const { historyPayment } = payment;
+
+  const { pagingPayment: historyPayment } = useSelector(
+    (state) => state.paging
+  );
 
   const dispatch = useDispatch();
 
@@ -37,7 +44,7 @@ export default function SummaryScreen() {
     if (fund) {
       setWallet(fund.payment_account);
       setBank(fund.bank_accounts);
-      dispatch(findOnePaymentByUser(fund.payment_account.paac_account_number));
+      // dispatch(findOnePaymentByUser(fund.payment_account.paac_account_number));
     }
     if (fund && fund.payment_account) {
       if (!fund.payment_account.pacc_pin_number) {
@@ -46,22 +53,33 @@ export default function SummaryScreen() {
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (historyPayment && !paymentList) {
+  //     setPaymentList(
+  //       historyPayment.sort((a, b) =>
+  //         a.payt_id.length === b.payt_id.length
+  //           ? b.payt_id - a.payt_id
+  //           : a.payt_id.length - b.payt_id.length
+  //       )
+  //     );
+  //   }
+  // }, [historyPayment]);
+
   useEffect(() => {
-    if (historyPayment && !paymentList) {
-      setPaymentList(
-        historyPayment.sort((a, b) =>
-          a.payt_id.length === b.payt_id.length
-            ? b.payt_id - a.payt_id
-            : a.payt_id.length - b.payt_id.length
+    if (fund && fund.payment_account) {
+      dispatch(
+        getPagingPaymentAction(
+          `/api/payt/payment/paging/${fund.payment_account.paac_account_number}`,
+          { size: 5, order: "DESC" }
         )
       );
     }
-  }, [historyPayment]);
+  }, [dispatch]);
 
-  if (paymentList && paymentList.length > 5) {
-    const container = paymentList.splice(0, 5);
-    setPaymentList(container);
-  }
+  // if (paymentList && paymentList.length > 5) {
+  //   const container = paymentList.splice(0, 5);
+  //   setPaymentList(container);
+  // }
 
   const cancelButtonRef = useRef();
 
@@ -238,8 +256,8 @@ export default function SummaryScreen() {
           <Link to="/myaccount/transaction">
             <h1 className="text-blue-700 hover:underline">Recent activity</h1>
           </Link>
-          {paymentList ? (
-            paymentList.map((data) => (
+          {historyPayment && historyPayment.rows ? (
+            historyPayment.rows.map((data) => (
               <div
                 key={data.payt_id}
                 className="border-b-2 border-gray-300 bg-white flex flex-row space-x-7 cursor-pointer"

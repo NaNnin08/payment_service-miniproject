@@ -28,6 +28,14 @@ router.post(
   ctrl.Payt.create
 );
 router.post(
+  "/refundV2",
+  ctrl.Payt.dataValues,
+  ctrl.Payt.findOne,
+  ctrl.Paac.findOne,
+  ctrl.Paac.refund,
+  ctrl.Payt.create
+);
+router.post(
   "/orderCC",
   ctrl.Payt.dataValues,
   ctrl.Baac.findOne,

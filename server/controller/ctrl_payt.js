@@ -267,12 +267,28 @@ const findOne = async (req, res, next) => {
           where: { payt_trx_number: dataValues.payt_trx_number_ref },
         });
 
-        req.data = {
-          dataValues: dataValues,
-          payt_ref: payt_ref,
-        };
+        const payt_check = await req.context.models.Payment_Transaction.findOne(
+          {
+            where: { payt_trx_number_ref: dataValues.payt_trx_number_ref },
+          }
+        );
 
-        next();
+        if (!payt_check && payt_ref) {
+          req.data = {
+            dataValues: dataValues,
+            payt_ref: payt_ref,
+          };
+
+          next();
+        } else if (!payt_ref) {
+          res.status(404).send({
+            message: `Order with number transaction ${dataValues.payt_trx_number_ref} not found!`,
+          });
+        } else {
+          res.status(401).send({
+            message: `Refund fail, order with number transaction ${dataValues.payt_trx_number_ref} has been refund!`,
+          });
+        }
       } catch (err) {
         console.log(err);
       }

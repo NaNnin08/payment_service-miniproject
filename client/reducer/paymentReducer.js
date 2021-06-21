@@ -57,12 +57,24 @@ export const orderWalletReducer = (state = {}, action) => {
 export const findPaymentByUserReducer = (state = {}, action) => {
   switch (action.type) {
     case PAYMENT_FIND_ONE_REQUEST:
-    case PAYMENT_PAGING_REQUEST:
       return { loading: true };
     case PAYMENT_FIND_ONE_SUCCESS:
-    case PAYMENT_PAGING_SUCCESS:
       return { loading: false, historyPayment: action.payload };
     case PAYMENT_FIND_ONE_FAIL:
+      return { loading: false, error: action.payload };
+    case PAYMENT_FIND_ONE_CLEAR:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const findPagingPaymentByUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_PAGING_REQUEST:
+      return { loading: true };
+    case PAYMENT_PAGING_SUCCESS:
+      return { loading: false, pagingPayment: action.payload };
     case PAYMENT_PAGING_FAIL:
       return { loading: false, error: action.payload };
     case PAYMENT_FIND_ONE_CLEAR:

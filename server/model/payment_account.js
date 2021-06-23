@@ -18,7 +18,7 @@ const payment_account = (sequelize, DataTypes) => {
         allowNull: true,
       },
       pacc_user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(30),
         allowNull: false,
         references: {
           model: "users",

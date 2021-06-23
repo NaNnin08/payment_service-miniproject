@@ -188,13 +188,13 @@ export default function Landing() {
       {/* //Slider */}
       <div className="relative z-0 flex items-end md:items-center">
         <button
-          className="absolute text-white hover:text-blue-500 z-50"
+          className="absolute text-white hover:text-blue-500 focus:outline-none z-50"
           onClick={handleNext}
         >
           <ChevronLeftIcon className="w-28" />
         </button>
         <button
-          className="absolute right-0 text-white hover:text-blue-500 z-50"
+          className="absolute right-0 text-white hover:text-blue-500 focus:outline-none z-50"
           onClick={handlePrev}
         >
           <ChevronRightIcon className="w-28" />
@@ -203,7 +203,7 @@ export default function Landing() {
           <div className="flex">
             <div className="mx-auto space-x-3">
               <button
-                className="w-3"
+                className="w-3 focus:outline-none"
                 onClick={() =>
                   setCarosel({
                     image1: false,
@@ -227,7 +227,7 @@ export default function Landing() {
                 </svg>
               </button>
               <button
-                className="w-3"
+                className="w-3 focus:outline-none"
                 onClick={() =>
                   setCarosel({
                     image1: false,
@@ -251,7 +251,7 @@ export default function Landing() {
                 </svg>
               </button>
               <button
-                className="w-3"
+                className="w-3 focus:outline-none"
                 onClick={() =>
                   setCarosel({
                     image1: true,

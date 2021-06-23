@@ -256,7 +256,7 @@ export default function SummaryScreen() {
           <Link to="/myaccount/transaction">
             <h1 className="text-blue-700 hover:underline">Recent activity</h1>
           </Link>
-          {historyPayment && historyPayment.rows ? (
+          {historyPayment && historyPayment.rows.length > 0 ? (
             historyPayment.rows.map((data) => (
               <div
                 key={data.payt_id}

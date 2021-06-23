@@ -32,7 +32,7 @@ const bank_account = (sequelize, DataTypes) => {
         allowNull: false,
       },
       baac_user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(30),
         allowNull: true,
         references: {
           model: "users",

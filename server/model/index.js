@@ -9,11 +9,11 @@ import addres from "./address";
 import pays from "./payment_save";
 
 const models = {
-  Bank_Accounts: bank_accounts(sequelize, Sequelize),
+  Users: users(sequelize, Sequelize),
   Bank: bank(sequelize, Sequelize),
+  Bank_Accounts: bank_accounts(sequelize, Sequelize),
   Payment_Account: payment_account(sequelize, Sequelize),
   Payment_Transaction: payment_transaction(sequelize, Sequelize),
-  Users: users(sequelize, Sequelize),
   Addres: addres(sequelize, Sequelize),
   Pays: pays(sequelize, Sequelize),
 };

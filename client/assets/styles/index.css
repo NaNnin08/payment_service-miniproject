@@ -7,6 +7,26 @@
     @apply bg-gray-200;
   }
 
+    .border-bottom:after {
+      display: block;
+      content: "";
+      border-bottom: solid 2px;
+      margin-top: 5px;
+    }
+
+    .border-bottom-hover:after {
+      display: block;
+      content: "";
+      border-bottom: solid 2px;
+      transform: scaleX(0);
+      transition: transform 500ms ease-in-out;
+      margin-top: 5px;
+    }
+
+    .border-bottom-hover:hover:after {
+      transform: scaleX(1);
+    }
+
   @media print {
     .no-print {
       display: none;

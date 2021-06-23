@@ -38,8 +38,8 @@ export default function Navbar() {
               className={
                 "p-1 " +
                 (location.pathname == "/myaccount/summary"
-                  ? "border-b-2"
-                  : "hover:border-b-2")
+                  ? "border-bottom"
+                  : "border-bottom-hover")
               }
             >
               Ringkasan
@@ -50,8 +50,8 @@ export default function Navbar() {
               className={
                 "p-1 " +
                 (location.pathname == "/myaccount/money"
-                  ? "border-b-2"
-                  : "hover:border-b-2")
+                  ? "border-bottom"
+                  : "border-bottom-hover")
               }
             >
               Wallet
@@ -63,8 +63,8 @@ export default function Navbar() {
                 "p-1 " +
                 (location.pathname == "/myaccount/transfer" ||
                 location.pathname == "/myaccount/transfer/request"
-                  ? "border-b-2"
-                  : "hover:border-b-2")
+                  ? "border-bottom"
+                  : "border-bottom-hover")
               }
             >
               Kirim
@@ -75,8 +75,8 @@ export default function Navbar() {
               className={
                 "p-1 " +
                 (location.pathname == "/myaccount/transaction"
-                  ? "border-b-2"
-                  : "hover:border-b-2")
+                  ? "border-bottom"
+                  : "border-bottom-hover")
               }
             >
               Aktivitas
@@ -85,11 +85,11 @@ export default function Navbar() {
         </div>
         <div className="absolute right-10 hidden md:flex flex-row">
           <Link to="/myaccount/profile">
-            <button className="w-8 pb-1 mr-3">
-              <CogIcon className="hover:animate-spin-5-f" />
+            <button className="w-8 pb-1 mr-3 focus:outline-none">
+              <CogIcon className="hover:animate-spin-5-f focus:outline-none" />
             </button>
           </Link>
-          <button className="text-sm hover:border-b-2" onClick={signoutHandler}>
+          <button className="text-sm border-bottom-hover" onClick={signoutHandler}>
             LOG OUT
           </button>
         </div>

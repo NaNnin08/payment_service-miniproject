@@ -5,20 +5,21 @@
     position: relative;
   }
   header {
-    background-color: #c4c7c5;
+    background-color: #2051f1;
+    color: white;
     font-size: larger;
     text-align: center;
-    padding: 30px 0;
+    padding: 10px 0;
   }
   .title {
     background-color: white;
     position: relative;
     text-align: center;
-    margin: -30px 0;
+    height: 5rem;
   }
   .empty {
     width: 100%;
-    height: 5rem;
+    height: 1rem;
     background-color: blue;
     margin-top: 7%;
   }
@@ -101,21 +102,30 @@
 </style>
 
 <div class="body_email">
-  <header>Halo, <%=to_email%></header>
+  <header>Halo, <a rel="nofollow" style='text-decoration:none; color:white'><%=to_email%></a></header>
   <div class="title">
     <h1
-      style="
-        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-        font-size: 3rem;
-      "
-    >
-      Ba<span style="color: #184afc">yar</span>
-    </h1>
+          style="
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
+              serif;
+          "
+        >
+          <img
+            src="https://drive.google.com/uc?export=view&id=1R7lf1ohYQBRg-EuCFrrZcO2ZW5Wh3aXb"
+            alt="google"
+            style="
+              border-radius: 100%;
+              background-color: rgb(153, 153, 153);
+              margin-left: -40px;
+              padding: 2px;
+            "
+          />
+        </h1>
   </div>
-  <div class="empty"></div>
+  <header><a rel="nofollow" style='text-decoration:none; color:white; display: none;'><%=to_email%></a></header>
   <div class="main">
-    <h1><%=from_email%> telah mengirim permintaan pembayaran kepada anda</h1>
-    <h2>Catatan dari <%=from_email%> :</h2>
+    <h1 style="color: rgb(0, 0, 0);"><a rel="nofollow" style='text-decoration:none;'><%=from_email%></a> telah mengirim permintaan pembayaran kepada anda</h1>
+    <h2 style="color: rgb(0, 0, 0);">Catatan dari <a rel="nofollow" style='text-decoration:none;'><%=from_email%></a> :</h2>
     <h2><span>"</span> <%=note%> <span>"</span></h2>
     <h3>Perincian permintaan pembayaran</h3>
     <div class="conten">
@@ -123,7 +133,7 @@
         <p>ID Transaksi:</p>
         <p style="font-family: monospace; margin-left: 10px"><%=trx%></p>
       </div>
-      <div class="conten_trx">
+      <div class="conten_trx" style="color: rgb(0, 0, 0);">
         <p>Tanggal Transaksi:</p>
         <p style="font-family: monospace; margin-left: 10px"><%=date%></p>
       </div>

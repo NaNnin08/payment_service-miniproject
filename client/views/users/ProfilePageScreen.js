@@ -282,13 +282,13 @@ export default function ProfilePageScreen() {
             {change.profile ? (
               <div className="relative pb-7">
                 <button
-                  className="text-blue-500 absolute right-1 font-semibold hover:underline"
+                  className="text-blue-500 absolute right-1 font-semibold hover:underline focus:outline-none"
                   onClick={handleSubmit}
                 >
                   Save
                 </button>
                 <button
-                  className="text-blue-500 absolute right-12 font-semibold hover:underline"
+                  className="text-blue-500 absolute right-12 font-semibold hover:underline focus:outline-none"
                   onClick={() =>
                     setChange({
                       profile: false,
@@ -304,7 +304,7 @@ export default function ProfilePageScreen() {
             ) : (
               <div className="flex flex-row-reverse">
                 <button
-                  className="text-blue-500 font-semibold hover:underline"
+                  className="text-blue-500 font-semibold hover:underline focus:outline-none"
                   onClick={() => {
                     setChange({
                       profile: true,
@@ -354,7 +354,7 @@ export default function ProfilePageScreen() {
               />
               <button
                 type="submit"
-                className="bg-blue-500 px-3 py-2 text-white font-semibold rounded-2xl"
+                className="bg-blue-500 px-3 py-2 text-white font-semibold rounded-2xl focus:outline-none"
               >
                 Save Change
               </button>
@@ -398,7 +398,7 @@ export default function ProfilePageScreen() {
               />
               <button
                 type="submit"
-                className="bg-blue-500 px-3 py-2 text-white font-semibold rounded-2xl"
+                className="bg-blue-500 px-3 py-2 text-white font-semibold rounded-2xl focus:outline-none"
               >
                 Save Change
               </button>
@@ -410,7 +410,7 @@ export default function ProfilePageScreen() {
         <div className="bg-white shadow-lg px-3 py-2 relative space-y-3">
           <h1 className="text-2xl font-semibold">Addresses</h1>
           <button
-            className="absolute right-5 w-7 top-0 text-blue-500"
+            className="absolute right-5 w-7 top-0 text-blue-500 focus:outline-none"
             onClick={() => setChange({ ...change, addres: true })}
           >
             <PlusIcon />
@@ -424,13 +424,13 @@ export default function ProfilePageScreen() {
                 onChange={(e) => setAddAddr(e.target.value)}
               />
               <button
-                className="text-blue-500 mt-2 right-1 font-semibold hover:underline"
+                className="text-blue-500 mt-2 right-1 font-semibold hover:underline focus:outline-none"
                 onClick={addAddress}
               >
                 Save
               </button>
               <button
-                className="text-blue-500 ml-2 mt-2 right-12 font-semibold hover:underline"
+                className="text-blue-500 ml-2 mt-2 right-12 font-semibold hover:underline focus:outline-none"
                 onClick={() =>
                   setChange({
                     profile: false,
@@ -446,10 +446,10 @@ export default function ProfilePageScreen() {
           )}
           {fund &&
             fund.addresses.map((data) => (
-              <div key={data.addr_id} className="flex flex-row relative">
+              <div key={data.addr_id} className="flex flex-row relative ">
                 <p className="ml-2 pb-2 text-lg">{data.addr_street}</p>
                 <button
-                  className="w-5 absolute right-3"
+                  className="w-5 absolute right-3 focus:outline-none"
                   onClick={() => deleteAddr(data.addr_id)}
                 >
                   <TrashIcon />
@@ -477,13 +477,13 @@ export default function ProfilePageScreen() {
           {change.email ? (
             <div className="relative pb-7">
               <button
-                className="text-blue-500 absolute right-1 font-semibold hover:underline"
+                className="text-blue-500 absolute right-1 font-semibold hover:underline focus:outline-none"
                 onClick={handleSubmit}
               >
                 Save
               </button>
               <button
-                className="text-blue-500 absolute right-12 font-semibold hover:underline"
+                className="text-blue-500 absolute right-12 font-semibold hover:underline focus:outline-none"
                 onClick={() =>
                   setChange({
                     profile: false,
@@ -498,7 +498,7 @@ export default function ProfilePageScreen() {
             </div>
           ) : (
             <button
-              className="text-blue-500 font-semibold absolute right-5 bottom-4 hover:underline"
+              className="text-blue-500 font-semibold absolute right-5 bottom-4 hover:underline focus:outline-none"
               onClick={() => {
                 setChange({
                   profile: false,
@@ -532,13 +532,13 @@ export default function ProfilePageScreen() {
           {change.phone ? (
             <div className="relative pb-7">
               <button
-                className="text-blue-500 absolute right-1 font-semibold hover:underline"
+                className="text-blue-500 absolute right-1 font-semibold hover:underline focus:outline-none"
                 onClick={handleSubmit}
               >
                 Save
               </button>
               <button
-                className="text-blue-500 absolute right-12 font-semibold hover:underline"
+                className="text-blue-500 absolute right-12 font-semibold hover:underline focus:outline-none"
                 onClick={() =>
                   setChange({
                     profile: false,
@@ -553,7 +553,7 @@ export default function ProfilePageScreen() {
             </div>
           ) : (
             <button
-              className="text-blue-500 font-semibold absolute right-5 bottom-4 hover:underline"
+              className="text-blue-500 font-semibold absolute right-5 bottom-4 hover:underline focus:outline-none"
               onClick={() => {
                 setChange({
                   profile: false,

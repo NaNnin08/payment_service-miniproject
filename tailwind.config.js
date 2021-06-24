@@ -1,7 +1,9 @@
-const { inset } = require("tailwindcss/defaultTheme");
-
 module.exports = {
-  purge: ["./**/*.html"],
+  purge: ["./client/**/*.js", "./client/assets/**/*.css"],
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
+  },
   darkMode: false,
   theme: {
     extend: {

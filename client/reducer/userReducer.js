@@ -116,7 +116,7 @@ export const userFindOneReduccer = (state = {}, action) => {
     case USER_UPDATE_REQUEST:
       return { loading: true };
     case USER_UPDATE_SUCCESS:
-      return { loading: false, fund: action.payload };
+      return { loading: false, fund: action.payload, isSuccess: true };
     case USER_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case USER_UPDATE_PIN_REQUEST:

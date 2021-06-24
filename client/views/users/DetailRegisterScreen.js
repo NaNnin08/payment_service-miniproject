@@ -17,6 +17,11 @@ export default function DetailRegisterScreen() {
     user_phone: null,
     user_id_card: null,
   });
+
+  const [dataSigin, setDataSignin] = useState(
+    register ? { ...register } : null
+  );
+
   const history = useHistory();
 
   const handleChange = (name) => (event) => {
@@ -36,7 +41,13 @@ export default function DetailRegisterScreen() {
   };
 
   if (isSuccess) {
-    history.push("/login");
+    // history.push("/login");
+    history.push({
+      pathname: "/signup-success",
+      signup: {
+        ...dataSigin,
+      },
+    });
   }
 
   return (

@@ -1,0 +1,1 @@
+web: yarn node dist/server.generated.js

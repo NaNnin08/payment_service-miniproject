@@ -32,6 +32,7 @@ import { TransferBankCheckout } from "./views/TransferBankCheckout";
 import { RequestScreen } from "./views/RequestScreen";
 import { TransactionScreenV2 } from "./views/TransactionScreenV2";
 import { TransactionPrintScreen } from "./views/TransactionPrintScreen";
+import { ModalSignupSuccess } from "./views/ModalSignupSuccess";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -43,7 +44,7 @@ const MainRouter = () => {
         <link rel="shortcut icon" href={icon} />
       </Helmet>
       <Switch location={location} key={location.pathname}>
-        <Route exact path="/dummy" component={TransactionScreenV2} />
+        <Route exact path="/dummy" component={Dummy} />
         <PrivateRoute
           exact
           path="/pay/order/wallet/:id"
@@ -53,6 +54,7 @@ const MainRouter = () => {
         <Route exact path="/" component={Landing} />
         <Route exact path="/register" component={RegisterScreen} />
         <Route exact path="/registerDetail" component={DetailRegisterScreen} />
+        <Route exact path="/signup-success" component={ModalSignupSuccess} />
         <PrivateRoute
           exact
           path="/myaccount/money/banks/new"

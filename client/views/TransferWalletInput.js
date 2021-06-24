@@ -73,7 +73,10 @@ export const TransferWalletInput = () => {
             {findEmail && findEmail.user_email}
           </p>
         </div>
-        <div className="flex mt-5">
+        <div className="flex flex-col mt-5">
+          <h1 className="ml-5 text-gray-400">
+            Masukan nominal yang akan dikirim:
+          </h1>
           <Cleave
             className="mx-auto w-full p-2 border focus:ring-1 focus:ring-white focus:border-transparent text-center font-mono text-3xl"
             style={{ border: 0 }}

@@ -36,6 +36,9 @@ import {
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
   USER_FIND_ONE_SUCCESS,
+  USER_FORGOT_PASSWORD_FAIL,
+  USER_FORGOT_PASSWORD_REQUEST,
+  USER_FORGOT_PASSWORD_SUCCESS,
   USER_REGISTER_FAIL_1,
   USER_REGISTER_FAIL_2,
   USER_REGISTER_REQUEST_1,
@@ -171,6 +174,19 @@ export const userCloseAccountReducer = (state = {}, action) => {
     case USER_CLOSE_ACCOUNT_SUCCESS:
       return { loading: false, message: action.payload, isSuccess: true };
     case USER_CLOSE_ACCOUNT_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userForgotPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_FORGOT_PASSWORD_REQUEST:
+      return { loading: true };
+    case USER_FORGOT_PASSWORD_SUCCESS:
+      return { loading: false, message: action.payload, isSuccess: true };
+    case USER_FORGOT_PASSWORD_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

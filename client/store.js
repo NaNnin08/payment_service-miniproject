@@ -15,6 +15,7 @@ import {
   userCloseAccountReducer,
   userFindEmailReducer,
   userFindOneReduccer,
+  userForgotPasswordReducer,
   userRegisterReducer,
   userSigninReducer,
 } from "./reducer/userReducer";
@@ -53,6 +54,7 @@ const reducer = combineReducers({
   paymentById: findPaymentByIdReducer,
   closeAccount: userCloseAccountReducer,
   paging: findPagingPaymentByUserReducer,
+  forgotPass: userForgotPasswordReducer,
 });
 
 const store = createStore(

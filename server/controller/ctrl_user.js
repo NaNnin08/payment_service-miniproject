@@ -6,6 +6,7 @@ import formidable from "formidable";
 import fs from "fs";
 import path from "path";
 import { nanoid } from "nanoid";
+import { Op } from "sequelize";
 
 const pathDir = process.cwd() + "/uploads";
 
@@ -103,6 +104,28 @@ const findOneEmail = async (req, res) => {
       return res.send(users);
     } else {
       return res.status(404).send({ message: "email not found" });
+    }
+  } catch (err) {
+    return res.send(err.message);
+  }
+};
+
+const findOnePass = async (req, res) => {
+  try {
+    const users = await req.context.models.Users.findOne({
+      where: {
+        [Op.or]: [
+          { user_email: req.params.id },
+          { user_password: req.params.id },
+        ],
+      },
+      attributes: ["user_id", "user_password"],
+    });
+
+    if (users) {
+      return res.send(users);
+    } else {
+      return res.status(404).send({ message: "User not found" });
     }
   } catch (err) {
     return res.send(err.message);
@@ -306,6 +329,75 @@ const ComparePassword = async (req, res) => {
   }
 };
 
+const updatePass = async (req, res) => {
+  try {
+    const { dataValues } = new req.context.models.Users(req.body);
+
+    if (!dataValues.user_id) {
+      dataValues.user_id = req.params.id;
+    }
+
+    if (dataValues.user_password) {
+      dataValues.user_salt = Auth.makeSalt();
+      dataValues.user_password = Auth.hashPassword(
+        dataValues.user_password,
+        dataValues.user_salt
+      );
+    }
+
+    await req.context.models.Users.update(dataValues, {
+      returning: true,
+      where: {
+        [Op.or]: [{ user_id: req.params.id }, { user_password: req.params.id }],
+      },
+    });
+
+    return res.send({ message: "update success" });
+  } catch (err) {
+    return res.status("404").json({
+      error: "Could not retrieve user",
+    });
+  }
+};
+
+const sendRequestPassword = async (req, res) => {
+  const { email, token } = req.body;
+  const nodemailer = require("nodemailer");
+  const ejs = require("ejs");
+  const juice = require("juice");
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.USER_GMAIL,
+      pass: process.env.PASS_GMAIL,
+    },
+  });
+  const data = await ejs.renderFile(process.cwd() + "/forgotPassword.ejs", {
+    email: email,
+    token: token,
+  });
+
+  const htmlWithStylesInlined = juice(data);
+
+  let msg = {
+    from: `Bayar services`,
+    to: `${email}`,
+    subject: "Reset Password, Bayar ✔",
+    html: htmlWithStylesInlined,
+  };
+
+  // // send email
+  let info = await transporter.sendMail(msg, (err, info) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Message sent: " + info.response);
+      res.send("email has been send");
+    }
+  });
+};
+
 export default {
   signup,
   signin,
@@ -315,8 +407,11 @@ export default {
   findOne,
   findOneEmail,
   findOneEmailTransferWallet,
+  findOnePass,
   update,
+  updatePass,
   remove,
   requireSignin,
   ComparePassword,
+  sendRequestPassword,
 };

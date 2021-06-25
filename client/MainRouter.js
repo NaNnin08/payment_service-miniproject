@@ -33,6 +33,8 @@ import { RequestScreen } from "./views/RequestScreen";
 import { TransactionScreenV2 } from "./views/TransactionScreenV2";
 import { TransactionPrintScreen } from "./views/TransactionPrintScreen";
 import { ModalSignupSuccess } from "./views/ModalSignupSuccess";
+import { NotFoundScreen } from "./views/NotFoundScreen";
+import { ForgotPasswordScreen } from "./views/ForgotPasswordScreen";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -55,6 +57,7 @@ const MainRouter = () => {
         <Route exact path="/register" component={RegisterScreen} />
         <Route exact path="/registerDetail" component={DetailRegisterScreen} />
         <Route exact path="/signup-success" component={ModalSignupSuccess} />
+        <Route exact path="/forgot_password" component={ForgotPasswordScreen} />
         <PrivateRoute
           exact
           path="/myaccount/money/banks/new"
@@ -102,56 +105,59 @@ const MainRouter = () => {
           component={TransferBankCheckout}
         />
         <MainLayout>
-          <PrivateRoute
-            exact
-            path="/myaccount/summary"
-            component={SummaryScreen}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/money"
-            component={WalletScreen}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/profile"
-            component={ProfilePageScreen}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/transaction"
-            component={TransactionScreen}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/transfer/"
-            component={TransferScreen}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/transfer/input"
-            component={TransferWalletInput}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/transfer/select"
-            component={TransferSendSelect}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/transfer/preview"
-            component={TransferWalletCheckout}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/transfer/request"
-            component={RequestScreen}
-          />
-          <PrivateRoute
-            exact
-            path="/myaccount/transaction/detail/:id"
-            component={TransactionPrintScreen}
-          />
+          <Switch>
+            <PrivateRoute
+              exact
+              path="/myaccount/summary"
+              component={SummaryScreen}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/money"
+              component={WalletScreen}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/profile"
+              component={ProfilePageScreen}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/transaction"
+              component={TransactionScreen}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/transfer/"
+              component={TransferScreen}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/transfer/input"
+              component={TransferWalletInput}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/transfer/select"
+              component={TransferSendSelect}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/transfer/preview"
+              component={TransferWalletCheckout}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/transfer/request"
+              component={RequestScreen}
+            />
+            <PrivateRoute
+              exact
+              path="/myaccount/transaction/detail/:id"
+              component={TransactionPrintScreen}
+            />
+            <Route component={NotFoundScreen} />
+          </Switch>
         </MainLayout>
       </Switch>
     </AnimatePresence>

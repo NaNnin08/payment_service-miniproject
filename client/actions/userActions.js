@@ -20,6 +20,9 @@ import {
   USER_FIND_ONE_FAIL,
   USER_FIND_ONE_REQUEST,
   USER_FIND_ONE_SUCCESS,
+  USER_FORGOT_PASSWORD_FAIL,
+  USER_FORGOT_PASSWORD_REQUEST,
+  USER_FORGOT_PASSWORD_SUCCESS,
   USER_REGISTER_FAIL_1,
   USER_REGISTER_FAIL_2,
   USER_REGISTER_REQUEST_1,
@@ -233,6 +236,22 @@ export const deleteUserAccountAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_CLOSE_ACCOUNT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const postForgotPasswordAction = (user) => async (dispatch) => {
+  dispatch({ type: USER_FORGOT_PASSWORD_REQUEST });
+  try {
+    const { data } = await axios.post(`/api/users/requestForgotPassword`, user);
+    dispatch({ type: USER_FORGOT_PASSWORD_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_FORGOT_PASSWORD_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

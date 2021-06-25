@@ -89,6 +89,14 @@ export default function LoginScreen() {
               required
             />
           </div>
+          <div className="flex flex-row-reverse mt-3 -mb-5">
+            <h1
+              className="text-blue-500 hover:underline cursor-pointer"
+              onClick={() => history.push("/forgot_password")}
+            >
+              Forgot your password?
+            </h1>
+          </div>
           <div className="mt-10">
             <button
               type="submit"

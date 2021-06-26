@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import { LoadingScereenWhite } from "../components/layout/LoadingScereenWhite";
+import { motion } from "framer-motion";
 
 export const NotFoundScreen = () => {
+  const [isLoading, SetIsLoading] = useState(true);
+
+  if (isLoading) {
+    setTimeout(() => {
+      SetIsLoading(false);
+    }, 1000);
+  }
   return (
-    <div
+    <motion.div
+      exit={{ opacity: 0 }}
       className="absolute top-0 w-full z-50 bg-white"
       style={{ height: "120vh" }}
     >
+      {isLoading && <LoadingScereenWhite />}
       <h1 className="text-lg md:text-3xl text-gray-500 ml-10 md:ml-32 mt-28 md:mt-7 absolute">
         Sorry, the page you request was not found
       </h1>
@@ -68,6 +79,6 @@ export const NotFoundScreen = () => {
         <span className="font-extrabold text-blue-500">{"<"}</span> Go back to
         home page
       </h1>
-    </div>
+    </motion.div>
   );
 };

@@ -7,6 +7,8 @@ import { findOneUser, signin } from "../../actions/userActions";
 import { useHistory, useLocation } from "react-router-dom";
 import LoadingScreen from "../../components/layout/LoadingScreen";
 import { Helmet } from "react-helmet";
+import { LoadingScereenWhite } from "../../components/layout/LoadingScereenWhite";
+import { motion } from "framer-motion";
 
 export default function LoginScreen() {
   const [values, setValues] = useState({
@@ -14,6 +16,14 @@ export default function LoginScreen() {
     user_password: "",
     error: false,
   });
+
+  const [isLoading, SetIsLoading] = useState(true);
+
+  if (isLoading) {
+    setTimeout(() => {
+      SetIsLoading(false);
+    }, 700);
+  }
 
   const history = useHistory();
   const location = useLocation();
@@ -56,11 +66,15 @@ export default function LoginScreen() {
     }
   }, [userInfo, history, fund]);
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center font-serif">
+    <motion.div
+      exit={{ opacity: 0 }}
+      className="bg-gray-100 min-h-screen flex items-center font-serif"
+    >
       <Helmet>
         <title>Sign In</title>
       </Helmet>
       {loading && <LoadingScreen />}
+      {isLoading && <LoadingScereenWhite />}
       <div className="w-5/6 md:w-1/2 lg:w-1/3 mx-auto bg-white shadow p-10 rounded-sm">
         <div className="-mt-5">
           <img className="w-1/2 mx-auto" src={Logo} alt="" />
@@ -125,6 +139,6 @@ export default function LoginScreen() {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

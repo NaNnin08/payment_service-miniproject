@@ -5,7 +5,7 @@ import { useState } from "react";
 export const TransferDetailWalletScreen = ({ data }) => {
   const [dataTransfer, setDataTransfer] = useState({
     amount: undefined,
-    message: undefined,
+    message: "",
   });
 
   const handleNext = () => {};

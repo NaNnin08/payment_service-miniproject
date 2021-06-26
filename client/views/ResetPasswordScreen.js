@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { findOneEmail, postForgotPasswordAction } from "../actions/userActions";
+import { useHistory, useLocation } from "react-router-dom";
+import { updateUser } from "../actions/userActions";
 import Logo from "../assets/images/bayar-logo.svg";
 import checkIcon from "../assets/images/checked1.svg";
 import AlertInput from "../components/layout/AlertInput";
 import LoadingScreen from "../components/layout/LoadingScreen";
 
-export const ForgotPasswordScreen = () => {
-  const [email, setEmail] = useState("");
+export const ResetPasswordScreen = () => {
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [successSend, setSuccessSend] = useState(false);
 
-  const { error, findEmail } = useSelector((state) => state.emailUser);
-
-  const { isSuccess, loading } = useSelector((state) => state.forgotPass);
+  const { isSuccess, loading, error } = useSelector((state) => state.userFund);
 
   const dispatch = useDispatch();
 
   const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     if (error) {
@@ -37,17 +37,6 @@ export const ForgotPasswordScreen = () => {
   }
 
   useEffect(() => {
-    if (findEmail) {
-      const data = {
-        email: findEmail.user_email,
-        token: findEmail.user_id,
-      };
-
-      dispatch(postForgotPasswordAction(data));
-    }
-  }, [dispatch, findEmail]);
-
-  useEffect(() => {
     if (isSuccess) {
       setSuccessSend(true);
       setIsLoading(false);
@@ -56,20 +45,15 @@ export const ForgotPasswordScreen = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (email) {
-      if (
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-          email
-        )
-      ) {
-        if (email !== user_email) {
-          dispatch(findOneEmail(email));
-        } else {
-          setIsError("Email must not same with email login");
-        }
-      } else {
-        setIsError("Format email invalid");
-      }
+    if (newPassword === confirmNewPassword) {
+      let user = new FormData();
+      user.append("user_password", newPassword);
+
+      const user_id = new URLSearchParams(location.search).get("token");
+
+      dispatch(updateUser(user, user_id));
+    } else {
+      setIsError("password and confirm password not same");
     }
   };
   return (
@@ -82,15 +66,15 @@ export const ForgotPasswordScreen = () => {
         {successSend ? (
           <div>
             <div className="text-center mt-7">
-              <h1 className="text-2xl font-semibold">Forgot Password</h1>
+              <h1 className="text-2xl font-semibold">Password Reset Success</h1>
               <img
                 className="w-28 mt-5 mx-auto transform -rotate-6"
                 src={checkIcon}
                 alt="bayar icon"
               />
               <p className="my-5 max-w-sm mx-auto">
-                You will receive an email with further instructions on how to
-                reset your password.
+                Awesome. You have successfully reset the password for your
+                account
               </p>
             </div>
             <button
@@ -103,23 +87,29 @@ export const ForgotPasswordScreen = () => {
         ) : (
           <div>
             <div className="text-center mt-7">
-              <h1 className="text-2xl font-semibold">Forgot Password</h1>
+              <h1 className="text-2xl font-semibold">Enter New Password</h1>
               <p className="mt-2">
-                No Problem! Enter your email below and we will send you an email
-                with instruction to reset your password.
+                Looks like you are trying to reset the password for the account.
+                Please enter your new password twice. So we can verify you typed
+                it correclty.
               </p>
             </div>
             {isError && <AlertInput data={isError} />}
             <form method="POST" action="#" className="p-0" onSubmit={onSubmit}>
-              <div className="mt-5">
+              <div className="mt-5 space-y-2">
                 <input
-                  type="text"
-                  id="user_email"
-                  name="user_email"
-                  className="block w-full p-2 border rounded border-gray-300 focus:outline-none focus:ring-1 focus:ring-black focus:border-transparent "
-                  placeholder="Email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
+                  type="password"
+                  className="w-full rounded-md"
+                  placeholder="New password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <input
+                  type="password"
+                  className="w-full rounded-md"
+                  placeholder="Confirm new password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
               </div>
               <div className="mt-5">
@@ -127,17 +117,8 @@ export const ForgotPasswordScreen = () => {
                   type="submit"
                   className="py-3 bg-blue-500 text-white w-full rounded hover:bg-blue-600 focus:outline-none"
                 >
-                  Send Reset Link
+                  Change password
                 </button>
-                <h1 className="text-center mt-5">
-                  Back to{" "}
-                  <span
-                    className="text-blue-500 cursor-pointer hover:underline"
-                    onClick={() => history.push("/login")}
-                  >
-                    Login
-                  </span>
-                </h1>
               </div>
             </form>
           </div>

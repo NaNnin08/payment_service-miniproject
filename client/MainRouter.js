@@ -35,6 +35,7 @@ import { TransactionPrintScreen } from "./views/TransactionPrintScreen";
 import { ModalSignupSuccess } from "./views/ModalSignupSuccess";
 import { NotFoundScreen } from "./views/NotFoundScreen";
 import { ForgotPasswordScreen } from "./views/ForgotPasswordScreen";
+import { ResetPasswordScreen } from "./views/ResetPasswordScreen";
 
 const MainRouter = () => {
   const location = useLocation();
@@ -58,6 +59,7 @@ const MainRouter = () => {
         <Route exact path="/registerDetail" component={DetailRegisterScreen} />
         <Route exact path="/signup-success" component={ModalSignupSuccess} />
         <Route exact path="/forgot_password" component={ForgotPasswordScreen} />
+        <Route exact path="/reset_password" component={ResetPasswordScreen} />
         <PrivateRoute
           exact
           path="/myaccount/money/banks/new"

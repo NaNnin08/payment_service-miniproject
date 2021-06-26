@@ -12,7 +12,7 @@ import { ArrowLeftIcon } from "@heroicons/react/outline";
 export const TransferWalletInput = () => {
   const [dataTransfer, setDataTransfer] = useState({
     amount: undefined,
-    message: undefined,
+    message: "",
   });
 
   const { findEmail } = useSelector((state) => state.emailUser);
@@ -63,13 +63,13 @@ export const TransferWalletInput = () => {
             src={
               findEmail && findEmail.user_avatar
                 ? require("../../uploads/" + findEmail.user_avatar).default
-                : require("../assets/images/defaultProfile.jpg")
+                : require("../assets/images/defaultProfile.jpg").default
             }
             alt="user_friend"
             className="rounded-full"
             style={{ width: "90px", height: "90px" }}
           />
-          <p className="text-2xl font-semibold ml-5 text-gray-500">
+          <p className="text-2xl font-semibold ml-5 text-gray-500 truncate">
             {findEmail && findEmail.user_email}
           </p>
         </div>

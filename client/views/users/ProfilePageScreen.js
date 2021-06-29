@@ -14,10 +14,11 @@ import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { ModalCloseAccount } from "../ModalCloseAccount";
+import { PAYMENT_TRANSFER_WALLET_CLEAR } from "../../constants/paymentConstants";
 
 export default function ProfilePageScreen() {
   const userFund = useSelector((state) => state.userFund);
-  const { fund } = userFund;
+  const { fund, isSuccess } = userFund;
   const dispatch = useDispatch();
 
   const [userData, setUserData] = useState("");
@@ -44,6 +45,10 @@ export default function ProfilePageScreen() {
   const [closeAccount, setCloseAccount] = useState(false);
 
   const cancelButtonRef = useRef();
+
+  if (isSuccess) {
+    dispatch({ type: PAYMENT_TRANSFER_WALLET_CLEAR });
+  }
 
   useEffect(() => {
     if (fund && !userData) {

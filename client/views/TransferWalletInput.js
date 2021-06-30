@@ -8,12 +8,14 @@ import {
   PAYMENT_TRANSFER_DATA_CLEAR,
 } from "../constants/paymentConstants";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
+import AlertInput from "../components/layout/AlertInput";
 
 export const TransferWalletInput = () => {
   const [dataTransfer, setDataTransfer] = useState({
     amount: undefined,
     message: "",
   });
+  const [isError, setIsError] = useState(false);
 
   const { findEmail } = useSelector((state) => state.emailUser);
   const { fund } = useSelector((state) => state.userFund);
@@ -31,9 +33,14 @@ export const TransferWalletInput = () => {
       message: dataTransfer.message,
     };
 
-    if (dataTransfer.amount) {
+    if (
+      dataTransfer.amount &&
+      parseFloat(fund.payment_account.pacc_saldo) > dataTransfer.amount
+    ) {
       dispatch({ type: PAYMENT_TRANSFER_DATA, payload: data });
       history.push("/myaccount/transfer/select");
+    } else {
+      setIsError("Balance tidak cukup!");
     }
   };
 
@@ -51,6 +58,12 @@ export const TransferWalletInput = () => {
 
   if (!findEmail) {
     history.push("/myaccount/transfer");
+  }
+
+  if (isError) {
+    setTimeout(() => {
+      setIsError(false);
+    }, 3000);
   }
   return (
     <div className="bg-gray-100 flex">
@@ -73,6 +86,7 @@ export const TransferWalletInput = () => {
             {findEmail && findEmail.user_email}
           </p>
         </div>
+        {isError && <AlertInput data={isError} />}
         <div className="flex flex-col mt-5">
           <h1 className="ml-5 text-gray-400">
             Masukan nominal yang akan dikirim:

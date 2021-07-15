@@ -50,7 +50,7 @@ const MainRouter = () => {
         <Route exact path="/dummy" component={Dummy} />
         <PrivateRoute
           exact
-          path="/pay/order/wallet/:id"
+          path="/pay/order/wallet/:id/:amount"
           component={OrderViews}
         />
         <Route exact path="/login" component={LoginScreen} />

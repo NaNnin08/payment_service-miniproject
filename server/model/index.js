@@ -6,7 +6,6 @@ import users from "./users";
 import Sequelize from "sequelize";
 import { sequelize } from "../../config/config-db";
 import addres from "./address";
-import pays from "./payment_save";
 
 const models = {
   Users: users(sequelize, Sequelize),
@@ -15,7 +14,6 @@ const models = {
   Payment_Account: payment_account(sequelize, Sequelize),
   Payment_Transaction: payment_transaction(sequelize, Sequelize),
   Addres: addres(sequelize, Sequelize),
-  Pays: pays(sequelize, Sequelize),
 };
 
 Object.keys(models).forEach((key) => {

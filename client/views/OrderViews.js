@@ -19,16 +19,13 @@ export default function OrderViews({ match }) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [order, setOrder] = useState("");
+  const [order, setOrder] = useState({
+    pays_amount: match.params.amount,
+    pays_order_number: match.params.id,
+  });
   const [confirm, setConfirm] = useState(false);
   const [payConfirm, setPayConfirm] = useState(false);
   const [dummy, setDummy] = useState("");
-
-  const payment = async () => {
-    await axios
-      .get("/api/payment/save/" + match.params.id)
-      .then((data) => setOrder(data.data));
-  };
 
   const lupa = async () => {
     try {
@@ -42,10 +39,6 @@ export default function OrderViews({ match }) {
 
   useEffect(() => {
     lupa();
-  }, []);
-
-  useEffect(() => {
-    payment();
   }, []);
 
   if (dummy) {

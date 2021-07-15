@@ -7,13 +7,9 @@ export default function ButtonBayar(props) {
     pays_order_number: props.orderNumber,
   };
 
-  const lopalopa = async () => {
-    await axios.post("http://192.168.100.24:3030/api/payment/save", order);
-  };
-
   const lopalalalllopa = async () => {
     const { data } = await axios.get(
-      "http://192.168.100.24:3030/api/payt/order/" + order.pays_order_number
+      "http://localhost:3030/api/payt/order/" + order.pays_order_number
     );
     props.onSuccess(data);
   };
@@ -21,10 +17,8 @@ export default function ButtonBayar(props) {
   const handleCilck = (e) => {
     e.preventDefault();
 
-    lopalopa();
-
     let popup = window.open(
-      `http://192.168.100.24:3030/pay/order/wallet/${order.pays_order_number}`,
+      `http://localhost:3030/pay/order/wallet/${order.pays_order_number}/${order.pays_amount}`,
       "Popup",
       "toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30"
     );

@@ -73,11 +73,7 @@ export const TransferWalletInput = () => {
         </button>
         <div className="flex flex-row mt-5 ml-5 items-center">
           <img
-            src={
-              findEmail && findEmail.user_avatar
-                ? require("../../uploads/" + findEmail.user_avatar).default
-                : require("../assets/images/defaultProfile.jpg").default
-            }
+            src={require("../assets/images/defaultProfile.jpg").default}
             alt="user_friend"
             className="rounded-full"
             style={{ width: "90px", height: "90px" }}

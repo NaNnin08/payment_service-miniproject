@@ -211,11 +211,7 @@ export default function ProfilePageScreen() {
             <img
               className="rounded-full mt-2"
               style={{ width: "100px", height: "100px" }}
-              src={
-                fund && fund.user_avatar
-                  ? require("../../../uploads/" + fund.user_avatar).default
-                  : defaulProfile
-              }
+              src={defaulProfile}
               alt="default profile"
             />
             <Link to="/myaccount/add/profile">

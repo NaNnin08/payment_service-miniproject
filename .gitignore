@@ -3,6 +3,5 @@
 /data/
 npm-debug.log
 /schema-reverse/
-/uploads/
 .env
 yarn.lock

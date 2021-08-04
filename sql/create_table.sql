@@ -4,21 +4,21 @@ CREATE SEQUENCE seq_paac_number
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
-  START 1
+  START 1;
   
 CREATE SEQUENCE seq_pyt_trx
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
-  START 1
+  START 1;
   
 create or replace function pacc_id () returns varchar as $$
 select CONCAT('PAAC',to_char(now(),'YYYYMMDD'),'-',lpad(''||nextval('seq_paac_number'),4,'0'))
-$$ language sql
+$$ language sql;
 
 create or replace function pyt_trx () returns varchar as $$
 select CONCAT('PAY',to_char(now(),'YYYYMMDD'),'-',lpad(''||nextval('seq_pyt_trx'),4,'0'))
-$$ language sql
+$$ language sql;
 
 CREATE TABLE users (
 	user_id VARCHAR(30) PRIMARY KEY,

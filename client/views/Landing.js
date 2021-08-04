@@ -320,7 +320,7 @@ export default function Landing() {
                 </div>
               </div>
               <img
-                className="object-cover w-full h-90v"
+                className="object-cover w-screen h-90v"
                 src={image1}
                 alt="shopping1"
               />
@@ -359,7 +359,7 @@ export default function Landing() {
                 </div>
               </div>
               <img
-                className="object-cover w-full h-90v"
+                className="object-cover w-screen h-90v"
                 src={image2}
                 alt="shopping1"
               />
@@ -401,7 +401,7 @@ export default function Landing() {
                 </div>
               </div>
               <img
-                className="object-cover w-full h-90v"
+                className="object-cover w-screen h-90v"
                 src={image3}
                 alt="shopping1"
               />

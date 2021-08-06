@@ -14,7 +14,7 @@ import { Helmet } from "react-helmet";
 import Pagination from "@material-ui/lab/Pagination";
 
 export const TransactionScreenV2 = () => {
-  const { historyPayment } = useSelector((state) => state.paymentList);
+  const { pagingPayment } = useSelector((state) => state.paging);
   const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
@@ -47,9 +47,9 @@ export const TransactionScreenV2 = () => {
   return (
     <div>
       <div className="w-2/3 mx-auto">
-        {historyPayment &&
-          historyPayment.rows &&
-          historyPayment.rows.map((data, index) => (
+        {pagingPayment &&
+          pagingPayment.rows &&
+          pagingPayment.rows.map((data, index) => (
             <Disclosure key={index}>
               {({ open }) => (
                 <>
@@ -486,8 +486,8 @@ export const TransactionScreenV2 = () => {
           ))}
       </div>
       <Pagination
-        className="my-3"
-        count={historyPayment ? historyPayment.totalPages : 0}
+        className="my-10"
+        count={pagingPayment ? pagingPayment.totalPages : 1}
         page={page}
         siblingCount={1}
         boundaryCount={1}

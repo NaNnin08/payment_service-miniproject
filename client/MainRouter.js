@@ -47,7 +47,7 @@ const MainRouter = () => {
         <link rel="shortcut icon" href={icon} />
       </Helmet>
       <Switch location={location} key={location.pathname}>
-        <Route exact path="/dummy" component={Dummy} />
+        <Route exact path="/dummy" component={TransactionScreenV2} />
         <PrivateRoute
           exact
           path="/pay/order/wallet/:id/:amount"

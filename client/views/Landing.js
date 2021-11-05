@@ -22,6 +22,7 @@ export default function Landing() {
     image2: false,
     image3: true,
   });
+  const [autoSlide, setAutoSlide] = useState(false);
 
   const { userInfo } = useSelector((state) => state.userSignin);
 
@@ -42,34 +43,23 @@ export default function Landing() {
     window.addEventListener("scroll", changeNavbar);
 
     const timeout = setTimeout(() => {
-      setCarosel(
-        carosel.image1
-          ? {
-              image1: false,
-              image2: false,
-              image3: true,
-            }
-          : carosel.image2
-          ? {
-              image1: true,
-              image2: false,
-              image3: false,
-            }
-          : carosel.image3
-          ? {
-              image1: false,
-              image2: true,
-              image3: false,
-            }
-          : null
-      );
+      if (carosel.image1 && autoSlide) {
+        setCarosel({ image1: false, image2: false, image3: true });
+        setAutoSlide(false);
+      } else if (carosel.image2 && autoSlide) {
+        setCarosel({ image1: true, image2: false, image3: false });
+        setAutoSlide(false);
+      } else if (carosel.image3 && autoSlide) {
+        setCarosel({ image1: false, image2: true, image3: false });
+        setAutoSlide(false);
+      }
     }, 5000);
 
     return () => {
       window.removeEventListener("scroll", changeNavbar);
       clearTimeout(timeout);
     };
-  }, [carosel]);
+  }, [carosel, autoSlide]);
 
   const handleNext = () => {
     if (carosel.image1) {
@@ -323,6 +313,7 @@ export default function Landing() {
                 className="object-cover w-screen h-90v"
                 src={image1}
                 alt="shopping1"
+                onLoad={() => setAutoSlide(true)}
               />
             </Transition>
           ) : carosel.image2 ? (
@@ -362,6 +353,7 @@ export default function Landing() {
                 className="object-cover w-screen h-90v"
                 src={image2}
                 alt="shopping1"
+                onLoad={() => setAutoSlide(true)}
               />
             </Transition>
           ) : (
@@ -404,6 +396,7 @@ export default function Landing() {
                 className="object-cover w-screen h-90v"
                 src={image3}
                 alt="shopping1"
+                onLoad={() => setAutoSlide(true)}
               />
             </Transition>
           )}

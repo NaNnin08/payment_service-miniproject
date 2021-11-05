@@ -6,6 +6,9 @@ import {
   PAYMENT_FIND_ONE_ID_SUCCESS,
   PAYMENT_FIND_ONE_REQUEST,
   PAYMENT_FIND_ONE_SUCCESS,
+  PAYMENT_MIDTRANS_TOKEN_FAIL,
+  PAYMENT_MIDTRANS_TOKEN_REQUEST,
+  PAYMENT_MIDTRANS_TOKEN_SUCCESS,
   PAYMENT_ORDER_WALLET_FAIL,
   PAYMENT_ORDER_WALLET_REQUEST,
   PAYMENT_ORDER_WALLET_SUCCESS,
@@ -178,6 +181,23 @@ export const getPagingPaymentAction = (request, params) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PAYMENT_PAGING_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const postMidtransToken = (request) => async (dispatch) => {
+  dispatch({ type: PAYMENT_MIDTRANS_TOKEN_REQUEST });
+  try {
+    const { data } = await axios.post("/api/payt/payment/midtrans", request);
+
+    dispatch({ type: PAYMENT_MIDTRANS_TOKEN_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PAYMENT_MIDTRANS_TOKEN_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

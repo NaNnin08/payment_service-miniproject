@@ -152,10 +152,11 @@ export default function Landing() {
             </g>
           </svg>
         </div>
+
         <div className="absolute right-10 flex flex-row space-x-3">
           <div
             className={
-              "px-2 py-1 rounded-xl text-sm " +
+              "px-2 py-1 rounded-lg text-sm " +
               (navBarTransparant
                 ? "border border-white"
                 : "border border-blue-500 text-blue-500")
@@ -165,7 +166,7 @@ export default function Landing() {
           </div>
           <div
             className={
-              "px-2 py-1 rounded-xl text-sm " +
+              "px-2 py-1 rounded-lg text-sm " +
               (navBarTransparant
                 ? "text-black bg-white"
                 : "text-white bg-blue-500")
@@ -175,6 +176,7 @@ export default function Landing() {
           </div>
         </div>
       </header>
+
       {/* //Slider */}
       <div className="relative z-0 flex items-end md:items-center">
         <button

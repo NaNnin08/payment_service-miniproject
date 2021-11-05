@@ -6,6 +6,9 @@ import {
   PAYMENT_FIND_ONE_ID_SUCCESS,
   PAYMENT_FIND_ONE_REQUEST,
   PAYMENT_FIND_ONE_SUCCESS,
+  PAYMENT_MIDTRANS_TOKEN_FAIL,
+  PAYMENT_MIDTRANS_TOKEN_REQUEST,
+  PAYMENT_MIDTRANS_TOKEN_SUCCESS,
   PAYMENT_ORDER_WALLET_FAIL,
   PAYMENT_ORDER_WALLET_REQUEST,
   PAYMENT_ORDER_WALLET_SUCCESS,
@@ -117,6 +120,21 @@ export const findPaymentByIdReducer = (state = {}, action) => {
     case PAYMENT_FIND_ONE_ID_SUCCESS:
       return { loading: false, payment: action.payload };
     case PAYMENT_FIND_ONE_ID_FAIL:
+      return { loading: false, error: action.payload };
+    case PAYMENT_REQUEST_WALLET_CLEAR:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const requestTokenMidtrans = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_MIDTRANS_TOKEN_REQUEST:
+      return { loading: true };
+    case PAYMENT_MIDTRANS_TOKEN_SUCCESS:
+      return { loading: false, data: action.payload, isSuccess: true };
+    case PAYMENT_MIDTRANS_TOKEN_FAIL:
       return { loading: false, error: action.payload };
     case PAYMENT_REQUEST_WALLET_CLEAR:
       return {};

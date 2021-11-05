@@ -3,12 +3,17 @@ import { Link, useHistory } from "react-router-dom";
 import bIcon from "../assets/images/B_icon.svg";
 import { XIcon } from "@heroicons/react/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { findOnePaymentByUser, topupFromBank } from "../actions/paymentAction";
+import {
+  findOnePaymentByUser,
+  postMidtransToken,
+  topupFromBank,
+} from "../actions/paymentAction";
 import { findOneUser } from "../actions/userActions";
 import { PAYMENT_TOPUP_BANK_CLEAR } from "../constants/paymentConstants";
 import AlertInput from "../components/layout/AlertInput";
 import { bankFindById } from "../actions/bankActions";
 import { BANK_CLEAR_SEARCH } from "../constants/bankConstants";
+import useMidtrans from "../hook/useMidtrans";
 
 export default function TopUpBalanceScreen() {
   const history = useHistory();
@@ -19,6 +24,9 @@ export default function TopUpBalanceScreen() {
   const { bankId } = bank;
   const payment = useSelector((state) => state.payment);
   const { topup, isSuccess, error } = payment;
+
+  const { data: midtrans } = useSelector((state) => state.tokenMidtrans);
+
   const dispatch = useDispatch();
 
   const [values, setValues] = useState({
@@ -27,6 +35,8 @@ export default function TopUpBalanceScreen() {
     payt_type: "topup",
     payt_dabet: undefined,
   });
+
+  useMidtrans();
 
   useEffect(() => {
     if (!bankId) {
@@ -57,9 +67,36 @@ export default function TopUpBalanceScreen() {
     }
   }, [dispatch, isSuccess]);
 
+  useEffect(() => {
+    if (window && typeof window === "object" && midtrans) {
+      window.snap.pay(midtrans.token);
+    }
+  }, [midtrans]);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(topupFromBank(values));
+
+    if (values.payt_bacc_acc_bank === "midtrans") {
+      const parameter = {
+        transaction_details: {
+          order_id: "YOUR-ORDERID-123456",
+          gross_amount: values.payt_dabet,
+        },
+        credit_card: {
+          secure: true,
+        },
+        customer_details: {
+          first_name: "Nida",
+          last_name: "Sunandar",
+          email: "nida.pra@example.com",
+          phone: "08111222333",
+        },
+      };
+
+      dispatch(postMidtransToken(parameter));
+    } else {
+      dispatch(topupFromBank(values));
+    }
   };
 
   const clearSearch = () => {
@@ -77,6 +114,7 @@ export default function TopUpBalanceScreen() {
             <XIcon />
           </div>
         </Link>
+
         <div className="mx-auto mt-5">
           <img
             className="w-12 transform -rotate-6"
@@ -84,10 +122,12 @@ export default function TopUpBalanceScreen() {
             alt="bayar icon"
           />
         </div>
+
         <div className="lg:ml-44 ml-32 mt-10">
           <h1 className="text-2xl">Add Balance</h1>
           <p className="mt-5">Add balance from your bank</p>
         </div>
+
         <div className="w-2/3 mx-auto">
           {error && <AlertInput data={error} />}
           <form onSubmit={onSubmit}>
@@ -116,6 +156,7 @@ export default function TopUpBalanceScreen() {
                             .bank_name}
                       </option>
                     ))}
+                <option value="midtrans">Midtrans</option>
               </select>
             </div>
             <div className="mt-5">

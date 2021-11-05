@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import Pagination from "../helpers/Pagination";
+import midtransClient from "midtrans-client";
 
 const dataValues = async (req, res, next) => {
   try {
@@ -488,6 +489,24 @@ const paymentPaging = async (req, res) => {
   }
 };
 
+const paymentMidtrans = async (req, res) => {
+  // Create Snap API instance
+  let snap = new midtransClient.Snap({
+    // Set to true if you want Production Environment (accept real transaction).
+    isProduction: false,
+    serverKey: "SB-Mid-server-tGIIXbqzCCqOprPdkiR1Bbgu",
+  });
+
+  let parameter = req.body;
+
+  snap.createTransaction(parameter).then((transaction) => {
+    // transaction token
+    let transactionToken = transaction.token;
+
+    res.send({ token: transactionToken });
+  });
+};
+
 export default {
   create,
   findAll,
@@ -503,4 +522,5 @@ export default {
   sendRequestPayment,
   createRequest,
   paymentPaging,
+  paymentMidtrans,
 };

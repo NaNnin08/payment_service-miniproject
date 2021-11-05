@@ -9,6 +9,7 @@ import {
   orderWalletReducer,
   paymentTransfer,
   requestPaymentReducer,
+  requestTokenMidtrans,
   topupFromBankReducer,
 } from "./reducer/paymentReducer";
 import {
@@ -55,6 +56,7 @@ const reducer = combineReducers({
   closeAccount: userCloseAccountReducer,
   paging: findPagingPaymentByUserReducer,
   forgotPass: userForgotPasswordReducer,
+  tokenMidtrans: requestTokenMidtrans,
 });
 
 const store = createStore(

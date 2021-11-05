@@ -85,6 +85,7 @@ router.post(
   ctrl.Payt.sendRequestPayment
 );
 router.get("/", ctrl.Payt.findAll);
+router.post("/payment/midtrans", ctrl.Payt.paymentMidtrans);
 router.get("/:id", ctrl.Payt.findOne);
 router.get("/user/:id", ctrl.Payt.findOneByUser);
 router.get("/order/:id", ctrl.Payt.findOneByOrder);

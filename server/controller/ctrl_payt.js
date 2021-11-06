@@ -16,106 +16,26 @@ const dataValues = async (req, res, next) => {
   }
 };
 
-const create = async (req, res) => {
-  const { dataValues } = req.data;
+const create = async (req, res, next) => {
+  const { dataValues } = req.data
+    ? req.data
+    : new req.context.models.Payment_Transaction(req.body);
 
   try {
     const payt = await req.context.models.Payment_Transaction.create(
       dataValues
     );
 
-    res.send(payt);
+    if (payt.payt_type === "topup with midtrans") {
+      req.midtransData = payt;
+
+      next();
+    } else {
+      res.send(payt);
+    }
   } catch (err) {
     console.log(err);
   }
-
-  // const { dataValues } = new req.context.models.Payment_Transaction(req.body);
-
-  // const paac = await req.context.models.Payment_Account.findOne({
-  //   where: { paac_account_number: dataValues.payt_paac_account_number },
-  // });
-
-  // if (dataValues.payt_type === "topup" && dataValues.payt_dabet) {
-  //   const bank = await req.context.models.Bank_Accounts.findOne({
-  //     where: { baac_acc_bank: dataValues.payt_bacc_acc_bank },
-  //   });
-
-  //   if (bank.baac_saldo - dataValues.payt_dabet > 10000) {
-  //     const bacc = await req.context.models.Bank_Accounts.update(
-  //       {
-  //         baac_saldo: bank.baac_saldo - dataValues.payt_dabet,
-  //       },
-  //       {
-  //         returning: true,
-  //         where: { baac_acc_bank: dataValues.payt_bacc_acc_bank },
-  //       }
-  //     );
-
-  //     const topup = await req.context.models.Payment_Account.update(
-  //       {
-  //         pacc_saldo:
-  //           parseInt(paac.pacc_saldo) + parseInt(dataValues.payt_dabet),
-  //       },
-  //       {
-  //         returning: true,
-  //         where: { paac_account_number: dataValues.payt_paac_account_number },
-  //       }
-  //     );
-
-  //     const payt = await req.context.models.Payment_Transaction.create(
-  //       dataValues
-  //     );
-
-  //     return res.send(payt);
-  //   } else {
-  //     return res.send("saldo tidak cukup");
-  //   }
-  // }
-
-  // if (dataValues.payt_type === "order" && dataValues.payt_credit) {
-  //   if (parseInt(paac.pacc_saldo) > parseInt(dataValues.payt_credit)) {
-  //     const order = await req.context.models.Payment_Account.update(
-  //       {
-  //         pacc_saldo:
-  //           parseInt(paac.pacc_saldo) - parseInt(dataValues.payt_credit),
-  //       },
-  //       {
-  //         returning: true,
-  //         where: { paac_account_number: dataValues.payt_paac_account_number },
-  //       }
-  //     );
-
-  //     const payt = await req.context.models.Payment_Transaction.create(
-  //       dataValues
-  //     );
-
-  //     return res.send(payt);
-  //   } else {
-  //     return res.send("saldo tidak cukup");
-  //   }
-  // }
-
-  // if (dataValues.payt_type === "refund" && dataValues.payt_trx_number_ref) {
-  //   const payt_ref = await req.context.models.Payment_Transaction.findOne({
-  //     where: { payt_trx_number: dataValues.payt_trx_number_ref },
-  //   });
-
-  //   const refund = await req.context.models.Payment_Account.update(
-  //     {
-  //       pacc_saldo: parseInt(paac.pacc_saldo) + parseInt(payt_ref.payt_credit),
-  //     },
-  //     {
-  //       returning: true,
-  //       where: { paac_account_number: dataValues.payt_paac_account_number },
-  //     }
-  //   );
-
-  //   const payt = await req.context.models.Payment_Transaction.create(
-  //     dataValues
-  //   );
-
-  //   return res.send(payt);
-  // }
 };
 
 const createTransferWallet = async (req, res, next) => {
@@ -490,6 +410,8 @@ const paymentPaging = async (req, res) => {
 };
 
 const paymentMidtrans = async (req, res) => {
+  const dataMidtrans = req.midtransData;
+
   // Create Snap API instance
   let snap = new midtransClient.Snap({
     // Set to true if you want Production Environment (accept real transaction).
@@ -497,7 +419,23 @@ const paymentMidtrans = async (req, res) => {
     serverKey: "SB-Mid-server-tGIIXbqzCCqOprPdkiR1Bbgu",
   });
 
-  let parameter = req.body;
+  const parameter = {
+    transaction_details: {
+      order_id: dataMidtrans.payt_trx_number,
+      gross_amount: dataMidtrans.payt_dabet,
+    },
+    credit_card: {
+      secure: true,
+    },
+    customer_details: {
+      first_name: "Nida",
+      last_name: "Sunandar",
+      email: "nida.pra@example.com",
+      phone: "08111222333",
+    },
+  };
+
+  // let parameter = req.body;
 
   snap.createTransaction(parameter).then((transaction) => {
     // transaction token
@@ -505,6 +443,23 @@ const paymentMidtrans = async (req, res) => {
 
     res.send({ token: transactionToken });
   });
+};
+
+const midtransNotification = async (req, res) => {
+  const dataMetadata = {
+    payt_midtrans_status: req.body.transaction_status,
+    payt_midtrans_metadata: JSON.stringify(req.body).replace(/"/g, '\\"'),
+  };
+
+  const payt = await req.context.models.Payment_Transaction.update(
+    dataMetadata,
+    {
+      returning: true,
+      where: { payt_trx_number: req.body.order_id },
+    }
+  );
+
+  return res.send(payt);
 };
 
 export default {
@@ -523,4 +478,5 @@ export default {
   createRequest,
   paymentPaging,
   paymentMidtrans,
+  midtransNotification,
 };

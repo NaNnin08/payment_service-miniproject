@@ -84,7 +84,9 @@ CREATE TABLE payment_transaction(
 	payt_type VARCHAR(20),
 	payt_paac_account_number TEXT NOT NULL,
 	FOREIGN KEY (payt_paac_account_number) REFERENCES payment_account(paac_account_number)
-	ON UPDATE CASCADE ON DELETE CASCADE
+	ON UPDATE CASCADE ON DELETE CASCADE,
+	payt_midtrans_status TEXT,
+	payt_midtrans_metadata TEXT
 );
 
 CREATE TABLE payment_save (
@@ -93,3 +95,7 @@ CREATE TABLE payment_save (
 	pays_order_number VARCHAR(150),
 	pays_desc VARCHAR(150)
 )
+
+ALTER TABLE payment_transaction
+ADD COLUMN payt_midtrans_status TEXT,
+ADD COLUMN payt_midtrans_metadata TEXT;

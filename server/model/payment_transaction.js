@@ -55,7 +55,16 @@ const payment_transaction = (sequelize, DataTypes) => {
           key: "paac_account_number",
         },
       },
+      payt_midtrans_status: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      payt_midtrans_metadata: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
     },
+
     {
       sequelize,
       tableName: "payment_transaction",

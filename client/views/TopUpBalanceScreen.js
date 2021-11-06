@@ -77,23 +77,13 @@ export default function TopUpBalanceScreen() {
     e.preventDefault();
 
     if (values.payt_bacc_acc_bank === "midtrans") {
-      const parameter = {
-        transaction_details: {
-          order_id: "YOUR-ORDERID-123456",
-          gross_amount: values.payt_dabet,
-        },
-        credit_card: {
-          secure: true,
-        },
-        customer_details: {
-          first_name: "Nida",
-          last_name: "Sunandar",
-          email: "nida.pra@example.com",
-          phone: "08111222333",
-        },
+      const dataMidtrans = {
+        ...values,
+        payt_type: "topup with midtrans",
+        payt_midtrans_status: "pending",
       };
 
-      dispatch(postMidtransToken(parameter));
+      dispatch(postMidtransToken(dataMidtrans));
     } else {
       dispatch(topupFromBank(values));
     }
